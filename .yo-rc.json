@@ -1,0 +1,7 @@
+{
+  "@callstack-io/generator-node-module": {
+    "promptValues": {
+      "githubUsername": "callstack-io"
+    }
+  }
+}
