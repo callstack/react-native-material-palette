@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-const MaterialPalette = require('../');
+import MaterialPalette from '../';
 
 describe('reactNativeMaterialPalette', () => {
   it('should return argument', () => {

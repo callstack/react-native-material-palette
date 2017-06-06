@@ -1,9 +1,8 @@
 /* @flow */
 
-export type Image = { uri: string };
+export type Uri = string;
 
 export type ColorProfile =
-  | 'dominant'
   | 'muted'
   | 'vibrant'
   | 'darkMuted'
@@ -26,12 +25,5 @@ export type PaletteInstance = {
 export type Options = {
   region?: { top: number, left: number, bottom: number, right: number },
   maximumColorCount?: number,
-  type?:
-    | 'dominant'
-    | 'muted'
-    | 'vibrant'
-    | 'darkMuted'
-    | 'darkVibrant'
-    | 'lightMuted'
-    | 'lightVibrant',
+  type?: ColorProfile,
 };

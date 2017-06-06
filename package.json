@@ -8,6 +8,7 @@
     "name": "Raul Gomez Acuna",
     "email": "rauliyohmc@gmail.com"
   },
+  "main": "./src/index.js",
   "files": [
     "lib"
   ],
@@ -51,7 +52,7 @@
   "babel": {
     "presets": [
       [
-        "react-native-stage-0"
+        "react-native"
       ]
     ],
     "plugins": [
@@ -99,6 +100,7 @@
       "no-plusplus": 0,
       "no-class-assign": 0,
       "no-duplicate-imports": 0,
+      "import/no-extraneous-dependencies": 0,
       "react/jsx-filename-extension": [
         0,
         {
