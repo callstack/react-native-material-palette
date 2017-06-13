@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import java.io.IOException
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
+import android.graphics.Color
 import java.net.URL
 
 class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
@@ -22,6 +23,25 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
     private lateinit var palette: Palette
 
     @ReactMethod
+    fun getColor(color: String, defaultColor: String, promise: Promise) {
+        val defaultColorInt = Color.parseColor(defaultColor)
+        val targetColor: Int
+        when(color) {
+            "muted" -> targetColor = palette.getMutedColor(defaultColorInt)
+            "vibrant" -> targetColor = palette.getVibrantColor(defaultColorInt)
+            "darkMuted" -> targetColor = palette.getDarkMutedColor(defaultColorInt)
+            "darkVibrant" -> targetColor = palette.getDarkVibrantColor(defaultColorInt)
+            "lightMuted" -> targetColor = palette.getLightMutedColor(defaultColorInt)
+            "lightVibrant" -> targetColor = palette.getLightVibrantColor(defaultColorInt)
+            else -> {
+                throw RuntimeException("The color provided is not valid. It must be one of types 'muted', " +
+                        "'vibrant', 'darkMuted', 'darkVibrant', 'lightMuted' or 'lightVibrant")
+            }
+        }
+        promise.resolve(String.format("#%06X", 0xFFFFFF and targetColor))
+    }
+
+    @ReactMethod
     fun createMaterialPalette(source: ReadableMap, promise: Promise) {
         try {
             val uri = source.getString("uri")
@@ -34,7 +54,7 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
             }
             Palette.from(bitmap).generate({ p: Palette ->
                 palette = p
-                promise.resolve("Palette created successfully")
+                promise.resolve(true)
             })
         } catch(error: IOException) {
             throw IOException("The URI provided is not an image or the path is incorrect")
