@@ -8,7 +8,7 @@
     "name": "Raul Gomez Acuna",
     "email": "rauliyohmc@gmail.com"
   },
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "files": [
     "lib"
   ],
@@ -19,6 +19,7 @@
     "flow": "flow",
     "lint": "eslint src",
     "prepublish": "babel src --out-dir lib",
+    "build:watch": "babel src --out-dir lib --watch",
     "jest": "jest src",
     "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
     "format": "eslint --fix src"
@@ -44,9 +45,10 @@
     "npm-release": "^1.0.0",
     "prettier": "^0.22.0",
     "react": "16.0.0-alpha.6",
-    "react-native": "^0.44.2"
+    "react-native": "0.43.4"
   },
   "peerDependencies": {
+    "react": "*",
     "react-native": "*"
   },
   "babel": {
@@ -138,5 +140,10 @@
   },
   "jest": {
     "preset": "react-native"
+  },
+  "rnpm": {
+    "android": {
+      "sourceDir": "./android"
+    }
   }
 }

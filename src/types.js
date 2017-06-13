@@ -1,6 +1,7 @@
 /* @flow */
 
-export type Uri = string;
+// Number is the opaque type returned by require('./image.jpg')
+export type Image = number | { uri: string };
 
 export type ColorProfile =
   | 'muted'
