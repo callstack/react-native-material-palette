@@ -22,10 +22,32 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
 
     private lateinit var palette: Palette
 
+    fun throwExceptionWrongColor() {
+        throw RuntimeException("The color provided is not valid. It must be one of types 'muted', " +
+                "'vibrant', 'darkMuted', 'darkVibrant', 'lightMuted' or 'lightVibrant")
+    }
+
+    fun getHexColor(rgbInt: Int): String = String.format("#%06X", 0xFFFFFF and rgbInt)
+
+    fun getSwatchProperties(swatch: Palette.Swatch?): WritableMap {
+        val swatchMap = Arguments.createMap()
+        val population = swatch?.population ?: 0
+        val bodyTextColor = swatch?.bodyTextColor ?: 0
+        val titleTextColor = swatch?.titleTextColor ?: 0
+        val rgbColor = swatch?.rgb ?: 0
+
+        swatchMap.putInt("population", population)
+        swatchMap.putString("color", getHexColor(rgbColor))
+        swatchMap.putString("bodyTextColor", getHexColor(bodyTextColor))
+        swatchMap.putString("titleTextColor", getHexColor(titleTextColor))
+
+        return swatchMap
+    }
+
     @ReactMethod
     fun getColor(color: String, defaultColor: String, promise: Promise) {
         val defaultColorInt = Color.parseColor(defaultColor)
-        val targetColor: Int
+        var targetColor: Int = 16777215 // #FFFFFF for initialization
         when(color) {
             "muted" -> targetColor = palette.getMutedColor(defaultColorInt)
             "vibrant" -> targetColor = palette.getVibrantColor(defaultColorInt)
@@ -34,11 +56,27 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
             "lightMuted" -> targetColor = palette.getLightMutedColor(defaultColorInt)
             "lightVibrant" -> targetColor = palette.getLightVibrantColor(defaultColorInt)
             else -> {
-                throw RuntimeException("The color provided is not valid. It must be one of types 'muted', " +
-                        "'vibrant', 'darkMuted', 'darkVibrant', 'lightMuted' or 'lightVibrant")
+                throwExceptionWrongColor()
             }
         }
-        promise.resolve(String.format("#%06X", 0xFFFFFF and targetColor))
+        promise.resolve(getHexColor(targetColor))
+    }
+
+    @ReactMethod
+    fun getSwatch(color: String, promise: Promise) {
+        var targetSwatch: Palette.Swatch? = Palette.Swatch(0, 0)
+        when(color) {
+            "muted" -> targetSwatch = palette.mutedSwatch
+            "vibrant" -> targetSwatch = palette.vibrantSwatch
+            "darkMuted" -> targetSwatch = palette.darkMutedSwatch
+            "darkVibrant" -> targetSwatch = palette.darkVibrantSwatch
+            "lightMuted" -> targetSwatch = palette.lightMutedSwatch
+            "lightVibrant" -> targetSwatch = palette.lightVibrantSwatch
+            else -> {
+                throwExceptionWrongColor()
+            }
+        }
+        promise.resolve(getSwatchProperties(targetSwatch))
     }
 
     @ReactMethod

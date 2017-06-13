@@ -3,15 +3,38 @@
 import { NativeModules } from 'react-native';
 import resolveAssetSource
   from 'react-native/Libraries/Image/resolveAssetSource';
+import isEqual from 'lodash/isEqual';
 import Background from './Background';
 import Text from './Text';
-import type { Image, PaletteInstance, Options, ColorProfile } from './types';
+import type {
+  Image,
+  PaletteInstance,
+  Options,
+  ColorProfile,
+  Swatch,
+} from './types';
+
+const nullSwatch = {
+  population: 0,
+  color: '#000000',
+  bodyTextColor: '#000000',
+  titleTextColor: '#000000',
+};
+
+const doesSwatchExist = (swatch: Swatch): boolean =>
+  !isEqual(swatch, nullSwatch);
 
 function getColor(
   color: ColorProfile,
   defaultColor: string = '#FFFFFF',
-): string {
+): Promise<string> {
   return NativeModules.MaterialPalette.getColor(color, defaultColor);
+}
+
+async function getSwatch(color: ColorProfile): ?Promise<Swatch> {
+  const swatch = await NativeModules.MaterialPalette.getSwatch(color);
+  // $FlowFixMe
+  return doesSwatchExist(swatch) ? Promise.resolve(swatch) : null;
 }
 
 /** API */
@@ -19,8 +42,10 @@ export default class MaterialPalette {
   static async create(image: Image): Promise<PaletteInstance> {
     const source = resolveAssetSource(image);
     await NativeModules.MaterialPalette.createMaterialPalette(source);
+    // $FlowFixMe
     return Promise.resolve({
       getColor,
+      getSwatch,
     });
   }
 

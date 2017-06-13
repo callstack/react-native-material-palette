@@ -145,5 +145,8 @@
     "android": {
       "sourceDir": "./android"
     }
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
   }
 }

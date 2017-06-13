@@ -19,8 +19,8 @@ export type Swatch = {
 };
 
 export type PaletteInstance = {
-  getColor: (ColorProfile) => string,
-  // getSwatch: (ColorProfile) => Swatch,
+  getColor: (ColorProfile) => Promise<string>,
+  getSwatch: (ColorProfile) => Promise<Swatch>,
 };
 
 export type Options = {
