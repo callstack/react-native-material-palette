@@ -31,10 +31,9 @@ function getColor(
   return NativeModules.MaterialPalette.getColor(color, defaultColor);
 }
 
-async function getSwatch(color: ColorProfile): ?Promise<Swatch> {
+async function getSwatch(color: ColorProfile): Promise<Swatch> {
   const swatch = await NativeModules.MaterialPalette.getSwatch(color);
-  // $FlowFixMe
-  return doesSwatchExist(swatch) ? Promise.resolve(swatch) : null;
+  return doesSwatchExist(swatch) ? swatch : nullSwatch;
 }
 
 /** API */
@@ -42,11 +41,10 @@ export default class MaterialPalette {
   static async create(image: Image): Promise<PaletteInstance> {
     const source = resolveAssetSource(image);
     await NativeModules.MaterialPalette.createMaterialPalette(source);
-    // $FlowFixMe
-    return Promise.resolve({
+    return {
       getColor,
       getSwatch,
-    });
+    };
   }
 
   static Background: Class<React$Component<void, Options, void>> = Background;
