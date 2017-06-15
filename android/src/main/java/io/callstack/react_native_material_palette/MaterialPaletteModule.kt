@@ -8,7 +8,7 @@ import android.provider.MediaStore
 import java.io.IOException
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-import android.graphics.Color
+import android.support.v7.graphics.Target
 import java.net.URL
 
 class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
@@ -29,6 +29,20 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
 
     fun getHexColor(rgbInt: Int): String = String.format("#%06X", 0xFFFFFF and rgbInt)
 
+    fun targetMap(target: String): Target? {
+        return when(target) {
+            "muted" -> Target.MUTED
+            "vibrant" -> Target.VIBRANT
+            "darkMuted" -> Target.DARK_MUTED
+            "darkVibrant" -> Target.DARK_VIBRANT
+            "lightMuted" -> Target.LIGHT_MUTED
+            "lightVibrant" -> Target.LIGHT_VIBRANT
+            else -> {
+                null
+            }
+        }
+    }
+
     fun getSwatchProperties(swatch: Palette.Swatch?): WritableMap {
         val swatchMap = Arguments.createMap()
         val population = swatch?.population ?: 0
@@ -45,25 +59,7 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
     }
 
     @ReactMethod
-    fun getColor(color: String, defaultColor: String, promise: Promise) {
-        val defaultColorInt = Color.parseColor(defaultColor)
-        var targetColor: Int = 16777215 // #FFFFFF for initialization
-        when(color) {
-            "muted" -> targetColor = palette.getMutedColor(defaultColorInt)
-            "vibrant" -> targetColor = palette.getVibrantColor(defaultColorInt)
-            "darkMuted" -> targetColor = palette.getDarkMutedColor(defaultColorInt)
-            "darkVibrant" -> targetColor = palette.getDarkVibrantColor(defaultColorInt)
-            "lightMuted" -> targetColor = palette.getLightMutedColor(defaultColorInt)
-            "lightVibrant" -> targetColor = palette.getLightVibrantColor(defaultColorInt)
-            else -> {
-                throwExceptionWrongColor()
-            }
-        }
-        promise.resolve(getHexColor(targetColor))
-    }
-
-    @ReactMethod
-    fun getSwatch(color: String, promise: Promise) {
+    fun getSwatch(color: String): WritableMap {
         var targetSwatch: Palette.Swatch? = Palette.Swatch(0, 0)
         when(color) {
             "muted" -> targetSwatch = palette.mutedSwatch
@@ -76,24 +72,69 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
                 throwExceptionWrongColor()
             }
         }
-        promise.resolve(getSwatchProperties(targetSwatch))
+        return getSwatchProperties(targetSwatch)
     }
 
     @ReactMethod
-    fun createMaterialPalette(source: ReadableMap, promise: Promise) {
+    fun createMaterialPalette(source: ReadableMap, options: ReadableMap, promise: Promise) {
         try {
             val uri = source.getString("uri")
+            val region = options.getMap("region")
+            val top = region.getInt("top")
+            val right = region.getInt("right")
+            val bottom = region.getInt("bottom")
+            val left = region.getInt("left")
+            val maxColorCount = options.getInt("maximumColorCount")
+            val type = options.getString("type")
+            val types = options.getArray("types")
             val bitmap: Bitmap
+
             if (uri.contains("http")) {
                 val url = URL(uri)
+                // TODO handle network error in case of invalid image
                 bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
             } else {
                 bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, Uri.parse(uri))
             }
-            Palette.from(bitmap).generate({ p: Palette ->
+
+            var builder: Palette.Builder = Palette.from(bitmap).maximumColorCount(maxColorCount)
+
+            if (left != 0 || top != 0 || right != 0 || bottom != 0) {
+                builder = builder.setRegion(left, top, right, bottom)
+            }
+
+            if (types.size() == 0) {
+                val target = targetMap(type)
+                if (target != null) {
+                    builder = builder.addTarget(target)
+                } else {
+                    throwExceptionWrongColor()
+                }
+            } else {
+                for (t in Array(types.size(), { i -> targetMap(types.getString(i))})) {
+                    if (t != null) {
+                        builder = builder.addTarget(t)
+                    } else {
+                        throwExceptionWrongColor()
+                    }
+                }
+            }
+
+            builder.generate({ p: Palette ->
                 palette = p
-                promise.resolve(true)
+                val returnMap = Arguments.createMap()
+
+                if (types.size() == 0) {
+                    returnMap.putMap(type, getSwatch(type))
+                } else {
+                    val targets: Array<String> = Array(types.size(), { i -> types.getString(i)})
+                    for (t in targets) {
+                        returnMap.putMap(t, getSwatch(t))
+                    }
+                }
+                promise.resolve(returnMap)
             })
+
         } catch(error: IOException) {
             throw IOException("The URI provided is not an image or the path is incorrect")
         }

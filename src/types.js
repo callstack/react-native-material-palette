@@ -2,6 +2,12 @@
 
 // Number is the opaque type returned by require('./image.jpg')
 export type Image = number | { uri: string };
+export type Region = {
+  top: number,
+  left: number,
+  bottom: number,
+  right: number,
+};
 
 export type ColorProfile =
   | 'muted'
@@ -19,12 +25,12 @@ export type Swatch = {
 };
 
 export type PaletteInstance = {
-  getColor: (ColorProfile) => Promise<string>,
-  getSwatch: (ColorProfile) => Promise<Swatch>,
+  [key: ColorProfile]: Swatch,
 };
 
 export type Options = {
-  region?: { top: number, left: number, bottom: number, right: number },
+  region?: Region,
   maximumColorCount?: number,
   type?: ColorProfile,
+  types?: Array<ColorProfile>,
 };
