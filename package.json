@@ -18,8 +18,9 @@
   "scripts": {
     "flow": "flow",
     "lint": "eslint src",
-    "prepublish": "babel src --out-dir lib",
-    "build:watch": "babel src --out-dir lib --watch",
+    "clean": "rimraf lib",
+    "prepublish": "yarn run clean && babel src --out-dir lib --ignore '__tests__/'",
+    "build:watch": "yarn run clean && babel src --out-dir lib --watch --ignore '__tests__/'",
     "jest": "jest src",
     "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
     "format": "eslint --fix src"
@@ -45,7 +46,8 @@
     "npm-release": "^1.0.0",
     "prettier": "^0.22.0",
     "react": "16.0.0-alpha.6",
-    "react-native": "0.43.4"
+    "react-native": "0.43.4",
+    "rimraf": "^2.6.1"
   },
   "peerDependencies": {
     "react": "*",
@@ -145,8 +147,5 @@
     "android": {
       "sourceDir": "./android"
     }
-  },
-  "dependencies": {
-    "lodash": "^4.17.4"
   }
 }
