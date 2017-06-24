@@ -1,0 +1,4 @@
+rootProject.name = 'TestPalette'
+include ':react-native-material-palette'
+project(':react-native-material-palette').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-material-palette/android')
+include ':app'

@@ -24,3 +24,6 @@ android/app/libs
 .vscode
 .github
 lib/
+
+# EXAMPLE
+example/.happypack

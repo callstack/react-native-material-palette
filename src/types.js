@@ -25,7 +25,7 @@ export type Swatch = {
 };
 
 export type PaletteInstance = {
-  [key: ColorProfile]: Swatch,
+  [key: ColorProfile]: ?Swatch,
 };
 
 export type Options = {
