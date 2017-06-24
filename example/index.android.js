@@ -5,37 +5,56 @@
  */
 
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Image } from 'react-native';
 
 import MaterialPalette from 'react-native-material-palette';
 
 export default class TestPalette extends Component {
+  state = {
+    isLoading: true,
+    palette: null,
+  };
 
   async componentDidMount() {
-    const palette = await MaterialPalette.create(require('./assets/wroclaw.jpg'), {
-      types: ['lightMuted', 'darkVibrant']
+    const palette = await MaterialPalette.create(
+      require('./assets/wroclaw.jpg'), // eslint-disable-line global-require
+      {
+        types: ['lightMuted', 'darkVibrant', 'vibrant'],
+      },
+    );
+    this.setState({
+      palette,
+      isLoading: false,
     });
-    console.log(palette);
   }
 
   render() {
+    const { palette, isLoading } = this.state;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
+        {isLoading
+          ? <Text>
+              Generating palette asynchronously...
+            </Text>
+          : <View>
+              <Image
+                source={require('./assets/wroclaw.jpg')}
+                style={styles.image}
+              />
+              {Object.keys(palette).map(profile => (
+                <View
+                  style={{
+                    backgroundColor: palette[profile].color,
+                    height: 50,
+                  }}
+                  key={profile}
+                >
+                  <Text style={{ color: palette[profile].bodyTextColor }}>
+                    {profile.toUpperCase()}
+                  </Text>
+                </View>
+              ))}
+            </View>}
       </View>
     );
   }
@@ -45,18 +64,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  image: {
+    height: 200,
+    width: null,
+    resizeMode: 'cover',
   },
 });
 
