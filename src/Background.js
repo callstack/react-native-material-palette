@@ -13,17 +13,12 @@ const MPBackground = requireNativeComponent(
 // eslint-disable-next-line react/prefer-stateless-function
 export default class MaterialPaletteBackground extends Component {
   static propTypes = {
-    source: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.shape({
-        uri: PropTypes.string,
-      }),
-    ]),
+    testColor: PropTypes.number,
     ...View.propTypes, // include the default view properties
   };
   render() {
-    const { source, ...rest } = this.props;
-    const src = resolveAssetSource(source);
-    return <MPBackground {...rest} source={src} />;
+    // const { source, ...rest } = this.props;
+    // const src = resolveAssetSource(source);
+    return <MPBackground {...this.props} />;
   }
 }

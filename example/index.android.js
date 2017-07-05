@@ -5,31 +5,44 @@
  */
 
 import React from 'react';
-import { AppRegistry, StyleSheet, View } from 'react-native';
-import MaterialPalette from 'react-native-material-palette';
+import { AppRegistry, View, Button, StyleSheet } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import AsyncExample from './src/AsyncExample';
+import ComponentsExample from './src/ComponentsExample';
 
-function TestPalette() {
-  return (
-    <View style={styles.container}>
-      <MaterialPalette.Background
-        source={require('./assets/wroclaw.jpg')}
-        style={{ height: 150, width: 200 }}
-      />
-      <View style={{ height: 150, width: 200, backgroundColor: 'green' }} />
-    </View>
-  );
+class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'RN Material Palette',
+  };
+
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+      <View>
+        <View style={styles.button}>
+          <Button onPress={() => navigate('Async')} title="Async API" />
+        </View>
+        <View style={styles.button}>
+          <Button
+            onPress={() => navigate('Components')}
+            title="UI Components"
+          />
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'red',
-  },
-  image: {
-    height: 200,
-    width: null,
-    resizeMode: 'cover',
+  button: {
+    margin: 10,
   },
 });
 
-AppRegistry.registerComponent('TestPalette', () => TestPalette);
+const ExampleApp = StackNavigator({
+  Home: { screen: HomeScreen },
+  Async: { screen: AsyncExample },
+  Components: { screen: ComponentsExample },
+});
+
+AppRegistry.registerComponent('TestPalette', () => ExampleApp);
