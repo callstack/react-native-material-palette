@@ -1,6 +1,6 @@
 # `react-native-material-palette` development
 
-The recommended way to develop `react-native-material-palette` is by cloning the repository and symlinkink it to a project using `yarn link` or `npm link`.
+The recommended way to develop `react-native-material-palette` is by cloning the repository and symlinking it to a project using `yarn link` or `npm link`.
 
 Follow the steps below in order to setup `react-native-material-palette` for development:
 
@@ -27,14 +27,19 @@ cd example
 
 5. Install example app dependencies:
 ```bash
-$ yarn link # or `npm link`
+$ yarn # or `npm install`
 ```
 
-Done. Everything is set up aleady. Run `yarn run haul -- --platform andoid` to start the development server and `react-native run-andoid` to build and start the app.
+6. Link `react-native-material-palette` within the example app:
+```bash
+$ yarn link react-native-material-palette # or `npm link react-native-material-palette`
+```
+
+Done. Everything is set up aleady. Run `yarn run haul -- --platform android` to start the development server and `react-native run-android` to build and start the app.
 
 ## Custom app
 
-4. (Optional) Create a React Native project and natigate to it:
+4. (Optional) Create a React Native project and navigate to it:
 ```bash
 $ react-native init MyProject && cd MyProject
 ```

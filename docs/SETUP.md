@@ -54,7 +54,7 @@ public class MainApplication extends Application implements ReactApplication {
 
 ```
 
-4. Add the following line to `andoid/app/src/build.gardle`:
+4. Add the following line to `andoid/app/src/build.gradle`:
 ```diff
 // ...
 
