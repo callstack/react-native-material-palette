@@ -6,9 +6,7 @@
 
 ## Install
 
-```
-$ yarn add react-native-material-palette
-```
+Installation and setup guide can be found here: [Setup guide](./docs/SETUP.md).
 
 ## Usage As API
 
@@ -66,6 +64,10 @@ const palette = await MaterialPalette.create(require('./assets/image.jpg'), {
   types: ['muted', 'lightVibrant'],
 });
 ```
+
+## Development
+
+Development instructions can be found here: [`react-native-material-palett` development](./docs/DEVELOPEMTN.md).
 
 ## License
 
