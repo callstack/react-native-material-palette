@@ -12,7 +12,7 @@ If you're using a lower version, you need to add
 ```
 compile 'com.android.support:support-v4:24.2.0'
 ```
-to `andoid/app/src/build.gardle` in `dependencies` section.
+to `andoid/app/src/build.gradle` in `dependencies` section.
 
 ## Setup instructions
 
