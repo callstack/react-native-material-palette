@@ -6,6 +6,8 @@ import resolveAssetSource
 import isEqual from 'lodash/isEqual';
 import Background from './Background';
 import Text from './Text';
+import PaletteProvider from './PaletteProvider';
+import withPalette from './withPalette';
 import { defaultOptions, nullSwatch } from './constants/defaults';
 import type { Image, PaletteInstance, Options, ColorProfile } from './types';
 
@@ -13,14 +15,14 @@ import type { Image, PaletteInstance, Options, ColorProfile } from './types';
 export default class MaterialPalette {
   static async create(
     image: Image,
-    options: Options = defaultOptions,
+    options: ?Options = defaultOptions,
   ): Promise<PaletteInstance> {
     const {
-      region = defaultOptions.region,
-      maximumColorCount = defaultOptions.maximumColorCount,
-      type = defaultOptions.type,
-      types = defaultOptions.types,
-    } = options;
+      region,
+      maximumColorCount,
+      type,
+      types,
+    } = { ...defaultOptions, ...options };
 
     const source = resolveAssetSource(image);
 
@@ -43,4 +45,6 @@ export default class MaterialPalette {
 
   static Background: Class<React$Component<void, Options, void>> = Background;
   static Text: Class<React$Component<void, Options, void>> = Text;
+  static PaletteProvider = PaletteProvider;
+  static withPalette = withPalette;
 }

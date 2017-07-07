@@ -25,6 +25,9 @@
     "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
     "format": "eslint --fix src"
   },
+  "dependencies": {
+    "prop-types": "^15.5.10"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
