@@ -10,10 +10,33 @@ import type { PaletteInstance, Image, Options } from './types';
 export const KEY = '__react-native-material-palette__';
 
 type Props = {
+  /**
+   * Image from which to generate the palette
+   */
   image: Image,
+  /**
+   * Options for palette generation
+   */
   options: ?Options,
+  /**
+   * Children
+   */
   children: React$Element<*>,
+  /**
+   * Error handler, called when palette generation fails
+   */
   onError: ?(error: Error) => void,
+  /**
+   * Initialization handler, called right before generation the palette
+   */
+  onInit: ?() => void,
+  /**
+   * Finish handler, called right after the palette is generated
+   */
+  onFinish: ?(palette: PaletteInstance) => void,
+  /**
+   * Render `null` or passed component when the palette is being generated
+   */
   waitForPalette: ?boolean | React$Component<*, *, *>,
 };
 
@@ -21,6 +44,17 @@ type State = {
   palette: ?PaletteInstance,
 };
 
+function execIfFunction(possibleFunction: mixed, ...args: *) {
+  if (typeof possibleFunction === 'function') {
+    possibleFunction(...args);
+  }
+}
+
+/**
+ * Provides broadcast for material palette instance via context.
+ * Passes `subscribe` method via context, which `withPalette` can call
+ * and subscribe in order to receive the palette instance.
+ */
 export default class MaterialPaletteProvider
   extends Component<void, Props, State> {
   state: State;
@@ -45,17 +79,17 @@ export default class MaterialPaletteProvider
   }
 
   componentWillMount() {
+    execIfFunction(this.props.onInit);
     MaterialPalette.create(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
+        execIfFunction(this.props.onFinish, palette);
         if (this.props.waitForPalette) {
           this.setState({ palette });
         }
         this.eventEmitter.publish(palette);
       })
       .catch((error: Error) => {
-        if (typeof this.props.onError === 'function') {
-          this.props.onError(error);
-        }
+        execIfFunction(this.props.onError, error);
       });
   }
 
