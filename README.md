@@ -67,7 +67,7 @@ const palette = await MaterialPalette.create(require('./assets/image.jpg'), {
 
 ## Development
 
-Development instructions can be found here: [`react-native-material-palett` development](./docs/DEVELOPMENT.md).
+Development instructions can be found here: [`react-native-material-palette` development](./docs/DEVELOPMENT.md).
 
 ## License
 
