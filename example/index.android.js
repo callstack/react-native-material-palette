@@ -4,73 +4,45 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Image } from 'react-native';
+import React from 'react';
+import { AppRegistry, View, Button, StyleSheet } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import AsyncExample from './src/AsyncExample';
+import ComponentsExample from './src/ComponentsExample';
 
-import MaterialPalette from 'react-native-material-palette';
-
-export default class TestPalette extends Component {
-  state = {
-    isLoading: true,
-    palette: null,
+class HomeScreen extends React.Component {
+  static navigationOptions = {
+    title: 'RN Material Palette',
   };
 
-  async componentDidMount() {
-    const palette = await MaterialPalette.create(
-      require('./assets/wroclaw.jpg'), // eslint-disable-line global-require
-      {
-        types: ['lightMuted', 'darkVibrant', 'vibrant'],
-      },
-    );
-    this.setState({
-      palette,
-      isLoading: false,
-    });
-  }
-
   render() {
-    const { palette, isLoading } = this.state;
+    const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
-        {isLoading
-          ? <Text>
-              Generating palette asynchronously...
-            </Text>
-          : <View>
-              <Image
-                source={require('./assets/wroclaw.jpg')}
-                style={styles.image}
-              />
-              {Object.keys(palette).map(profile => (
-                <View
-                  style={{
-                    backgroundColor: palette[profile].color,
-                    height: 50,
-                  }}
-                  key={profile}
-                >
-                  <Text style={{ color: palette[profile].bodyTextColor }}>
-                    {profile.toUpperCase()}
-                  </Text>
-                </View>
-              ))}
-            </View>}
+      <View>
+        <View style={styles.button}>
+          <Button onPress={() => navigate('Async')} title="Async API" />
+        </View>
+        <View style={styles.button}>
+          <Button
+            onPress={() => navigate('Components')}
+            title="UI Components"
+          />
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  image: {
-    height: 200,
-    width: null,
-    resizeMode: 'cover',
+  button: {
+    margin: 10,
   },
 });
 
-AppRegistry.registerComponent('TestPalette', () => TestPalette);
+const ExampleApp = StackNavigator({
+  Home: { screen: HomeScreen },
+  Async: { screen: AsyncExample },
+  Components: { screen: ComponentsExample },
+});
+
+AppRegistry.registerComponent('TestPalette', () => ExampleApp);
