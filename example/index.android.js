@@ -19,7 +19,7 @@ export default class TestPalette extends Component {
     const palette = await MaterialPalette.create(
       require('./assets/wroclaw.jpg'), // eslint-disable-line global-require
       {
-        types: ['lightMuted', 'darkVibrant', 'vibrant'],
+        type: ['lightMuted', 'darkVibrant', 'vibrant'],
       },
     );
     this.setState({

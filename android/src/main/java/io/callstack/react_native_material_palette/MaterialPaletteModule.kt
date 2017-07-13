@@ -58,7 +58,6 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
         return swatchMap
     }
 
-    @ReactMethod
     fun getSwatch(color: String): WritableMap {
         var targetSwatch: Palette.Swatch? = Palette.Swatch(0, 0)
         when(color) {
@@ -85,8 +84,7 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
             val bottom = region.getInt("bottom")
             val left = region.getInt("left")
             val maxColorCount = options.getInt("maximumColorCount")
-            val type = options.getString("type")
-            val types = options.getArray("types")
+            val types = options.getArray("type")
             val bitmap: Bitmap
 
             if (uri.contains("http")) {
@@ -103,20 +101,11 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
                 builder = builder.setRegion(left, top, right, bottom)
             }
 
-            if (types.size() == 0) {
-                val target = targetMap(type)
-                if (target != null) {
-                    builder = builder.addTarget(target)
+            for (t in Array(types.size(), { i -> targetMap(types.getString(i))})) {
+                if (t != null) {
+                    builder = builder.addTarget(t)
                 } else {
                     throwExceptionWrongColor()
-                }
-            } else {
-                for (t in Array(types.size(), { i -> targetMap(types.getString(i))})) {
-                    if (t != null) {
-                        builder = builder.addTarget(t)
-                    } else {
-                        throwExceptionWrongColor()
-                    }
                 }
             }
 
@@ -124,14 +113,11 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
                 palette = p
                 val returnMap = Arguments.createMap()
 
-                if (types.size() == 0) {
-                    returnMap.putMap(type, getSwatch(type))
-                } else {
-                    val targets: Array<String> = Array(types.size(), { i -> types.getString(i)})
-                    for (t in targets) {
-                        returnMap.putMap(t, getSwatch(t))
-                    }
+                val targets: Array<String> = Array(types.size(), { i -> types.getString(i)})
+                for (t in targets) {
+                    returnMap.putMap(t, getSwatch(t))
                 }
+
                 promise.resolve(returnMap)
             })
 
