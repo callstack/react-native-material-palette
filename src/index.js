@@ -7,7 +7,13 @@ import isEqual from 'lodash/isEqual';
 import Background from './Background';
 import Text from './Text';
 import { defaultOptions, nullSwatch } from './constants/defaults';
-import type { Image, PaletteInstance, Options, ColorProfile } from './types';
+import type {
+  Image,
+  PaletteInstance,
+  Options,
+  ColorProfile,
+  PaletteInstanceWithDefaults,
+} from './types';
 
 import PaletteProvider from './PaletteProvider';
 import withPalette from './withPalette';
@@ -23,7 +29,9 @@ type Namespace = {
   Text: Class<React$Component<void, Options, void>>,
   PaletteProvider: Class<React$Component<void, *, *>>,
   withPalette: (
-    mapPaletteToStyle: ?(palette: PaletteInstance) => { [key: string]: mixed },
+    mapPaletteToStyle: ?(palette: PaletteInstanceWithDefaults) => {
+      [key: string]: mixed,
+    },
   ) => (WrappedComponent: ReactClass<*>) => Class<React$Component<void, *, *>>,
 };
 

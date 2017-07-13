@@ -4,10 +4,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { KEY } from './PaletteProvider';
 
-import type { PaletteInstance } from './types';
+import type {
+  PaletteInstance,
+  ColorProfile,
+  DefaultPaletteInstance,
+  PaletteInstanceWithDefaults,
+} from './types';
 
 type State = {
   palette: ?PaletteInstance,
+  globalDefaults: ?DefaultPaletteInstance,
 };
 
 /**
@@ -19,7 +25,9 @@ type State = {
  * the results will be passed to a `style` prop to wrapped component.
  */
 export default function withMaterialPalette(
-  mapPaletteToStyle: ?(palette: PaletteInstance) => { [key: string]: mixed },
+  mapPaletteToStyle: ?(palette: PaletteInstanceWithDefaults) => {
+    [key: string]: mixed,
+  },
 ) {
   return (WrappedComponent: ReactClass<*>) =>
     class MaterialPaletteConnector extends Component<void, *, State> {
@@ -31,6 +39,7 @@ export default function withMaterialPalette(
         this.unsubscribe = null;
         this.state = {
           palette: null,
+          globalDefaults: null,
         };
       }
 
@@ -39,8 +48,13 @@ export default function withMaterialPalette(
       };
 
       componentWillMount() {
-        this.unsubscribe = this.context[KEY]((palette: PaletteInstance) => {
-          this.setState({ palette });
+        this.unsubscribe = this.context[KEY]((data: {
+          palette: PaletteInstance,
+          globalDefaults: DefaultPaletteInstance,
+        }) => {
+          if (data) {
+            this.setState(data);
+          }
         });
       }
 
@@ -50,11 +64,29 @@ export default function withMaterialPalette(
         }
       }
 
+      _mergePaletteWithDefaults(): PaletteInstanceWithDefaults {
+        const { palette, globalDefaults } = this.state;
+        // $FlowFixMe
+        return Object.keys(palette || {}).reduce(
+          (
+            acc: PaletteInstanceWithDefaults,
+            key: ColorProfile,
+          ): PaletteInstanceWithDefaults =>
+            acc[key]
+              ? // $FlowFixMe if `palette` is null, this will not be invoked
+                { ...acc, [key]: { ...acc[key], ...(palette[key] || {}) } }
+              : // $FlowFixMe if `palette` is null, this will not be invoked
+                { ...acc, [key]: palette[key] },
+          globalDefaults,
+        );
+      }
+
       render() {
         const { style, ...rest } = this.props;
+        const palette = this._mergePaletteWithDefaults();
         const stylesFromPalette = this.state.palette &&
           typeof mapPaletteToStyle === 'function'
-          ? mapPaletteToStyle(this.state.palette)
+          ? mapPaletteToStyle(palette)
           : {};
 
         return (
@@ -64,7 +96,7 @@ export default function withMaterialPalette(
               ...(Array.isArray(style) ? style : [style]),
               stylesFromPalette,
             ]}
-            palette={this.state.palette}
+            palette={palette}
           />
         );
       }

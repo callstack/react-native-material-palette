@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 import createEventEmitter from './eventEmitter';
 import MaterialPalette from './index';
 
-import type { PaletteInstance, Image, Options } from './types';
+import type {
+  PaletteInstance,
+  Image,
+  Options,
+  DefaultPaletteInstance,
+} from './types';
 
 export const KEY = '__react-native-material-palette__';
 
@@ -17,7 +22,8 @@ type Props = {
   /**
    * Options for palette generation
    */
-  options: ?Options,
+  options?: Options,
+  defaults?: DefaultPaletteInstance,
   /**
    * Children
    */
@@ -25,19 +31,22 @@ type Props = {
   /**
    * Error handler, called when palette generation fails
    */
-  onError: ?(error: Error) => void,
+  onError?: (error: Error) => void,
   /**
    * Initialization handler, called right before generation the palette
    */
-  onInit: ?() => void,
+  onInit?: () => void,
   /**
    * Finish handler, called right after the palette is generated
    */
-  onFinish: ?(palette: PaletteInstance) => void,
+  onFinish?: (
+    palette: PaletteInstance,
+    globalDefaults: DefaultPaletteInstance,
+  ) => void,
   /**
    * Render `null` or passed component when the palette is being generated
    */
-  waitForPalette: ?boolean | React$Component<*, *, *>,
+  waitForPalette?: boolean | React$Component<*, *, *>,
 };
 
 type State = {
@@ -82,11 +91,14 @@ export default class MaterialPaletteProvider
     execIfFunction(this.props.onInit);
     MaterialPalette.create(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
-        execIfFunction(this.props.onFinish, palette);
+        execIfFunction(this.props.onFinish, palette, this.props.defaults);
         if (this.props.waitForPalette) {
           this.setState({ palette });
         }
-        this.eventEmitter.publish(palette);
+        this.eventEmitter.publish({
+          palette,
+          globalDefaults: this.props.defaults,
+        });
       })
       .catch((error: Error) => {
         execIfFunction(this.props.onError, error);
