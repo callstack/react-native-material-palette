@@ -6,7 +6,7 @@ Once the React Native team releases a new version with the [following change](ht
 
 ## Compatibility
 
-Material Palette SDK is __only available in Android 24 or higher__. We __recommed__ using version __25__.
+Material Palette SDK is __only available in Android 24 or higher__. We __recommend__ using version __25__.
 
 If you're using a lower version, you need to add
 ```
@@ -44,7 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-+          new MaterialPalettePackage()
++         new MaterialPalettePackage()
       );
     }
   };
@@ -54,14 +54,14 @@ public class MainApplication extends Application implements ReactApplication {
 
 ```
 
-4. Add the following line to `andoid/app/src/build.gradle`:
+4. Add the following line to `android/app/src/build.gradle`:
 ```diff
 // ...
 
 dependencies {
-+    compile project(':react-native-material-palette')
++   compile project(':react-native-material-palette')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:25.0.1"
+    compile "com.android.support:appcompat-v7:25.0.1" // Or version 24, depends on your project compileSdkVersion 
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
 

@@ -27,8 +27,7 @@ type ColorProfile =
 type Options = {
   region?: { top: number, left: number, bottom: number, right: number },
   maximumColorCount?: number = 16,
-  type?: ColorProfile = 'vibrant',
-  types?: Array<ColorProfile> = []
+  type?: ColorProfile | Array<ColorProfile> = 'vibrant',
 }
 
 type Swatch = {
@@ -61,7 +60,7 @@ import MaterialPalette from "react-native-material-palette";
 const palette = await MaterialPalette.create(require('./assets/image.jpg'), {
   region: { top: 0, left: 0, bottom: 50, right: 50},
   maximumColorCount: 32,
-  types: ['muted', 'lightVibrant'],
+  type: ['muted', 'lightVibrant'],
 });
 ```
 
