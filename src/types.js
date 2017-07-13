@@ -31,6 +31,5 @@ export type PaletteInstance = {
 export type Options = {
   region?: Region,
   maximumColorCount?: number,
-  type?: ColorProfile,
-  types?: Array<ColorProfile>,
+  type?: ColorProfile | Array<ColorProfile>,
 };

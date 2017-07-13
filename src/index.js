@@ -19,7 +19,6 @@ export default class MaterialPalette {
       region = defaultOptions.region,
       maximumColorCount = defaultOptions.maximumColorCount,
       type = defaultOptions.type,
-      types = defaultOptions.types,
     } = options;
 
     const source = resolveAssetSource(image);
@@ -29,8 +28,7 @@ export default class MaterialPalette {
       {
         region,
         maximumColorCount,
-        type,
-        types,
+        type: typeof type === 'string' ? [type] : type,
       },
     );
     Object.keys(paletteInstance).forEach((profile: ColorProfile) => {
