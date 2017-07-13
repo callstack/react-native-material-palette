@@ -94,3 +94,6 @@ This error might happen if you're using `haul` and have `react-native-material-p
 +   }
 });
 ```
+
+### Cannot build the example project, `kotlin.KotlinNullPointerException`
+This error happens when you made some kotlin changes in the library and attempt to rebuild the example project. To fix that, run `yarn run build:android` from within the `example` folder.
