@@ -13,7 +13,6 @@ export const defaultOptions: Options = {
   region: defaultRegion,
   maximumColorCount: 16,
   type: 'vibrant',
-  types: [],
 };
 
 export const nullSwatch: Swatch = {

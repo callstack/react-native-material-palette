@@ -54,8 +54,7 @@ const namespace: Namespace = {
       {
         region,
         maximumColorCount,
-        type,
-        types,
+        type: typeof type === 'string' ? [type] : type,
       },
     );
     Object.keys(paletteInstance).forEach((profile: ColorProfile) => {
