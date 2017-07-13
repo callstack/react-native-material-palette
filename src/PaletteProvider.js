@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import createEventEmitter from './eventEmitter';
+import createEventEmitter from './createEventEmitter';
 import MaterialPalette from './index';
 
 import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
@@ -18,6 +18,9 @@ type Props = {
    * Options for palette generation
    */
   options?: Options,
+  /**
+   * Global defaults for Swatches
+   */
   defaults?: PaletteDefaults,
   /**
    * Children
