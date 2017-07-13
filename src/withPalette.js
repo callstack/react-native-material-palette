@@ -23,6 +23,7 @@ export default function withMaterialPalette(
   mapPaletteToStyle: ?(palette: PaletteInstance) => {
     [key: string]: mixed,
   },
+  localDefaults?: PaletteDefaults,
 ) {
   return (WrappedComponent: ReactClass<*>) =>
     class MaterialPaletteConnector extends Component<void, *, State> {
@@ -83,6 +84,9 @@ export default function withMaterialPalette(
               ...acc[key],
               ...(globalDefaults && globalDefaults[key]
                 ? globalDefaults[key]
+                : {}),
+              ...(localDefaults && localDefaults[key]
+                ? localDefaults[key]
                 : {}),
             },
           }),
