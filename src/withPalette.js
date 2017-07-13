@@ -4,16 +4,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { KEY } from './PaletteProvider';
 
-import type {
-  PaletteInstance,
-  ColorProfile,
-  DefaultPaletteInstance,
-  PaletteInstanceWithDefaults,
-} from './types';
+import type { PaletteInstance, ColorProfile, PaletteDefaults } from './types';
 
 type State = {
   palette: ?PaletteInstance,
-  globalDefaults: ?DefaultPaletteInstance,
+  globalDefaults: ?PaletteDefaults,
 };
 
 /**
@@ -25,7 +20,7 @@ type State = {
  * the results will be passed to a `style` prop to wrapped component.
  */
 export default function withMaterialPalette(
-  mapPaletteToStyle: ?(palette: PaletteInstanceWithDefaults) => {
+  mapPaletteToStyle: ?(palette: PaletteInstance) => {
     [key: string]: mixed,
   },
 ) {
@@ -50,7 +45,7 @@ export default function withMaterialPalette(
       componentWillMount() {
         this.unsubscribe = this.context[KEY]((data: {
           palette: PaletteInstance,
-          globalDefaults: DefaultPaletteInstance,
+          globalDefaults: PaletteDefaults,
         }) => {
           if (data) {
             this.setState(data);
@@ -64,26 +59,53 @@ export default function withMaterialPalette(
         }
       }
 
-      _mergePaletteWithDefaults(): PaletteInstanceWithDefaults {
+      _mergePaletteWithDefaults(): PaletteInstance {
         const { palette, globalDefaults } = this.state;
+
+        // Create swatches with initial properties
+        let swatches = [
+          ...Object.keys(palette || {}),
+          ...Object.keys(globalDefaults || {}),
+        ].reduce(
+          (acc: *, key: string) => ({
+            ...acc,
+            [key]: { population: 0 },
+          }),
+          {},
+        );
+
+        // Merge global defaults
         // $FlowFixMe
-        return Object.keys(palette || {}).reduce(
-          (
-            acc: PaletteInstanceWithDefaults,
-            key: ColorProfile,
-          ): PaletteInstanceWithDefaults =>
-            acc[key]
-              ? // $FlowFixMe if `palette` is null, this will not be invoked
-                { ...acc, [key]: { ...acc[key], ...(palette[key] || {}) } }
-              : // $FlowFixMe if `palette` is null, this will not be invoked
-                { ...acc, [key]: palette[key] },
-          globalDefaults,
+        swatches = Object.keys(swatches).reduce(
+          (acc: *, key: ColorProfile) => ({
+            ...acc,
+            [key]: {
+              ...acc[key],
+              ...(globalDefaults && globalDefaults[key]
+                ? globalDefaults[key]
+                : {}),
+            },
+          }),
+          swatches,
+        );
+
+        // Merge swatches from palette
+        // $FlowFixMe
+        return Object.keys(swatches).reduce(
+          (acc: *, key: ColorProfile) => ({
+            ...acc,
+            [key]: {
+              ...acc[key],
+              ...(palette && palette[key] ? palette[key] : {}),
+            },
+          }),
+          swatches,
         );
       }
 
       render() {
         const { style, ...rest } = this.props;
-        const palette = this._mergePaletteWithDefaults();
+        const palette: PaletteInstance = this._mergePaletteWithDefaults();
         const stylesFromPalette = this.state.palette &&
           typeof mapPaletteToStyle === 'function'
           ? mapPaletteToStyle(palette)
@@ -96,7 +118,7 @@ export default function withMaterialPalette(
               ...(Array.isArray(style) ? style : [style]),
               stylesFromPalette,
             ]}
-            palette={palette}
+            palette={this.state.palette}
           />
         );
       }

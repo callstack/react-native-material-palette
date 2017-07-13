@@ -5,12 +5,7 @@ import PropTypes from 'prop-types';
 import createEventEmitter from './eventEmitter';
 import MaterialPalette from './index';
 
-import type {
-  PaletteInstance,
-  Image,
-  Options,
-  DefaultPaletteInstance,
-} from './types';
+import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
 
 export const KEY = '__react-native-material-palette__';
 
@@ -23,7 +18,7 @@ type Props = {
    * Options for palette generation
    */
   options?: Options,
-  defaults?: DefaultPaletteInstance,
+  defaults?: PaletteDefaults,
   /**
    * Children
    */
@@ -41,7 +36,7 @@ type Props = {
    */
   onFinish?: (
     palette: PaletteInstance,
-    globalDefaults: DefaultPaletteInstance,
+    globalDefaults: PaletteDefaults,
   ) => void,
   /**
    * Render `null` or passed component when the palette is being generated

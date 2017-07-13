@@ -25,9 +25,13 @@ export type Swatch = {
 };
 
 export type DefaultSwatch = {
-  color?: string,
-  bodyTextColor?: string,
-  titleTextColor?: string,
+  color: string,
+  bodyTextColor: string,
+  titleTextColor: string,
+};
+
+export type PaletteDefaults = {
+  [key: ColorProfile]: DefaultSwatch,
 };
 
 export type SwatchColors = {
@@ -38,14 +42,6 @@ export type SwatchColors = {
 
 export type PaletteInstance = {
   [key: ColorProfile]: ?Swatch,
-};
-
-export type PaletteInstanceWithDefaults = {
-  [key: ColorProfile]: Swatch | DefaultSwatch | null,
-};
-
-export type DefaultPaletteInstance = {
-  [key: ColorProfile]: DefaultSwatch,
 };
 
 export type Options = {
