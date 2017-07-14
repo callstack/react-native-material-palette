@@ -217,7 +217,9 @@ describe('withPalette', () => {
     };
     let subscriber;
     function onFirstRender(palette: *, style: *) {
-      expect(palette).toEqual({});
+      expect(palette).toEqual({
+        lightVibrant: { ...localDefaults.lightVibrant, population: 0 },
+      });
       expect(style).toEqual([{ fontSize: '14px' }, {}]);
     }
     function onSecondRender(palette: *, style: *) {

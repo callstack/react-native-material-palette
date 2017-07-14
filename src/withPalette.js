@@ -67,6 +67,7 @@ export default function withMaterialPalette(
         let swatches = [
           ...Object.keys(palette || {}),
           ...Object.keys(globalDefaults || {}),
+          ...Object.keys(localDefaults || {}),
         ].reduce(
           (acc: *, key: string) => ({
             ...acc,
