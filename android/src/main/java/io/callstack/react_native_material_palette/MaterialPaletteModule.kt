@@ -14,6 +14,7 @@ import java.net.URL
 class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContextBaseJavaModule(reactContext) {
 
     private val REACT_NAME = "MaterialPalette"
+    private val URI_ERROR = "URI_ERROR"
     private val context = reactContext
 
     override fun getName(): String {
@@ -89,7 +90,6 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
 
             if (uri.contains("http")) {
                 val url = URL(uri)
-                // TODO handle network error in case of invalid image
                 bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
             } else {
                 bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, Uri.parse(uri))
@@ -122,7 +122,7 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
             })
 
         } catch(error: IOException) {
-            throw IOException("The URI provided is not an image or the path is incorrect")
+            promise.reject(URI_ERROR, "The URI provided is not an image or the path is incorrect")
         }
     }
 }
