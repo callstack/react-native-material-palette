@@ -114,7 +114,6 @@ export default function withMaterialPalette(
           typeof mapPaletteToStyle === 'function'
           ? mapPaletteToStyle(palette)
           : {};
-
         return (
           <WrappedComponent
             {...rest}
@@ -122,7 +121,7 @@ export default function withMaterialPalette(
               ...(Array.isArray(style) ? style : [style]),
               stylesFromPalette,
             ]}
-            palette={this.state.palette}
+            palette={palette}
           />
         );
       }
