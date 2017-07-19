@@ -182,7 +182,7 @@ function withMaterialPalette(
 
   // later ...
 
-  <MaterialPaletteprovider defaults={{
+  <MaterialPaletteProvider defaults={{
     vibrant: {
       color: '#3792dd',
       bodyTextColor: '#ffffff',
@@ -194,7 +194,7 @@ function withMaterialPalette(
     PaletteView will have the color applied from local defaults:
       [{ backgroundColor: '#18b247' }]
     */}
-  </MaterialPaletteprovider>
+  </MaterialPaletteProvider>
   ```
 
 ### Examples
