@@ -30,7 +30,7 @@ describe('PaletteProvider', () => {
       Promise.resolve({ vibrant: null }));
 
     function onFinish(palette: *, defaults: *) {
-      expect(MaterialPalette.create).toHaveBeenCalledWith('path/to/image', {
+      expect(MaterialPalette.create).toHaveBeenCalledWith(0, {
         type: 'vibrant',
       });
       expect(palette).toEqual({ vibrant: null });
