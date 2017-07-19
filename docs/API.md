@@ -40,6 +40,10 @@ class App extends React.Component {
 > // MaterialPalette.PaletteProvider
 > ```
 
+### Description
+`MaterialPaletteprovider` is a component, which handles palette creation and provides the access to the palette instance to _connected_ components (via `withMaterialPalette`) using context. Ideally `MaterialPaletteprovider` should be placed at the top of components tree, so that all nested components can _conect_ to it.
+The concept is very similar to `Provider` component from `react-redux`.
+
 ### Props
 * `image: Image` (__required__) - Local image to create palette from (`require('path/to/image')`) or object with remote URI adress from which the image can be downloaded (`{ uri: 'http://some-domain.ext/image.png' }`) - same as `image` in `MaterialPalette.create` function.
 
