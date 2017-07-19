@@ -15,7 +15,7 @@ import PaletteAwareComponent from './PaletteAwareComponent';
 class App extends React.Component {
   render() {
     return (
-      <MaterialPaletteprovider
+      <MaterialPaletteProvider
         image={require('../assets/image.png')}
         options={{
           type: ['vibrant', 'muted']
@@ -24,7 +24,7 @@ class App extends React.Component {
         <View>
           <PaletteAwareComponent />
         </View>
-      </MaterialPaletteprovider>
+      </MaterialPaletteProvider>
     );
   }
 }
@@ -41,7 +41,8 @@ class App extends React.Component {
 > ```
 
 ### Description
-`MaterialPaletteprovider` is a component, which handles palette creation and provides the access to the palette instance to _connected_ components (via `withMaterialPalette`) using context. Ideally `MaterialPaletteprovider` should be placed at the top of components tree, so that all nested components can _conect_ to it.
+`MaterialPaletteProvider` is a component, which handles palette creation and provides the access to the palette instance for _connected_ components (via `withMaterialPalette`) using context. Ideally, `MaterialPaletteProvider` should be placed at the top of components tree, so that all nested components can _connect_ to it.
+
 The concept is very similar to `Provider` component from `react-redux`.
 
 ### Props
@@ -57,7 +58,7 @@ The concept is very similar to `Provider` component from `react-redux`.
   }
   ```
 
-* `defaults?: PaletteDefaults` (optional) - Global defaults which will be propagated to each _connected_ component along side with palette instance, which will be used if the specific color profile is not found:
+* `defaults?: PaletteDefaults` (optional) - Global defaults which will be propagated to each _connected_ component, alongside with palette instance, which will be used, if the specific color profile is not found:
   ```javascript
   type ColorProfile =
     | 'muted'
@@ -84,7 +85,7 @@ The concept is very similar to `Provider` component from `react-redux`.
   * `<MateriaPaletteProvider waitForPalette={SpinnerComponent}>` - will render `SpinnerComponent`,
   * `<MateriaPaletteProvider waitForPalette={() => <Text>Loading</Text>)}>` - will render `Text` component with _Loading_.
 
-* `onError?: (error: Error) => void` (optional) - Error handler, called if the palette failed to generate.
+* `onError?: (error: Error) => void` (optional) - Error handler, called if the palette failed to create.
 
 * `onInit?: () => void` - (optional) - Init handler, called when the `MaterialPaletteProvider` is just about to start creating the palette.
 
@@ -123,9 +124,9 @@ export default withMaterialPalette(
 > ```
 
 ### Description
-`withMaterialPalette` is a Higher Order Component (HOC), which allows to seemlessy connect to `MaterialPaletteProvider` and get the palette instance via context.
+`withMaterialPalette` is a Higher Order Component (HOC), which allows to seemlessy _connect_ to the `MaterialPaletteProvider` and get the palette instance via context.
 
-It is a function factory (it returns a new function), similarily to `connect` from `react-redux`, to allow to be used as a decorator:
+Under the hood, it is a function factory (it returns a new function), similarily to `connect` from `react-redux`, to allow to be used as a decorator:
 ```javascript
 @withMaterialPalette(
   palette => ({
@@ -138,9 +139,9 @@ export default class MyComponent extends React.Component {
 };
 ```
 
-`withMaterialPalette` passes palette instance as a `palette` prop to the _connected_ component, so that you can directly use it and apply a custom logic. However, for most common use case, which is applying colors to properties in `style`, the function accepts `mapPaletteToStyles` function as a first argument.
+`withMaterialPalette` passes palette instance as a `palette` prop to the _connected_ component, so that you can directly use it and apply a custom logic. However, for the most common use case, which is applying colors to properties in `style`, it accepts `mapPaletteToStyles` function as a first argument.
 
-`mapPaletteToStyles` must be a function, which takes single argument - palette instance and returns a valid `style` object. It will be later passed (and optionaly merged with other `style` prop) to the _connected_ component.
+`mapPaletteToStyles` takes single argument - palette instance and must return a valid `style` object. It will be later passed (and optionaly merged with other `style` prop) to the _connected_ component.
 
 ### Syntax
 ```javascript
@@ -189,9 +190,11 @@ function withMaterialPalette(
     },
   }}>
     <PaletteView />
+    {/*
+    PaletteView will have the color applied from local defaults:
+      [{ backgroundColor: '#18b247' }]
+    */}
   </MaterialPaletteprovider>
-  // PaletteView will have color applied from local defaults:
-  //   [{ backgroundColor: '#18b247' }]
   ```
 
 ### Examples
@@ -204,13 +207,13 @@ const PaletteView = withMaterialPalette(
   })
 )(View);
 
-// Pass color to Button component
+// Pass color to the Button component
 const PaletteButton = withMaterialPalette()(props => {
   const { palette, ...rest } = props;
   return <Button {...rest} color={palette.vibrant.color} />;
 });
 
-// Pass color to Button component with defaults
+// Pass color to the Button component with defaults
 const PaletteButton = withMaterialPalette(
   null,
   {
