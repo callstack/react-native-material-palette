@@ -38,7 +38,7 @@ const PaletteView = withMaterialPalette(
 </MaterialPaletteProvider>
 ```
 
-The API documentation can be found [here](./docs/API.md).
+The API documentation can be found here: [API documntation](./docs/API.md).
 
 ## Usage As API
 
