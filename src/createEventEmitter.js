@@ -1,6 +1,6 @@
 /* @flow */
 
-type Subscriber = (value: mixed) => void;
+type Subscriber = (value: *) => void;
 
 export default function createEventEmitter(initialValue: *) {
   let subscribers: Subscriber[] = [];

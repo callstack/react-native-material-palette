@@ -44,7 +44,10 @@ type Props = {
   /**
    * Render `null` or passed component when the palette is being generated
    */
-  waitForPalette?: boolean | React$Component<*, *, *>,
+  waitForPalette?:
+    | boolean
+    | React$Component<*, *, *>
+    | ((...args: *) => React$Element<*>),
 };
 
 type State = {

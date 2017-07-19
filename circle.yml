@@ -17,5 +17,4 @@ dependencies:
 test:
   override:
     - yarn run lint
-    - yarn run flow
     - yarn run jest -- -i --coverage

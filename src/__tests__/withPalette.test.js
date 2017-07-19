@@ -68,7 +68,7 @@ describe('withPalette', () => {
   });
 
   it('should pass a palette prop', () => {
-    let subscriber;
+    let subscriber = jest.fn();
     function onFirstRender(palette: *, style: *) {
       expect(palette).toEqual({});
       expect(style).toEqual([undefined, {}]);
@@ -97,7 +97,7 @@ describe('withPalette', () => {
   });
 
   it('should not update state if data is empty', () => {
-    let subscriber;
+    let subscriber = jest.fn();
 
     const PaletteTest = withPalette()(getTestComponent());
     const wrapper = shallow(
@@ -117,7 +117,7 @@ describe('withPalette', () => {
   });
 
   it('should create styles from palette using `mapPaletteToStyle`', () => {
-    let subscriber;
+    let subscriber = jest.fn();
     function onFirstRender(palette: *, style: *) {
       expect(palette).toEqual({});
       expect(style).toEqual([{ fontSize: '14px' }, {}]);
@@ -128,7 +128,7 @@ describe('withPalette', () => {
     }
 
     const PaletteTest = withPalette((palette: *) => ({
-      color: palette.vibrant.color,
+      color: palette.vibrant && palette.vibrant.color,
     }))(getTestComponent());
     const wrapper = shallow(
       <PaletteTest
@@ -156,7 +156,7 @@ describe('withPalette', () => {
         titleTextColor: '#000000',
       },
     };
-    let subscriber;
+    let subscriber = jest.fn();
     function onFirstRender(palette: *, style: *) {
       expect(palette).toEqual({});
       expect(style).toEqual([undefined, {}]);
@@ -173,7 +173,7 @@ describe('withPalette', () => {
     }
 
     const PaletteTest = withPalette((palette: *) => ({
-      color: palette.lightVibrant.color,
+      color: palette.lightVibrant && palette.lightVibrant.color,
     }))(getTestComponent());
     const wrapper = shallow(
       <PaletteTest
@@ -215,7 +215,7 @@ describe('withPalette', () => {
         titleTextColor: '#000000',
       },
     };
-    let subscriber;
+    let subscriber = jest.fn();
     function onFirstRender(palette: *, style: *) {
       expect(palette).toEqual({
         lightVibrant: { ...localDefaults.lightVibrant, population: 0 },
@@ -239,8 +239,8 @@ describe('withPalette', () => {
 
     const PaletteTest = withPalette(
       (palette: *) => ({
-        color: palette.lightVibrant.color,
-        backgroundColor: palette.muted.color,
+        color: palette.lightVibrant && palette.lightVibrant.color,
+        backgroundColor: palette.muted && palette.muted.color,
       }),
       localDefaults,
     )(getTestComponent());

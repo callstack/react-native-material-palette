@@ -39,8 +39,9 @@ describe('PaletteProvider', () => {
     }
 
     shallow(
+      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
-        image={'path/to/image'}
+        image={0}
         options={{ type: 'vibrant' }}
         onFinish={onFinish}
         defaults={{ vibrant: { color: '#000000' } }}
@@ -60,6 +61,7 @@ describe('PaletteProvider', () => {
     }
 
     render(
+      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider image={'path/to/image'} options={{ type: 'vibrant' }}>
         <TestComponent onRender={onRender} />
       </PaletteProvider>,
@@ -76,8 +78,9 @@ describe('PaletteProvider', () => {
     }
 
     render(
+      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
-        image={'path/to/image'}
+        image={0}
         options={{ type: 'vibrant' }}
         onError={onError}
       >
@@ -111,8 +114,9 @@ describe('PaletteProvider', () => {
     }
 
     wrapper = shallow(
+      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
-        image={'path/to/image'}
+        image={0}
         options={{ type: 'vibrant' }}
         waitForPalette
         onFinish={onFinish}
@@ -127,8 +131,9 @@ describe('PaletteProvider', () => {
   it('should render component specified in `waitForPalette` when creating palette', () => {
     MaterialPalette.create.mockImplementation(() => new Promise(() => {}));
     const wrapper = shallow(
+      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
-        image={'path/to/image'}
+        image={0}
         options={{ type: 'vibrant' }}
         waitForPalette={() => <Text>Loading</Text>}
       >

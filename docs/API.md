@@ -79,7 +79,7 @@ The concept is very similar to `Provider` component from `react-redux`.
   };
   ```
 
-* `waitForPalette?: boolean | React$Component<*, *, *>` (optional) - If specified, while waiting for palette to be created, will render either `null` (if `waitForPalette === true`) or the passed component:
+* `waitForPalette?: boolean | React$Component<*, *, *> | ((...args: *) => React$Element<*>)` (optional) - If specified, while waiting for palette to be created, will render either `null` (if `waitForPalette === true`) or the passed component:
   * `<MateriaPaletteProvider waitForPalette>` - will render `null`,
   * `<MateriaPaletteProvider waitForPalette={true}>` - will render `null`,
   * `<MateriaPaletteProvider waitForPalette={SpinnerComponent}>` - will render `SpinnerComponent`,
