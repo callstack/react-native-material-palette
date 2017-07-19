@@ -63,48 +63,30 @@ export default function withMaterialPalette(
       _mergePaletteWithDefaults(): PaletteInstance {
         const { palette, globalDefaults } = this.state;
 
-        // Create swatches with initial properties
-        let swatches = [
+        return [
           ...Object.keys(palette || {}),
           ...Object.keys(globalDefaults || {}),
           ...Object.keys(localDefaults || {}),
         ].reduce(
-          (acc: *, key: string) => ({
-            ...acc,
-            [key]: { population: 0 },
-          }),
+          (acc: *, key: string) => {
+            // $FlowFixMe
+            const profile = (key: ColorProfile);
+            return {
+              ...acc,
+              [key]: {
+                population: 0,
+                ...acc[key],
+                ...(globalDefaults && globalDefaults[profile]
+                  ? globalDefaults[profile]
+                  : {}),
+                ...(localDefaults && localDefaults[profile]
+                  ? localDefaults[profile]
+                  : {}),
+                ...(palette && palette[profile] ? palette[profile] : {}),
+              },
+            };
+          },
           {},
-        );
-
-        // Merge global defaults
-        // $FlowFixMe
-        swatches = Object.keys(swatches).reduce(
-          (acc: *, key: ColorProfile) => ({
-            ...acc,
-            [key]: {
-              ...acc[key],
-              ...(globalDefaults && globalDefaults[key]
-                ? globalDefaults[key]
-                : {}),
-              ...(localDefaults && localDefaults[key]
-                ? localDefaults[key]
-                : {}),
-            },
-          }),
-          swatches,
-        );
-
-        // Merge swatches from palette
-        // $FlowFixMe
-        return Object.keys(swatches).reduce(
-          (acc: *, key: ColorProfile) => ({
-            ...acc,
-            [key]: {
-              ...acc[key],
-              ...(palette && palette[key] ? palette[key] : {}),
-            },
-          }),
-          swatches,
         );
       }
 
