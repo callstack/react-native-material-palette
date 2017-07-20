@@ -54,10 +54,12 @@ type State = {
   palette: ?PaletteInstance,
 };
 
-function execIfFunction(possibleFunction: mixed, ...args: *) {
+function execIfFunction(possibleFunction: mixed, ...args: *): boolean {
   if (typeof possibleFunction === 'function') {
     possibleFunction(...args);
+    return true;
   }
+  return false;
 }
 
 /**
@@ -102,7 +104,12 @@ export default class MaterialPaletteProvider
         });
       })
       .catch((error: Error) => {
-        execIfFunction(this.props.onError, error);
+        const isCalled = execIfFunction(this.props.onError, error);
+        if (!isCalled) {
+          const enhancedError = error;
+          enhancedError.message = `Uncaugth MaterialPaletteProvider exception: ${enhancedError.message}`;
+          throw enhancedError;
+        }
       });
   }
 
@@ -112,6 +119,7 @@ export default class MaterialPaletteProvider
         ? null
         : <this.props.waitForPalette />;
     }
-    return this.props.children;
+
+    return React.Children.only(this.props.children);
   }
 }
