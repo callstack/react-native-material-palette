@@ -264,4 +264,13 @@ describe('withPalette', () => {
     });
     wrapper.shallow();
   });
+
+  it('should throw error if the Provider subscribe function was not found in context', () => {
+    const PaletteTest = withPalette()(getTestComponent());
+    expect(() => {
+      shallow(
+        <PaletteTest onFirstRender={() => {}} onSecondRender={() => {}} />,
+      );
+    }).toThrowError();
+  });
 });

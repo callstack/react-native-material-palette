@@ -89,6 +89,34 @@ describe('PaletteProvider', () => {
     );
   });
 
+  it('should throw error if `onError` was not passed and pallete creation fails', () =>
+    new Promise((resolve: () => void) => {
+      function checkErrorAndFinish(error: Error) {
+        expect(error.message).toMatch(/MaterialPaletteProvider.*test/);
+        resolve();
+      }
+
+      MaterialPalette.create.mockImplementation(() => ({
+        then() {
+          return this;
+        },
+        catch(errorHandler: *) {
+          try {
+            errorHandler(new Error('test'));
+          } catch (error) {
+            checkErrorAndFinish(error);
+          }
+        },
+      }));
+
+      render(
+        // $FlowFixMe `children` are passed via JSX nesting
+        <PaletteProvider image={0} options={{ type: 'vibrant' }}>
+          <Text>Test</Text>
+        </PaletteProvider>,
+      );
+    }));
+
   it('should render `null` if `waitForPalette` is true when creating palette', (done: () => void) => {
     MaterialPalette.create.mockImplementation(
       () =>
