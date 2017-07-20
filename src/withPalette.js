@@ -44,7 +44,16 @@ export default function withMaterialPalette(
       };
 
       componentWillMount() {
-        this.unsubscribe = this.context[KEY]((data: {
+        const subscribe = this.context[KEY];
+
+        if (typeof subscribe !== 'function') {
+          throw new Error(
+            'Cannot find MaterialPaletteProvider key in context. ' +
+              'Did you forget to add <MaterialPaletteProvider> on top of components tree?',
+          );
+        }
+
+        this.unsubscribe = subscribe((data: {
           palette: PaletteInstance,
           globalDefaults: PaletteDefaults,
         }) => {
