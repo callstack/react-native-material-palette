@@ -25,6 +25,10 @@
     "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
     "format": "eslint --fix src"
   },
+  "dependencies": {
+    "hoist-non-react-statics": "^2.2.0",
+    "prop-types": "^15.5.10"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
@@ -33,6 +37,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "concurrently": "^3.4.0",
+    "enzyme": "^2.9.1",
     "eslint": "^3.18.0",
     "eslint-config-airbnb": "^14.1.0",
     "eslint-config-prettier": "^1.5.0",
@@ -47,6 +52,7 @@
     "prettier": "^0.22.0",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.4",
+    "react-native-mock": "^0.3.1",
     "rimraf": "^2.6.1"
   },
   "peerDependencies": {
@@ -81,7 +87,8 @@
     ],
     "env": {
       "node": true,
-      "es6": true
+      "es6": true,
+      "jest": true
     },
     "globals": {
       "ReactClass": true
@@ -141,7 +148,11 @@
     }
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": [
+      "./testSetup.js"
+    ],
+    "collectCoverage": true
   },
   "rnpm": {
     "android": {

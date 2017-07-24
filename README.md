@@ -8,6 +8,38 @@
 
 Installation and setup guide can be found here: [Setup guide](./docs/SETUP.md).
 
+## Usage with `MaterialPaletteProvider` and `withMaterialPalette`
+
+```javascript
+import { MaterialPaletteProvider, withMaterialPalette } from 'react-native-material-palette';
+
+const PaletteView = withMaterialPalette(
+  palette => ({ backgroundColor: palette.vibrant.color }),
+)(View);
+
+// later ...
+
+<MaterialPaletteProvider
+  image={require('../assets/image.png')}
+  options={{
+    type: 'vibrant',
+  }}
+  defaults={{
+    vibrant: {
+      color: '#3792dd',
+      bodyTextColor: '#ffffff',
+      titleTextColor: '#ffffff',
+    },
+  }}
+>
+  <PaletteView style={{ flex: 1 }}>
+    <Text>Hello World</Text>
+  </PaletteView>
+</MaterialPaletteProvider>
+```
+
+The API documentation can be found here: [API documntation](./docs/API.md).
+
 ## Usage As API
 
 ### `create()`

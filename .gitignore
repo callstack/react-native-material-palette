@@ -27,3 +27,5 @@ lib/
 
 # EXAMPLE
 example/.happypack
+
+coverage/

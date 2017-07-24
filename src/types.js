@@ -24,6 +24,22 @@ export type Swatch = {
   titleTextColor: string, // appropriate color to use for any 'title' text
 };
 
+export type DefaultSwatch = {
+  color: string,
+  bodyTextColor: string,
+  titleTextColor: string,
+};
+
+export type PaletteDefaults = {
+  [key: ColorProfile]: DefaultSwatch,
+};
+
+export type SwatchColors = {
+  color?: string,
+  bodyTextColor?: string,
+  titleTextColor?: string,
+};
+
 export type PaletteInstance = {
   [key: ColorProfile]: ?Swatch,
 };

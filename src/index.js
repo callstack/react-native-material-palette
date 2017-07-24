@@ -7,19 +7,45 @@ import isEqual from 'lodash/isEqual';
 import Background from './Background';
 import Text from './Text';
 import { defaultOptions, nullSwatch } from './constants/defaults';
-import type { Image, PaletteInstance, Options, ColorProfile } from './types';
+import type {
+  Image,
+  PaletteInstance,
+  Options,
+  ColorProfile,
+  PaletteDefaults,
+} from './types';
+
+import PaletteProvider from './PaletteProvider';
+import withPalette from './withPalette';
+
+export const MaterialPaletteProvider = PaletteProvider;
+export const withMaterialPalette = withPalette;
 
 /** API */
-export default class MaterialPalette {
-  static async create(
+
+type Namespace = {
+  create: (image: Image, options: ?Options) => Promise<PaletteInstance>,
+  Background: Class<React$Component<void, Options, void>>,
+  Text: Class<React$Component<void, Options, void>>,
+  PaletteProvider: Class<React$Component<void, *, *>>,
+  withPalette: (
+    mapPaletteToStyle?: (palette: PaletteInstance) => {
+      [key: string]: mixed,
+    },
+    localDefaults?: PaletteDefaults,
+  ) => (WrappedComponent: ReactClass<*>) => Class<React$Component<void, *, *>>,
+};
+
+const namespace: Namespace = {
+  async create(
     image: Image,
-    options: Options = defaultOptions,
+    options: ?Options = defaultOptions,
   ): Promise<PaletteInstance> {
     const {
-      region = defaultOptions.region,
-      maximumColorCount = defaultOptions.maximumColorCount,
-      type = defaultOptions.type,
-    } = options;
+      region,
+      maximumColorCount,
+      type,
+    } = { ...defaultOptions, ...options };
 
     const source = resolveAssetSource(image);
 
@@ -37,8 +63,12 @@ export default class MaterialPalette {
       }
     });
     return paletteInstance;
-  }
+  },
 
-  static Background: Class<React$Component<void, Options, void>> = Background;
-  static Text: Class<React$Component<void, Options, void>> = Text;
-}
+  Background,
+  Text,
+  PaletteProvider: MaterialPaletteProvider,
+  withPalette: withMaterialPalette,
+};
+
+export default namespace;

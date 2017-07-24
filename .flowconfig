@@ -36,6 +36,9 @@
 ; Ignore react-native-fbads dependency of the expo sdk
 .*/node_modules/react-native-fbads/*
 
+; Ignore react-native-mock
+.*/node_modules/react-native-mock/*
+
 [include]
 
 [libs]
