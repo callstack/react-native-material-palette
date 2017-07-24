@@ -26,7 +26,7 @@ describe('PaletteProvider', () => {
     MaterialPalette.create.mockReset();
   });
 
-  it('should create pallete and call `onInit` and `onFinish` handlers', done => {
+  it('should create palette and call `onInit` and `onFinish` handlers', done => {
     MaterialPalette.create.mockImplementation(() =>
       Promise.resolve({ vibrant: null }));
 
@@ -40,7 +40,6 @@ describe('PaletteProvider', () => {
     }
 
     shallow(
-      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
         image={0}
         options={{ type: 'vibrant' }}
@@ -62,7 +61,6 @@ describe('PaletteProvider', () => {
     }
 
     render(
-      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
         image={'path/to/image'}
         options={{ type: 'vibrant' }}
@@ -73,7 +71,7 @@ describe('PaletteProvider', () => {
     );
   });
 
-  it('should run `onError` hanlder if pallete creation fails', done => {
+  it('should run `onError` handler if palette creation fails', done => {
     MaterialPalette.create.mockImplementation(() =>
       Promise.reject(new Error('test')));
 
@@ -83,7 +81,6 @@ describe('PaletteProvider', () => {
     }
 
     render(
-      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
         image={0}
         options={{ type: 'vibrant' }}
@@ -94,7 +91,7 @@ describe('PaletteProvider', () => {
     );
   });
 
-  it('should throw error if `onError` was not passed and pallete creation fails', () =>
+  it('should throw error if `onError` was not passed and palette creation fails', () =>
     new Promise(resolve => {
       function checkErrorAndFinish(error) {
         expect(error.message).toMatch(/MaterialPaletteProvider.*test/);
@@ -115,7 +112,6 @@ describe('PaletteProvider', () => {
       }));
 
       render(
-        // $FlowFixMe `children` are passed via JSX nesting
         <PaletteProvider image={0} options={{ type: 'vibrant' }}>
           <Text>Test</Text>
         </PaletteProvider>,
@@ -154,7 +150,6 @@ describe('PaletteProvider', () => {
     }
 
     const wrapper = render(
-      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider image={0} options={{ type: 'vibrant' }} forceRender>
         <TestComponent onRender={onRender} />
       </PaletteProvider>,
@@ -166,7 +161,6 @@ describe('PaletteProvider', () => {
   it('should render component specified in `waitForPalette` when creating palette', () => {
     MaterialPalette.create.mockImplementation(() => new Promise(() => {}));
     const wrapper = shallow(
-      // $FlowFixMe `children` are passed via JSX nesting
       <PaletteProvider
         image={0}
         options={{ type: 'vibrant' }}
