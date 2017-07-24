@@ -41,7 +41,7 @@ class App extends React.Component {
 > ```
 
 ### Description
-`MaterialPaletteProvider` is a component, which handles palette creation and provides the access to the palette instance for _connected_ components (via `withMaterialPalette`) using context. Ideally, `MaterialPaletteProvider` should be placed at the top of components tree, so that all nested components can _connect_ to it.
+`MaterialPaletteProvider` is a component, which handles palette creation and provides the access to the palette instance for _connected_ components (via `withMaterialPalette`) using context. Ideally, `MaterialPaletteProvider` should be placed at the top of components tree, so that all nested components can _connect_ to it. By default it will render `null` when the palette is being created unless either `forceRender` or `LoaderComponent` is specified.
 
 The concept is very similar to `Provider` component from `react-redux`.
 
@@ -79,11 +79,10 @@ The concept is very similar to `Provider` component from `react-redux`.
   };
   ```
 
-* `waitForPalette?: boolean | React$Component<*, *, *> | ((...args: *) => React$Element<*>)` (optional) - If specified, while waiting for palette to be created, will render either `null` (if `waitForPalette === true`) or the passed component:
-  * `<MateriaPaletteProvider waitForPalette>` - will render `null`,
-  * `<MateriaPaletteProvider waitForPalette={true}>` - will render `null`,
-  * `<MateriaPaletteProvider waitForPalette={SpinnerComponent}>` - will render `SpinnerComponent`,
-  * `<MateriaPaletteProvider waitForPalette={() => <Text>Loading</Text>)}>` - will render `Text` component with _Loading_.
+* `forceRender?: boolean` (optional) - Forces to render the children regardless whether the palette is being created. __Does not take effect if `LoaderComponent` is specified!__
+* `LoaderComponent: React$Component<*, *, *> | ((...args: *) => React$Element<*>)` (optional) - If specified, will render the passed component while waiting for palette to be created:
+  * `<MateriaPaletteProvider LoaderComponent={SpinnerComponent}>` - will render `SpinnerComponent`,
+  * `<MateriaPaletteProvider LoaderComponent={() => <Text>Loading</Text>)}>` - will render `Text` component with _Loading_.
 
 * `onError?: (error: Error) => void` (optional) - Error handler, called if the palette failed to create.
 

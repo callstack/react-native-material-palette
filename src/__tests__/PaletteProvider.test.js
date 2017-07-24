@@ -9,6 +9,7 @@ import { shallow, render } from 'enzyme';
 import PaletteProvider, { KEY } from '../PaletteProvider';
 import MaterialPalette from '../index';
 
+// eslint-disable-next-line react/prefer-stateless-function
 class TestComponent extends React.Component {
   static contextTypes = {
     [KEY]: PropTypes.func.isRequired,
@@ -16,7 +17,7 @@ class TestComponent extends React.Component {
 
   render() {
     this.props.onRender(this.context);
-    return null;
+    return <Text>TestComponent</Text>;
   }
 }
 
@@ -62,7 +63,11 @@ describe('PaletteProvider', () => {
 
     render(
       // $FlowFixMe `children` are passed via JSX nesting
-      <PaletteProvider image={'path/to/image'} options={{ type: 'vibrant' }}>
+      <PaletteProvider
+        image={'path/to/image'}
+        options={{ type: 'vibrant' }}
+        forceRender
+      >
         <TestComponent onRender={onRender} />
       </PaletteProvider>,
     );
@@ -117,43 +122,45 @@ describe('PaletteProvider', () => {
       );
     }));
 
-  it('should render `null` if `waitForPalette` is true when creating palette', (done: () => void) => {
+  it('should render children if `forceRender` is true when creating palette', (done: () => void) => {
     MaterialPalette.create.mockImplementation(
       () =>
         new Promise((resolve: (v: *) => void) => {
           setTimeout(
             () => {
-              resolve({ vibrant: null });
+              resolve({ vibrant: {} });
             },
             50,
           );
         }),
     );
 
-    let wrapper;
-    function onFinish() {
+    let firstNatification = true;
+    function onRender(context: *) {
       setTimeout(
         () => {
-          expect(wrapper.state().palette.vibrant).toBeNull();
-          done();
+          context[KEY]((data: *) => {
+            if (firstNatification) {
+              firstNatification = false;
+              expect(data).toBeNull();
+            } else {
+              expect(data.palette.vibrant).toEqual({});
+              done();
+            }
+          });
         },
-        0,
+        10,
       );
     }
 
-    wrapper = shallow(
+    const wrapper = render(
       // $FlowFixMe `children` are passed via JSX nesting
-      <PaletteProvider
-        image={0}
-        options={{ type: 'vibrant' }}
-        waitForPalette
-        onFinish={onFinish}
-      >
-        <Text>Test</Text>
+      <PaletteProvider image={0} options={{ type: 'vibrant' }} forceRender>
+        <TestComponent onRender={onRender} />
       </PaletteProvider>,
     );
 
-    expect(wrapper.text()).toEqual('');
+    expect(wrapper.text()).toEqual('TestComponent');
   });
 
   it('should render component specified in `waitForPalette` when creating palette', () => {
@@ -163,7 +170,7 @@ describe('PaletteProvider', () => {
       <PaletteProvider
         image={0}
         options={{ type: 'vibrant' }}
-        waitForPalette={() => <Text>Loading</Text>}
+        LoaderComponent={() => <Text>Loading</Text>}
       >
         <Text>Test</Text>
       </PaletteProvider>,

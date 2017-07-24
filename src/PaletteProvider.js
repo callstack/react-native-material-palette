@@ -42,10 +42,14 @@ type Props = {
     globalDefaults: PaletteDefaults,
   ) => void,
   /**
-   * Render `null` or passed component when the palette is being generated
+   * Render the children regardless whether palette is still being created, does not
+   * take effect if `LoaderComponent` is specified
    */
-  waitForPalette?:
-    | boolean
+  forceRender?: boolean,
+  /**
+   * Render LoaderComponent when the palette is being created
+   */
+  LoaderComponent?:
     | React$Component<*, *, *>
     | ((...args: *) => React$Element<*>),
 };
@@ -94,7 +98,7 @@ export default class MaterialPaletteProvider
     MaterialPalette.create(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
         execIfFunction(this.props.onFinish, palette, this.props.defaults);
-        if (this.props.waitForPalette) {
+        if (!this.props.forceRender) {
           this.setState({ palette });
         }
         this.eventEmitter.publish({
@@ -113,10 +117,10 @@ export default class MaterialPaletteProvider
   }
 
   render() {
-    if (this.props.waitForPalette && !this.state.palette) {
-      return typeof this.props.waitForPalette === 'boolean'
-        ? null
-        : <this.props.waitForPalette />;
+    if (!this.state.palette && this.props.LoaderComponent) {
+      return <this.props.LoaderComponent />;
+    } else if (!this.state.palette && !this.props.forceRender) {
+      return null;
     }
 
     return React.Children.only(this.props.children);
