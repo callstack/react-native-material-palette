@@ -4,9 +4,8 @@ import { NativeModules } from 'react-native';
 import resolveAssetSource
   from 'react-native/Libraries/Image/resolveAssetSource';
 import isEqual from 'lodash/isEqual';
-import Background from './Background';
-import Text from './Text';
 import { defaultOptions, nullSwatch } from './constants/defaults';
+import validation from './utils/validation';
 import type {
   Image,
   PaletteInstance,
@@ -24,9 +23,7 @@ export const withMaterialPalette = withPalette;
 /** API */
 
 type Namespace = {
-  create: (image: Image, options: ?Options) => Promise<PaletteInstance>,
-  Background: Class<React$Component<void, Options, void>>,
-  Text: Class<React$Component<void, Options, void>>,
+  create: (image: Image, options?: Options) => Promise<PaletteInstance>,
   PaletteProvider: Class<React$Component<void, *, *>>,
   withPalette: (
     mapPaletteToStyle?: (palette: PaletteInstance) => {
@@ -39,8 +36,9 @@ type Namespace = {
 const namespace: Namespace = {
   async create(
     image: Image,
-    options: ?Options = defaultOptions,
+    options?: Options = defaultOptions,
   ): Promise<PaletteInstance> {
+    validation(image, options);
     const {
       region,
       maximumColorCount,
@@ -64,9 +62,6 @@ const namespace: Namespace = {
     });
     return paletteInstance;
   },
-
-  Background,
-  Text,
   PaletteProvider: MaterialPaletteProvider,
   withPalette: withMaterialPalette,
 };
