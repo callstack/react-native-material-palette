@@ -1,5 +1,4 @@
-/* @flow */
-
+/* eslint flowtype/require-parameter-type: 0 */
 import React from 'react';
 import { shallow } from 'enzyme';
 import withPalette from '../withPalette';
@@ -21,7 +20,7 @@ function getTestComponent() {
   };
 }
 
-function createContext(subscribeFn: *) {
+function createContext(subscribeFn) {
   return {
     [KEY]: subscribeFn,
   };
@@ -69,11 +68,11 @@ describe('withPalette', () => {
 
   it('should pass a palette prop', () => {
     let subscriber = jest.fn();
-    function onFirstRender(palette: *, style: *) {
+    function onFirstRender(palette, style) {
       expect(palette).toEqual({});
       expect(style).toEqual([undefined, {}]);
     }
-    function onSecondRender(palette: *, style: *) {
+    function onSecondRender(palette, style) {
       expect(palette).toEqual(paletteMock);
       expect(style).toEqual([undefined, {}]);
     }
@@ -85,7 +84,7 @@ describe('withPalette', () => {
         onSecondRender={onSecondRender}
       />,
       {
-        context: createContext((fn: *) => {
+        context: createContext(fn => {
           subscriber = fn;
         }),
       },
@@ -103,7 +102,7 @@ describe('withPalette', () => {
     const wrapper = shallow(
       <PaletteTest onFirstRender={() => {}} onSecondRender={() => {}} />,
       {
-        context: createContext((fn: *) => {
+        context: createContext(fn => {
           subscriber = fn;
         }),
       },
@@ -118,16 +117,16 @@ describe('withPalette', () => {
 
   it('should create styles from palette using `mapPaletteToStyle`', () => {
     let subscriber = jest.fn();
-    function onFirstRender(palette: *, style: *) {
+    function onFirstRender(palette, style) {
       expect(palette).toEqual({});
       expect(style).toEqual([{ fontSize: '14px' }, {}]);
     }
-    function onSecondRender(palette: *, style: *) {
+    function onSecondRender(palette, style) {
       expect(palette).toEqual(paletteMock);
       expect(style).toEqual([{ fontSize: '14px' }, { color: '#ffffff' }]);
     }
 
-    const PaletteTest = withPalette((palette: *) => ({
+    const PaletteTest = withPalette(palette => ({
       color: palette.vibrant && palette.vibrant.color,
     }))(getTestComponent());
     const wrapper = shallow(
@@ -137,7 +136,7 @@ describe('withPalette', () => {
         style={{ fontSize: '14px' }}
       />,
       {
-        context: createContext((fn: *) => {
+        context: createContext(fn => {
           subscriber = fn;
         }),
       },
@@ -157,11 +156,11 @@ describe('withPalette', () => {
       },
     };
     let subscriber = jest.fn();
-    function onFirstRender(palette: *, style: *) {
+    function onFirstRender(palette, style) {
       expect(palette).toEqual({});
       expect(style).toEqual([undefined, {}]);
     }
-    function onSecondRender(palette: *, style: *) {
+    function onSecondRender(palette, style) {
       expect(palette).toEqual({
         ...paletteMock,
         lightVibrant: { population: 0, ...defaults.lightVibrant },
@@ -172,7 +171,7 @@ describe('withPalette', () => {
       ]);
     }
 
-    const PaletteTest = withPalette((palette: *) => ({
+    const PaletteTest = withPalette(palette => ({
       color: palette.lightVibrant && palette.lightVibrant.color,
     }))(getTestComponent());
     const wrapper = shallow(
@@ -181,7 +180,7 @@ describe('withPalette', () => {
         onSecondRender={onSecondRender}
       />,
       {
-        context: createContext((fn: *) => {
+        context: createContext(fn => {
           subscriber = fn;
         }),
       },
@@ -216,13 +215,13 @@ describe('withPalette', () => {
       },
     };
     let subscriber = jest.fn();
-    function onFirstRender(palette: *, style: *) {
+    function onFirstRender(palette, style) {
       expect(palette).toEqual({
         lightVibrant: { ...localDefaults.lightVibrant, population: 0 },
       });
       expect(style).toEqual([{ fontSize: '14px' }, {}]);
     }
-    function onSecondRender(palette: *, style: *) {
+    function onSecondRender(palette, style) {
       expect(palette).toEqual({
         ...paletteMock,
         lightVibrant: { population: 0, ...localDefaults.lightVibrant },
@@ -238,7 +237,7 @@ describe('withPalette', () => {
     }
 
     const PaletteTest = withPalette(
-      (palette: *) => ({
+      palette => ({
         color: palette.lightVibrant && palette.lightVibrant.color,
         backgroundColor: palette.muted && palette.muted.color,
       }),
@@ -251,7 +250,7 @@ describe('withPalette', () => {
         style={[{ fontSize: '14px' }]}
       />,
       {
-        context: createContext((fn: *) => {
+        context: createContext(fn => {
           subscriber = fn;
         }),
       },

@@ -1,5 +1,4 @@
-/* @flow */
-
+/* eslint flowtype/require-parameter-type: 0 */
 import createEventEmitter from '../createEventEmitter';
 
 describe('createEventEmitter', () => {
@@ -11,15 +10,15 @@ describe('createEventEmitter', () => {
 
   it('should provide initial value when listener subscribes', () => {
     const eventEmitter = createEventEmitter('data');
-    eventEmitter.subscribe((data: string) => {
+    eventEmitter.subscribe(data => {
       expect(data).toBe('data');
     });
   });
 
-  it('should allow listeners to subscribe and be notified with new values', (done: () => void) => {
+  it('should allow listeners to subscribe and be notified with new values', done => {
     const eventEmitter = createEventEmitter();
     let initial = true;
-    eventEmitter.subscribe((data: string) => {
+    eventEmitter.subscribe(data => {
       if (!initial) {
         expect(data).toBe('data');
         done();

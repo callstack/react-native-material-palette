@@ -1,4 +1,4 @@
-/* @flow */
+/* eslint flowtype/require-parameter-type: 0 */
 /* eslint-disable import/first */
 jest.mock('../index.js', () => ({ create: jest.fn() }));
 
@@ -26,11 +26,11 @@ describe('PaletteProvider', () => {
     MaterialPalette.create.mockReset();
   });
 
-  it('should create pallete and call `onInit` and `onFinish` handlers', (done: () => void) => {
+  it('should create pallete and call `onInit` and `onFinish` handlers', done => {
     MaterialPalette.create.mockImplementation(() =>
       Promise.resolve({ vibrant: null }));
 
-    function onFinish(palette: *, defaults: *) {
+    function onFinish(palette, defaults) {
       expect(MaterialPalette.create).toHaveBeenCalledWith(0, {
         type: 'vibrant',
       });
@@ -52,11 +52,11 @@ describe('PaletteProvider', () => {
     );
   });
 
-  it('should pass `subscribe` function via context', (done: () => void) => {
+  it('should pass `subscribe` function via context', done => {
     MaterialPalette.create.mockImplementation(() =>
       Promise.resolve({ vibrant: null }));
 
-    function onRender(context: *) {
+    function onRender(context) {
       expect(typeof context[KEY]).toEqual('function');
       done();
     }
@@ -73,11 +73,11 @@ describe('PaletteProvider', () => {
     );
   });
 
-  it('should run `onError` hanlder if pallete creation fails', (done: () => void) => {
+  it('should run `onError` hanlder if pallete creation fails', done => {
     MaterialPalette.create.mockImplementation(() =>
       Promise.reject(new Error('test')));
 
-    function onError(error: *) {
+    function onError(error) {
       expect(error.message).toEqual('test');
       done();
     }
@@ -95,8 +95,8 @@ describe('PaletteProvider', () => {
   });
 
   it('should throw error if `onError` was not passed and pallete creation fails', () =>
-    new Promise((resolve: () => void) => {
-      function checkErrorAndFinish(error: Error) {
+    new Promise(resolve => {
+      function checkErrorAndFinish(error) {
         expect(error.message).toMatch(/MaterialPaletteProvider.*test/);
         resolve();
       }
@@ -105,7 +105,7 @@ describe('PaletteProvider', () => {
         then() {
           return this;
         },
-        catch(errorHandler: *) {
+        catch(errorHandler) {
           try {
             errorHandler(new Error('test'));
           } catch (error) {
@@ -122,10 +122,10 @@ describe('PaletteProvider', () => {
       );
     }));
 
-  it('should render children if `forceRender` is true when creating palette', (done: () => void) => {
+  it('should render children if `forceRender` is true when creating palette', done => {
     MaterialPalette.create.mockImplementation(
       () =>
-        new Promise((resolve: (v: *) => void) => {
+        new Promise(resolve => {
           setTimeout(
             () => {
               resolve({ vibrant: {} });
@@ -136,10 +136,10 @@ describe('PaletteProvider', () => {
     );
 
     let firstNatification = true;
-    function onRender(context: *) {
+    function onRender(context) {
       setTimeout(
         () => {
-          context[KEY]((data: *) => {
+          context[KEY](data => {
             if (firstNatification) {
               firstNatification = false;
               expect(data).toBeNull();
