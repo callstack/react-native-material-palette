@@ -85,7 +85,6 @@ export default class MaterialPaletteProvider
 
   getChildContext() {
     return {
-      ...this.context,
       [KEY]: this.eventEmitter.subscribe,
     };
   }
@@ -107,7 +106,7 @@ export default class MaterialPaletteProvider
         const isCalled = execIfFunction(this.props.onError, error);
         if (!isCalled) {
           const enhancedError = error;
-          enhancedError.message = `Uncaugth MaterialPaletteProvider exception: ${enhancedError.message}`;
+          enhancedError.message = `Uncaught MaterialPaletteProvider exception: ${enhancedError.message}`;
           throw enhancedError;
         }
       });

@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import hoistNonReactStatic from 'hoist-non-react-statics';
 import { KEY } from './PaletteProvider';
 
 import type { PaletteInstance, ColorProfile, PaletteDefaults } from './types';
@@ -20,12 +21,12 @@ type State = {
  * the results will be passed to a `style` prop to wrapped component.
  */
 export default function withMaterialPalette(
-  mapPaletteToStyle: ?(palette: PaletteInstance) => {
+  mapPaletteToStyle?: (palette: PaletteInstance) => {
     [key: string]: mixed,
   },
   localDefaults?: PaletteDefaults,
 ) {
-  return (WrappedComponent: ReactClass<*>) =>
+  return (WrappedComponent: ReactClass<*>) => {
     class MaterialPaletteConnector extends Component<void, *, State> {
       unsubscribe: ?() => void;
       state: State;
@@ -117,5 +118,8 @@ export default function withMaterialPalette(
           />
         );
       }
-    };
+    }
+
+    return hoistNonReactStatic(MaterialPaletteConnector, WrappedComponent);
+  };
 }

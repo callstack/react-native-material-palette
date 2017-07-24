@@ -124,7 +124,7 @@ export default withMaterialPalette(
 > ```
 
 ### Description
-`withMaterialPalette` is a Higher Order Component (HOC), which allows to seemlessy _connect_ to the `MaterialPaletteProvider` and get the palette instance via context.
+`withMaterialPalette` is a function that returns a Higher Order Component (HOC), which allows to seemlessy _connect_ to the `MaterialPaletteProvider` and get the palette instance via context.
 
 Under the hood, it is a function factory (it returns a new function), similarily to `connect` from `react-redux`, to allow to be used as a decorator:
 ```javascript

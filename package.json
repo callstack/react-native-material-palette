@@ -26,6 +26,7 @@
     "format": "eslint --fix src"
   },
   "dependencies": {
+    "hoist-non-react-statics": "^2.2.0",
     "prop-types": "^15.5.10"
   },
   "devDependencies": {
