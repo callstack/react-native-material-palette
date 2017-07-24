@@ -5,7 +5,7 @@ import resolveAssetSource
   from 'react-native/Libraries/Image/resolveAssetSource';
 import isEqual from 'lodash/isEqual';
 import { defaultOptions, nullSwatch } from './constants/defaults';
-import validation from './utils/validation';
+import validate from './utils/validate';
 import type {
   Image,
   PaletteInstance,
@@ -38,7 +38,7 @@ const namespace: Namespace = {
     image: Image,
     options?: Options = defaultOptions,
   ): Promise<PaletteInstance> {
-    validation(image, options);
+    validate(image, options);
     const {
       region,
       maximumColorCount,
