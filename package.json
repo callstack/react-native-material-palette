@@ -23,7 +23,8 @@
     "build:watch": "yarn run clean && babel src --out-dir lib --watch --ignore '__tests__/'",
     "jest": "jest src",
     "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
-    "format": "eslint --fix src"
+    "format": "eslint --fix src",
+    "precommit": "yarn run lint"
   },
   "dependencies": {
     "hoist-non-react-statics": "^2.2.0",
@@ -47,6 +48,7 @@
     "eslint-plugin-prettier": "^2.0.1",
     "eslint-plugin-react": "^6.10.3",
     "flow-bin": "^0.40.0",
+    "husky": "^0.14.3",
     "jest": "^19.0.2",
     "npm-release": "^1.0.0",
     "prettier": "^0.22.0",
