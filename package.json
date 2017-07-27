@@ -22,6 +22,7 @@
     "prepublish": "yarn run clean && babel src --out-dir lib --ignore '__tests__/'",
     "build:watch": "yarn run clean && babel src --out-dir lib --watch --ignore '__tests__/'",
     "jest": "jest src",
+    "jest:coverage": "npm run jest && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
     "format": "eslint --fix src",
     "precommit": "yarn run lint"
@@ -38,6 +39,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "concurrently": "^3.4.0",
+    "coveralls": "^2.13.1",
     "enzyme": "^2.9.1",
     "eslint": "^3.18.0",
     "eslint-config-airbnb": "^14.1.0",
