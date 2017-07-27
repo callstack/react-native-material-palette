@@ -31,10 +31,5 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run flow and unit tests!
-      - run:
-        name: Running flow
-        command: yarn run flow
-
-      - run:
-        name: Running unit tests
-        command: yarn run jest:coverage
+      - run: yarn run flow
+      - run: yarn run jest:coverage
