@@ -14,10 +14,10 @@ type State = {
 
 /**
  * Connect component to a material palette notification channel in order to obtain
- * pallete instance when palette is resolved.
+ * palette instance when palette is resolved.
  * Prop `palette` will be passed to wrapped component with either `null` or with palette instance.
  * 
- * If `mapPaletteToStyle` is specified, it will be evaluated when pallete is available and
+ * If `mapPaletteToStyle` is specified, it will be evaluated when palette is available and
  * the results will be passed to a `style` prop to wrapped component.
  */
 export default function withMaterialPalette(

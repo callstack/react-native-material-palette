@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import createEventEmitter from './createEventEmitter';
 import MaterialPalette from './index';
+import { defaultSwatches } from './constants/defaults';
 
 import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
 
@@ -93,11 +94,37 @@ export default class MaterialPaletteProvider
     };
   }
 
+  _mergeWithDefaults(palette: PaletteInstance) {
+    const defaults = {
+      ...defaultSwatches,
+      ...Object.keys(this.props.defaults).reduce(
+        (acc: *, profile: string) => ({
+          ...acc,
+          [profile]: { ...this.props.defaults[profile], population: 0 },
+        }),
+        {},
+      ),
+    };
+    return {
+      ...Object.keys(palette)
+        .filter((profile: string) => !!palette[profile]) // Stripping out unavailable profiles
+        .reduce(
+          (acc: *, profile: string) => ({
+            ...acc,
+            [profile]: palette[profile],
+          }),
+          {},
+        ),
+      ...defaults,
+    };
+  }
+
   componentWillMount() {
     execIfFunction(this.props.onInit);
     MaterialPalette.create(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
-        execIfFunction(this.props.onFinish, palette, this.props.defaults);
+        const paletteWithDefaults = this._mergeWithDefaults(palette);
+        execIfFunction(this.props.onFinish, paletteWithDefaults);
         if (!this.props.forceRender) {
           this.setState({ palette });
         }

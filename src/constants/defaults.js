@@ -36,7 +36,7 @@ const defaultDarkSwatch: Swatch = {
   titleTextColor: '#FFFFFF',
 };
 
-export const defaultSwatch = {
+export const defaultSwatches = {
   vibrant: { ...defaultDarkSwatch, color: defaultVibrant },
   lightVibrant: { ...defaultLightSwatch, color: defaultLightVibrant },
   darkVibrant: { ...defaultLightSwatch, color: defaultDarkVibrant },
