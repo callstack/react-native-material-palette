@@ -4,7 +4,7 @@ import { NativeModules } from 'react-native';
 import resolveAssetSource
   from 'react-native/Libraries/Image/resolveAssetSource';
 import isEqual from 'lodash/isEqual';
-import { defaultOptions, nullSwatch } from './constants/defaults';
+import { defaultOptions, defaultLightSwatch } from './constants/defaults';
 import validate from './utils/validate';
 import type {
   Image,
@@ -56,7 +56,7 @@ const namespace: Namespace = {
       },
     );
     Object.keys(paletteInstance).forEach((profile: ColorProfile) => {
-      if (isEqual(paletteInstance[profile], nullSwatch)) {
+      if (isEqual(paletteInstance[profile], defaultLightSwatch)) {
         paletteInstance[profile] = null;
       }
     });

@@ -53,8 +53,7 @@ The concept is very similar to `Provider` component from `react-redux`.
   type Options = {
     region?: { top: number, left: number, bottom: number, right: number },
     maximumColorCount?: number = 16,
-    type?: ColorProfile = 'vibrant',
-    types?: Array<ColorProfile> = []
+    type?: ColorProfile | Array<ColorProfile> = 'vibrant',
   }
   ```
 
