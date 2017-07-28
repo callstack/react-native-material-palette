@@ -6,7 +6,13 @@ import createEventEmitter from './createEventEmitter';
 import MaterialPalette from './index';
 import { defaultSwatches } from './constants/defaults';
 
-import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
+import type {
+  PaletteInstance,
+  Image,
+  Options,
+  PaletteDefaults,
+  ColorProfile,
+} from './types';
 
 export const KEY = '__react-native-material-palette__';
 
@@ -97,19 +103,19 @@ export default class MaterialPaletteProvider
   _mergeWithDefaults(palette: PaletteInstance) {
     const defaults = {
       ...defaultSwatches,
-      ...Object.keys(this.props.defaults).reduce(
+      ...Object.keys(this.props.defaults || {}).reduce(
         (acc: *, profile: string) => ({
           ...acc,
-          [profile]: { ...this.props.defaults[profile], population: 0 },
+          [profile]: { ...(this.props.defaults[profile] || {}), population: 0 },
         }),
         {},
       ),
     };
     return {
       ...Object.keys(palette)
-        .filter((profile: string) => !!palette[profile]) // Stripping out unavailable profiles
+        .filter((profile: ColorProfile) => !!palette[profile]) // Stripping out unavailable profiles
         .reduce(
-          (acc: *, profile: string) => ({
+          (acc: *, profile: ColorProfile) => ({
             ...acc,
             [profile]: palette[profile],
           }),
@@ -119,7 +125,18 @@ export default class MaterialPaletteProvider
     };
   }
 
+  _validateDefaults() {
+    if (this.props.defaults) {
+      if (typeof this.props.defaults !== 'object') {
+        throw new Error('this.props.defaults should be an object');
+      } else {
+        // TODO validate defaults
+      }
+    }
+  }
+
   componentWillMount() {
+    this._validateDefaults();
     execIfFunction(this.props.onInit);
     MaterialPalette.create(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
