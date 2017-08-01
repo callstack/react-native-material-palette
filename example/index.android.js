@@ -7,7 +7,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, Image } from 'react-native';
 
-import MaterialPalette from 'react-native-material-palette';
+import { createMaterialPalette } from 'react-native-material-palette';
 
 export default class TestPalette extends Component {
   state = {
@@ -16,7 +16,7 @@ export default class TestPalette extends Component {
   };
 
   async componentDidMount() {
-    const palette = await MaterialPalette.create(
+    const palette = await createMaterialPalette(
       require('./assets/wroclaw.jpg'), // eslint-disable-line global-require
       {
         type: ['lightMuted', 'darkVibrant', 'vibrant'],

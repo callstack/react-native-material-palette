@@ -2,8 +2,6 @@
 
 ## `MaterialPaletteProvider`
 
-__Also available from the default import:__ `MaterialPalette.PaletteProvider`
-
 ### Example of usage:
 ```javascript
 import React from 'react';
@@ -29,16 +27,6 @@ class App extends React.Component {
   }
 }
 ```
-
-> You can import the component directly, as a named import:
-> ```javascript
-> import { MaterialPaletteProvider } from 'react-native-material-palette';
-> ```
-> or using the default import and accessing the component using `PaletteProvider` property:
-> ```javascript
-> import MaterialPalette from 'react-native-material-palette';
-> // MaterialPalette.PaletteProvider
-> ```
 
 ### Description
 `MaterialPaletteProvider` is a component, which handles palette creation and provides the access to the palette instance for _connected_ components (via `withMaterialPalette`) using context. Ideally, `MaterialPaletteProvider` should be placed at the top of components tree, so that all nested components can _connect_ to it. By default it will render `null` when the palette is being created unless either `forceRender` or `LoaderComponent` is specified.
@@ -95,8 +83,6 @@ The concept is very similar to `Provider` component from `react-redux`.
 
 ## `withMaterialPalette`
 
-__Also available from the default import:__ `MaterialPalette.withPalette`
-
 ### Example of usage:
 ```javascript
 import React from 'react';
@@ -110,16 +96,6 @@ export default withMaterialPalette(
   })
 )(Text);
 ```
-
-> You can import the function directly, as a named import:
-> ```javascript
-> import { withMaterialPalette } from 'react-native-material-palette';
-> ```
-> or using the default import and accessing the component using `withPalette` property:
-> ```javascript
-> import MaterialPalette from 'react-native-material-palette';
-> // MaterialPalette.withPalette
-> ```
 
 ### Description
 `withMaterialPalette` is a function that returns a Higher Order Component (HOC), which allows to seemlessy _connect_ to the `MaterialPaletteProvider` and get the palette instance via context.

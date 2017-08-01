@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import createEventEmitter from './createEventEmitter';
-import MaterialPalette from './index';
+import { createMaterialPalette } from './index';
 import { defaultSwatches } from './constants/defaults';
 
 import type {
@@ -145,7 +145,7 @@ export default class MaterialPaletteProvider
   componentWillMount() {
     this._validateDefaults();
     execIfFunction(this.props.onInit);
-    MaterialPalette.create(this.props.image, this.props.options)
+    createMaterialPalette(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
         const paletteWithDefaults = this._mergeWithDefaults(palette);
         execIfFunction(this.props.onFinish, paletteWithDefaults);

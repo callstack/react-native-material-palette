@@ -1,9 +1,9 @@
 /* eslint-env jest */
 
-import MaterialPalette from '../';
+import { createMaterialPalette } from '../';
 
 describe('reactNativeMaterialPalette', () => {
   it('should return argument', () => {
-    expect(typeof MaterialPalette.create).toBe('function');
+    expect(typeof createMaterialPalette).toBe('function');
   });
 });
