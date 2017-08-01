@@ -106,12 +106,12 @@ export function validateType(type: ColorProfile | Array<ColorProfile>) {
   }
 }
 
-export function validateDefaults(defaults?: PaletteDefaults) {
+export function validateDefaults(defaults: PaletteDefaults) {
   if (typeof defaults !== 'object') {
     throw new Error('this.props.defaults should be an object');
   } else {
     const validProfilesKeys = ['bodyTextColor', 'color', 'titleTextColor'];
-    Object.keys(defaults).forEach((profile: ColorProfile) => {
+    Object.keys(defaults).forEach(profile => {
       if (!validColorProfiles.includes(profile)) {
         throw new Error(
           `${profile} is not a valid color profile for this.props.defaults. Please refer to the API documentation`,
@@ -119,10 +119,10 @@ export function validateDefaults(defaults?: PaletteDefaults) {
       } else {
         const profileKeys = Object.keys(defaults[profile]).sort();
         const areTypesCorrect = profileKeys.every(
-          (key: string) => typeof defaults[profile][key] === 'string',
+          key => typeof defaults[profile][key] === 'string',
         );
         const areEqual = validProfilesKeys.length === profileKeys.length &&
-          validProfilesKeys.every((v: *, i: *) => v === profileKeys[i]);
+          validProfilesKeys.every((v, i) => v === profileKeys[i]);
         if (!areEqual) {
           throw new Error(
             `Each default profile should define 'bodyTextColor', 'color' and 'titleTextColor' parameters. Please refer to the API documentation`,
