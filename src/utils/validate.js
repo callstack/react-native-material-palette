@@ -1,5 +1,6 @@
 // @flow
 
+import { validColorProfiles } from '../constants/defaults';
 import type {
   Image,
   Options,
@@ -107,19 +108,11 @@ export function validateType(type: ColorProfile | Array<ColorProfile>) {
 
 export function validateDefaults(defaults?: PaletteDefaults) {
   if (typeof defaults !== 'object') {
-    throw new Error(`this.props.defaults should be an object`);
+    throw new Error('this.props.defaults should be an object');
   } else {
-    const validProfiles: Array<ColorProfile> = [
-      'vibrant',
-      'lightVibrant',
-      'darkVibrant',
-      'muted',
-      'lightMuted',
-      'darkMuted',
-    ];
     const validProfilesKeys = ['bodyTextColor', 'color', 'titleTextColor'];
     Object.keys(defaults).forEach((profile: ColorProfile) => {
-      if (!validProfiles.includes(profile)) {
+      if (!validColorProfiles.includes(profile)) {
         throw new Error(
           `${profile} is not a valid color profile for this.props.defaults. Please refer to the API documentation`,
         );

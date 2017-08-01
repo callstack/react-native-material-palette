@@ -9,6 +9,15 @@ const defaultMuted = '#9E9E9E';
 const defaultLightMuted = '#BDBDBD';
 const defaultDarkMuted = '#616161';
 
+export const validColorProfiles = [
+  'vibrant',
+  'lightVibrant',
+  'darkVibrant',
+  'muted',
+  'lightMuted',
+  'darkMuted',
+];
+
 export const defaultRegion: Region = {
   top: 0,
   right: 0,
@@ -24,6 +33,12 @@ export const defaultOptions: Options = {
 
 export const defaultLightSwatch: Swatch = {
   population: 0,
+  color: '#000000',
+  bodyTextColor: '#000000',
+  titleTextColor: '#000000',
+};
+
+export const defaultProfile = {
   color: '#000000',
   bodyTextColor: '#000000',
   titleTextColor: '#000000',

@@ -7,8 +7,9 @@ import validate, {
   validateRegion,
   validateMaximumColorCount,
   validateType,
+  validateDefaults,
 } from '../validate';
-import { defaultOptions } from '../../constants/defaults';
+import { defaultOptions, defaultProfile } from '../../constants/defaults';
 
 const VALID_IMAGE = { uri: 'https://something.image.jpg' };
 
@@ -93,5 +94,55 @@ describe('validation', () => {
     );
     expect(() => validateType('vibrant')).not.toThrow();
     expect(() => validateType(['vibrant', 'lightVibrant'])).not.toThrow();
+  });
+
+  it('this.props.defaults validation', () => {
+    const invalidDefaults1 = 'hej';
+    const invalidDefaults2 = {
+      foo: 'bar',
+      vibrant: 'bar',
+    };
+    const invalidDefaults3 = {
+      lightVibrant: 'foo',
+      muted: {
+        color: '#000000',
+        bodyTextColor: '#000000',
+        titleTextColor: '#000000',
+      },
+    };
+    const invalidDefaults4 = {
+      muted: {
+        color: '#000000',
+        bodyTextColor: '#000000',
+        titleTextColor: '#000000',
+      },
+      darkVibrant: {
+        color: '#000000',
+        bodyTextColor: 12,
+        titleTextColor: '#000000',
+      },
+    };
+    const validDefaults = {
+      muted: defaultProfile,
+      darkMuted: defaultProfile,
+      lightMuted: defaultProfile,
+      darkVibrant: defaultProfile,
+      vibrant: defaultProfile,
+      lightVibrant: defaultProfile,
+    };
+
+    expect(() => validateDefaults(invalidDefaults1)).toThrow(
+      'this.props.defaults should be an object',
+    );
+    expect(() => validateDefaults(invalidDefaults2)).toThrow(
+      'foo is not a valid color profile for this.props.defaults. Please refer to the API documentation',
+    );
+    expect(() => validateDefaults(invalidDefaults3)).toThrow(
+      `Each default profile should define 'bodyTextColor', 'color' and 'titleTextColor' parameters. Please refer to the API documentation`,
+    );
+    expect(() => validateDefaults(invalidDefaults4)).toThrow(
+      `'bodyTextColor', 'color' and 'titleTextColor' should all be strings`,
+    );
+    expect(() => validateDefaults(validDefaults)).not.toThrow();
   });
 });
