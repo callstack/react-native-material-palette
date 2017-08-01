@@ -154,7 +154,6 @@ export default class MaterialPaletteProvider
         }
         this.eventEmitter.publish({
           palette: paletteWithDefaults,
-          globalDefaults: this.props.defaults,
         });
       })
       .catch((error: Error) => {

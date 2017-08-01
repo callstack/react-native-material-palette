@@ -56,7 +56,6 @@ export default function withMaterialPalette(
 
         this.unsubscribe = subscribe((data: {
           palette: PaletteInstance,
-          globalDefaults: PaletteDefaults,
         }) => {
           if (data) {
             this.setState(data);
@@ -71,11 +70,10 @@ export default function withMaterialPalette(
       }
 
       _mergePaletteWithDefaults(): PaletteInstance {
-        const { palette, globalDefaults } = this.state;
+        const { palette } = this.state;
 
         return [
           ...Object.keys(palette || {}),
-          ...Object.keys(globalDefaults || {}),
           ...Object.keys(localDefaults || {}),
         ].reduce(
           (acc: *, key: string) => {
@@ -85,9 +83,6 @@ export default function withMaterialPalette(
               [key]: {
                 population: 0,
                 ...acc[key],
-                ...(globalDefaults && globalDefaults[profile]
-                  ? globalDefaults[profile]
-                  : {}),
                 ...(localDefaults && localDefaults[profile]
                   ? localDefaults[profile]
                   : {}),
