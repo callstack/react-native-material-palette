@@ -1,4 +1,3 @@
-/* eslint flowtype/require-parameter-type: 0 */
 /* eslint-disable import/first */
 jest.mock('../index.js', () => ({ createMaterialPalette: jest.fn() }));
 

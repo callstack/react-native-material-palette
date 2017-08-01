@@ -1,4 +1,3 @@
-/* eslint flowtype/require-parameter-type: 0 */
 import React from 'react';
 import { shallow } from 'enzyme';
 import withPalette from '../withPalette';
