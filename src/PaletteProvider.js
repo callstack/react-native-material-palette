@@ -6,7 +6,13 @@ import createEventEmitter from './createEventEmitter';
 import MaterialPalette from './index';
 import { defaultSwatches } from './constants/defaults';
 
-import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
+import type {
+  PaletteInstance,
+  Image,
+  Options,
+  PaletteDefaults,
+  ColorProfile,
+} from './types';
 
 export const KEY = '__react-native-material-palette__';
 
@@ -97,24 +103,26 @@ export default class MaterialPaletteProvider
   _mergeWithDefaults(palette: PaletteInstance) {
     const defaults = {
       ...defaultSwatches,
-      ...Object.keys(
+      ...((Object.keys(
         this.props.defaults || {},
-      ).reduce(
-        // eslint-disable-next-line flowtype/require-parameter-type
-        (acc, profile) => ({
+      ): any): ColorProfile[]).reduce(
+        (acc: *, profile: ColorProfile) => ({
           ...acc,
-          [profile]: { ...(this.props.defaults[profile] || {}), population: 0 },
+          [profile]: {
+            ...((this.props.defaults
+              ? this.props.defaults[profile]
+              : defaultSwatches[profile]) || defaultSwatches[profile]),
+            population: 0,
+          },
         }),
         {},
       ),
     };
     return {
-      ...Object.keys(palette)
-        // eslint-disable-next-line flowtype/require-parameter-type
-        .filter(profile => !!palette[profile]) // Stripping out unavailable profiles
+      ...((Object.keys(palette): any): ColorProfile[])
+        .filter((profile: ColorProfile) => !!palette[profile]) // Stripping out unavailable profiles
         .reduce(
-          // eslint-disable-next-line flowtype/require-parameter-type
-          (acc, profile) => ({
+          (acc: *, profile: ColorProfile) => ({
             ...acc,
             [profile]: palette[profile],
           }),
