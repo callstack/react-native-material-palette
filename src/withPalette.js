@@ -79,8 +79,7 @@ export default function withMaterialPalette(
           ...Object.keys(localDefaults || {}),
         ].reduce(
           (acc: *, key: string) => {
-            // $FlowFixMe
-            const profile = (key: ColorProfile);
+            const profile = ((key: any): ColorProfile);
             return {
               ...acc,
               [key]: {
