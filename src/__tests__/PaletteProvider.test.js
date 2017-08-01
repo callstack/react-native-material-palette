@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import { shallow, render } from 'enzyme';
 import PaletteProvider, { KEY } from '../PaletteProvider';
 import { createMaterialPalette } from '../index';
-import { defaultSwatches } from '../constants/defaults';
+import { defaultSwatches, defaultDarkSwatch } from '../constants/defaults';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class TestComponent extends React.Component {
@@ -36,13 +36,7 @@ describe('PaletteProvider', () => {
         type: 'vibrant',
       });
       expect(palette).toEqual({
-        ...defaultSwatches,
-        vibrant: {
-          color: '#000000',
-          bodyTextColor: '#FFFFFF',
-          titleTextColor: '#FFFFFF',
-          population: 0,
-        },
+        vibrant: defaultDarkSwatch,
       });
       done();
     }

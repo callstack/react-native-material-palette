@@ -111,7 +111,7 @@ export function validateDefaults(defaults: PaletteDefaults) {
     throw new Error('this.props.defaults should be an object');
   } else {
     const validProfilesKeys = ['bodyTextColor', 'color', 'titleTextColor'];
-    Object.keys(defaults).forEach(profile => {
+    (Object.keys((defaults: any)): ColorProfile[]).forEach(profile => {
       if (!validColorProfiles.includes(profile)) {
         throw new Error(
           `${profile} is not a valid color profile for this.props.defaults. Please refer to the API documentation`,

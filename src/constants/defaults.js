@@ -44,7 +44,7 @@ export const defaultProfile = {
   titleTextColor: '#000000',
 };
 
-const defaultDarkSwatch: Swatch = {
+export const defaultDarkSwatch: Swatch = {
   population: 0,
   color: '#000000',
   bodyTextColor: '#FFFFFF',

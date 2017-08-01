@@ -99,8 +99,18 @@ export default class MaterialPaletteProvider
   }
 
   _mergeWithDefaults(palette: PaletteInstance) {
+    const globalDefaultsForTypesProvided = ((Object.keys(
+      palette,
+    ): any): ColorProfile[]).reduce(
+      (acc, profile) => ({
+        ...acc,
+        [profile]: defaultSwatches[profile],
+      }),
+      {},
+    );
+
     const defaults = {
-      ...defaultSwatches,
+      ...globalDefaultsForTypesProvided,
       ...((Object.keys(
         this.props.defaults || {},
       ): any): ColorProfile[]).reduce(
