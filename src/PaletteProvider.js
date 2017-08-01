@@ -142,10 +142,10 @@ export default class MaterialPaletteProvider
         const paletteWithDefaults = this._mergeWithDefaults(palette);
         execIfFunction(this.props.onFinish, paletteWithDefaults);
         if (!this.props.forceRender) {
-          this.setState({ paletteWithDefaults });
+          this.setState({ palette: paletteWithDefaults });
         }
         this.eventEmitter.publish({
-          paletteWithDefaults,
+          palette: paletteWithDefaults,
           globalDefaults: this.props.defaults,
         });
       })
