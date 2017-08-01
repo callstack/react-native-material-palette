@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import createEventEmitter from './createEventEmitter';
 import { createMaterialPalette } from './index';
 import { defaultSwatches } from './constants/defaults';
+import { validateDefaults } from './utils/validate';
 
 import type {
   PaletteInstance,
@@ -132,18 +133,10 @@ export default class MaterialPaletteProvider
     };
   }
 
-  _validateDefaults() {
-    if (this.props.defaults) {
-      if (typeof this.props.defaults !== 'object') {
-        throw new Error('this.props.defaults should be an object');
-      } else {
-        // TODO validate defaults
-      }
-    }
-  }
-
   componentWillMount() {
-    this._validateDefaults();
+    if (this.props.defaults) {
+      validateDefaults(this.props.defaults);
+    }
     execIfFunction(this.props.onInit);
     createMaterialPalette(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
