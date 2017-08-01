@@ -9,14 +9,14 @@ const defaultMuted = '#9E9E9E';
 const defaultLightMuted = '#BDBDBD';
 const defaultDarkMuted = '#616161';
 
-export const validColorProfiles = [
-  'vibrant',
-  'lightVibrant',
-  'darkVibrant',
-  'muted',
-  'lightMuted',
-  'darkMuted',
-];
+export const validColorProfiles = {
+  vibrant: true,
+  lightVibrant: true,
+  darkVibrant: true,
+  muted: true,
+  lightMuted: true,
+  darkMuted: true,
+};
 
 export const defaultRegion: Region = {
   top: 0,
