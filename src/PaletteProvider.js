@@ -127,6 +127,7 @@ export default class MaterialPaletteProvider
       ),
     };
     return {
+      ...defaults,
       ...((Object.keys(palette): any): ColorProfile[])
         .filter((profile: ColorProfile) => !!palette[profile]) // Stripping out unavailable profiles
         .reduce(
@@ -136,7 +137,6 @@ export default class MaterialPaletteProvider
           }),
           {},
         ),
-      ...defaults,
     };
   }
 

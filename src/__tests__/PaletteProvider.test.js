@@ -148,7 +148,7 @@ describe('PaletteProvider', () => {
               firstNotification = false;
               expect(data).toBeNull();
             } else {
-              expect(data.palette.vibrant).toEqual(defaultSwatches.vibrant);
+              expect(data.palette.vibrant).toEqual({});
               done();
             }
           });
@@ -178,5 +178,116 @@ describe('PaletteProvider', () => {
       </PaletteProvider>,
     );
     expect(wrapper.shallow().props().children).toEqual('Loading');
+  });
+
+  describe('Merge with defaults', () => {
+    const PaletteWrapper = ({ types, defaults, onFinish }) => (
+      <PaletteProvider
+        image={0}
+        options={{ type: types }}
+        onFinish={onFinish}
+        defaults={defaults}
+      >
+        <Text>Test</Text>
+      </PaletteProvider>
+    );
+
+    it('should merge palette with globals when props.defaults is not provided, for the types specified', done => {
+      createMaterialPalette.mockImplementation(() =>
+        Promise.resolve({
+          vibrant: {
+            color: 'green',
+            bodyTextColor: 'red',
+            titleTextColor: 'red',
+            population: 20,
+          },
+          muted: null,
+        }));
+
+      function onFinish(palette) {
+        expect(palette).toEqual({
+          vibrant: {
+            color: 'green',
+            bodyTextColor: 'red',
+            titleTextColor: 'red',
+            population: 20,
+          },
+          muted: defaultSwatches.muted,
+        });
+        done();
+      }
+
+      render(
+        <PaletteWrapper
+          types={['vibrant', 'muted']}
+          defaults={undefined}
+          onFinish={onFinish}
+        />,
+      );
+    });
+
+    it('should merge palette with both globals and local defaults, for the types specified', done => {
+      createMaterialPalette.mockImplementation(() =>
+        Promise.resolve({
+          muted: {
+            color: 'green',
+            bodyTextColor: 'red',
+            titleTextColor: 'red',
+            population: 20,
+          },
+          darkMuted: {
+            color: 'yellow',
+            bodyTextColor: 'blue',
+            titleTextColor: 'blue',
+            population: 40,
+          },
+          lightVibrant: null,
+          darkVibrant: null,
+        }));
+
+      function onFinish(palette) {
+        expect(palette).toEqual({
+          muted: {
+            color: 'green',
+            bodyTextColor: 'red',
+            titleTextColor: 'red',
+            population: 20,
+          },
+          darkMuted: {
+            color: 'yellow',
+            bodyTextColor: 'blue',
+            titleTextColor: 'blue',
+            population: 40,
+          },
+          lightVibrant: {
+            color: 'orange',
+            bodyTextColor: 'purple',
+            titleTextColor: 'purple',
+            population: 0,
+          },
+          darkVibrant: defaultSwatches.darkVibrant,
+        });
+        done();
+      }
+
+      render(
+        <PaletteWrapper
+          types={['muted', 'darkMuted', 'lightVibrant', 'darkVibrant']}
+          defaults={{
+            darkMuted: {
+              color: 'orange',
+              bodyTextColor: 'purple',
+              titleTextColor: 'purple',
+            },
+            lightVibrant: {
+              color: 'orange',
+              bodyTextColor: 'purple',
+              titleTextColor: 'purple',
+            },
+          }}
+          onFinish={onFinish}
+        />,
+      );
+    });
   });
 });
