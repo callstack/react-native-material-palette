@@ -45,10 +45,7 @@ type Props = {
   /**
    * Finish handler, called right after the palette is generated
    */
-  onFinish?: (
-    palette: PaletteInstance,
-    globalDefaults: PaletteDefaults,
-  ) => void,
+  onFinish?: (palette: PaletteInstance) => void,
   /**
    * Render the children regardless whether palette is still being created, does not
    * take effect if `LoaderComponent` is specified

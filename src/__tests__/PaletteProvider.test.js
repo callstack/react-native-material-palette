@@ -1,13 +1,14 @@
 /* eslint flowtype/require-parameter-type: 0 */
 /* eslint-disable import/first */
-jest.mock('../index.js', () => ({ create: jest.fn() }));
+jest.mock('../index.js', () => ({ createMaterialPalette: jest.fn() }));
 
 import React from 'react';
 import { Text } from 'react-native';
 import PropTypes from 'prop-types';
 import { shallow, render } from 'enzyme';
 import PaletteProvider, { KEY } from '../PaletteProvider';
-import MaterialPalette from '../index';
+import { createMaterialPalette } from '../index';
+import { defaultSwatches } from '../constants/defaults';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class TestComponent extends React.Component {
@@ -23,19 +24,26 @@ class TestComponent extends React.Component {
 
 describe('PaletteProvider', () => {
   beforeEach(() => {
-    MaterialPalette.create.mockReset();
+    createMaterialPalette.mockReset();
   });
 
   it('should create palette and call `onInit` and `onFinish` handlers', done => {
-    MaterialPalette.create.mockImplementation(() =>
+    createMaterialPalette.mockImplementation(() =>
       Promise.resolve({ vibrant: null }));
 
-    function onFinish(palette, defaults) {
-      expect(MaterialPalette.create).toHaveBeenCalledWith(0, {
+    function onFinish(palette) {
+      expect(createMaterialPalette).toHaveBeenCalledWith(0, {
         type: 'vibrant',
       });
-      expect(palette).toEqual({ vibrant: null });
-      expect(defaults).toEqual({ vibrant: { color: '#000000' } });
+      expect(palette).toEqual({
+        ...defaultSwatches,
+        vibrant: {
+          color: '#000000',
+          bodyTextColor: '#FFFFFF',
+          titleTextColor: '#FFFFFF',
+          population: 0,
+        },
+      });
       done();
     }
 
@@ -44,7 +52,13 @@ describe('PaletteProvider', () => {
         image={0}
         options={{ type: 'vibrant' }}
         onFinish={onFinish}
-        defaults={{ vibrant: { color: '#000000' } }}
+        defaults={{
+          vibrant: {
+            color: '#000000',
+            bodyTextColor: '#FFFFFF',
+            titleTextColor: '#FFFFFF',
+          },
+        }}
       >
         <Text>Test</Text>
       </PaletteProvider>,
@@ -52,7 +66,7 @@ describe('PaletteProvider', () => {
   });
 
   it('should pass `subscribe` function via context', done => {
-    MaterialPalette.create.mockImplementation(() =>
+    createMaterialPalette.mockImplementation(() =>
       Promise.resolve({ vibrant: null }));
 
     function onRender(context) {
@@ -72,7 +86,7 @@ describe('PaletteProvider', () => {
   });
 
   it('should run `onError` handler if palette creation fails', done => {
-    MaterialPalette.create.mockImplementation(() =>
+    createMaterialPalette.mockImplementation(() =>
       Promise.reject(new Error('test')));
 
     function onError(error) {
@@ -98,7 +112,7 @@ describe('PaletteProvider', () => {
         resolve();
       }
 
-      MaterialPalette.create.mockImplementation(() => ({
+      createMaterialPalette.mockImplementation(() => ({
         then() {
           return this;
         },
@@ -119,7 +133,7 @@ describe('PaletteProvider', () => {
     }));
 
   it('should render children if `forceRender` is true when creating palette', done => {
-    MaterialPalette.create.mockImplementation(
+    createMaterialPalette.mockImplementation(
       () =>
         new Promise(resolve => {
           setTimeout(
@@ -131,16 +145,16 @@ describe('PaletteProvider', () => {
         }),
     );
 
-    let firstNatification = true;
+    let firstNotification = true;
     function onRender(context) {
       setTimeout(
         () => {
           context[KEY](data => {
-            if (firstNatification) {
-              firstNatification = false;
+            if (firstNotification) {
+              firstNotification = false;
               expect(data).toBeNull();
             } else {
-              expect(data.palette.vibrant).toEqual({});
+              expect(data.palette.vibrant).toEqual(defaultSwatches.vibrant);
               done();
             }
           });
@@ -159,7 +173,7 @@ describe('PaletteProvider', () => {
   });
 
   it('should render component specified in `waitForPalette` when creating palette', () => {
-    MaterialPalette.create.mockImplementation(() => new Promise(() => {}));
+    createMaterialPalette.mockImplementation(() => new Promise(() => {}));
     const wrapper = shallow(
       <PaletteProvider
         image={0}
