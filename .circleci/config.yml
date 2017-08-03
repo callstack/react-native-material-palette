@@ -24,8 +24,6 @@ jobs:
           - v1-dependencies
 
       - run: yarn
-      - store_artifacts:
-          path: coverage
       - save_cache:
           paths:
             - node_modules
@@ -34,3 +32,5 @@ jobs:
       # run flow and unit tests!
       - run: yarn run flow
       - run: yarn run jest:coverage
+      - store_artifacts:
+          path: coverage
