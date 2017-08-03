@@ -236,7 +236,6 @@ describe('PaletteProvider', () => {
         }));
 
       function onFinish(palette) {
-        console.log(palette);
         expect(palette).toEqual({
           vibrant: defaultSwatches.vibrant,
           darkMuted: defaultSwatches.darkMuted,
