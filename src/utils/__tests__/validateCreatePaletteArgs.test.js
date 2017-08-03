@@ -1,5 +1,4 @@
-/* eslint flowtype/require-parameter-type: 0 */
-import validate, {
+import {
   INVALID_IMAGE_MESSAGE,
   createOptionsErrorMessage,
   validateImage,
@@ -8,16 +7,12 @@ import validate, {
   validateMaximumColorCount,
   validateType,
   validateDefaults,
-} from '../validate';
-import { defaultOptions, defaultProfile } from '../../constants/defaults';
+} from '../validateCreatePaletteArgs';
+import { defaultProfile } from '../../constants/defaults';
 
 const VALID_IMAGE = { uri: 'https://something.image.jpg' };
 
-describe('validation', () => {
-  it('should run all validators if all args are passed', () => {
-    expect(() => validate(VALID_IMAGE, defaultOptions)).not.toThrow();
-  });
-
+describe('validateCreatePaletteArgs', () => {
   it('Should throw if image param is not valid', () => {
     expect(() => validateImage(false)).toThrow(INVALID_IMAGE_MESSAGE);
     expect(() => validateImage({ urii: '' })).toThrow(INVALID_IMAGE_MESSAGE);

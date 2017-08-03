@@ -1,4 +1,4 @@
-// @flow
+/* @flow */
 
 import { validColorProfiles } from '../constants/defaults';
 import type {
@@ -13,20 +13,6 @@ export const INVALID_IMAGE_MESSAGE = 'Invalid image param, you should either req
 
 export const createOptionsErrorMessage = (hint: string): string =>
   `Invalid options param - ${hint}. Please refer to the API documentation`;
-
-export default function validate(image: Image, options: Options) {
-  validateImage(image);
-  validateOptionsKeys(options);
-  if (options.type) {
-    validateType(options.type);
-  }
-  if (options.maximumColorCount) {
-    validateMaximumColorCount(options.maximumColorCount);
-  }
-  if (options.region) {
-    validateRegion(options.region);
-  }
-}
 
 export function validateImage(image: Image) {
   if (typeof image !== 'number' && typeof image !== 'object') {

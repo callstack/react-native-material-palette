@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import createEventEmitter from './createEventEmitter';
 import { createMaterialPalette } from './index';
 import { defaultSwatches } from './constants/defaults';
-import { validateDefaults } from './utils/validate';
+import { validateDefaults } from './utils/validateCreatePaletteArgs';
 
 import type {
   PaletteInstance,

@@ -7,7 +7,7 @@ jest.mock('react-native', () => ({
   },
 }));
 jest.mock('react-native/Libraries/Image/resolveAssetSource', () => jest.fn());
-jest.mock('../utils/validate', () => jest.fn());
+jest.mock('../utils/validateCreatePalette', () => jest.fn());
 
 import { NativeModules } from 'react-native';
 import resolveAssetSource
