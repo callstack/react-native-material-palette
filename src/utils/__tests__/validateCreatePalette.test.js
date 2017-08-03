@@ -1,12 +1,5 @@
 /* eslint-disable import/first */
-jest.mock('../validateCreatePaletteArgs', () => ({
-  __esModule: true,
-  validateImage: jest.fn(),
-  validateOptionsKeys: jest.fn(),
-  validateType: jest.fn(),
-  validateMaximumColorCount: jest.fn(),
-  validateRegion: jest.fn(),
-}));
+jest.mock('../validateCreatePaletteArgs');
 
 import validateCreatePalette from '../validateCreatePalette';
 import { defaultOptions } from '../../constants/defaults';
