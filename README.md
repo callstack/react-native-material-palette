@@ -42,7 +42,7 @@ The API documentation can be found here: [API documntation](./docs/API.md).
 
 ## Usage As API
 
-### `create()`
+### `createMaterialPalette()`
 
 ```js
 // Number is the opaque type returned by require('./image.jpg')
@@ -73,7 +73,7 @@ PaletteInstance = {
   [key: ColorProfile]: ?Swatch,
 };
 
-create: (image: Image, options?: Options) => Promise<PaletteInstance>
+createMaterialPalette: (image: Image, options?: Options) => Promise<PaletteInstance>
 ```
 
 #### Examples
