@@ -1,4 +1,3 @@
-/* eslint flowtype/require-parameter-type: 0 */
 import createEventEmitter from '../createEventEmitter';
 
 describe('createEventEmitter', () => {

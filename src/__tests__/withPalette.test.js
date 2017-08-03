@@ -1,4 +1,3 @@
-/* eslint flowtype/require-parameter-type: 0 */
 import React from 'react';
 import { shallow } from 'enzyme';
 import withPalette from '../withPalette';
@@ -147,66 +146,7 @@ describe('withPalette', () => {
     wrapper.shallow();
   });
 
-  it('should merge palette with global defaults', () => {
-    const defaults = {
-      lightVibrant: {
-        color: '#f1f1f1',
-        bodyTextColor: '#000000',
-        titleTextColor: '#000000',
-      },
-    };
-    let subscriber = jest.fn();
-    function onFirstRender(palette, style) {
-      expect(palette).toEqual({});
-      expect(style).toEqual([undefined, {}]);
-    }
-    function onSecondRender(palette, style) {
-      expect(palette).toEqual({
-        ...paletteMock,
-        lightVibrant: { population: 0, ...defaults.lightVibrant },
-      });
-      expect(style).toEqual([
-        undefined,
-        { color: defaults.lightVibrant.color },
-      ]);
-    }
-
-    const PaletteTest = withPalette(palette => ({
-      color: palette.lightVibrant && palette.lightVibrant.color,
-    }))(getTestComponent());
-    const wrapper = shallow(
-      <PaletteTest
-        onFirstRender={onFirstRender}
-        onSecondRender={onSecondRender}
-      />,
-      {
-        context: createContext(fn => {
-          subscriber = fn;
-        }),
-      },
-    );
-
-    wrapper.shallow();
-    subscriber({
-      palette: paletteMock,
-      globalDefaults: defaults,
-    });
-    wrapper.shallow();
-  });
-
-  it('should merge palette with both global and local defaults and style prop', () => {
-    const globalDefaults = {
-      lightVibrant: {
-        color: '#f1f1f1',
-        bodyTextColor: '#000000',
-        titleTextColor: '#000000',
-      },
-      muted: {
-        color: '#f1f1f1',
-        bodyTextColor: '#000000',
-        titleTextColor: '#000000',
-      },
-    };
+  it('should merge palette with local defaults and style prop', () => {
     const localDefaults = {
       lightVibrant: {
         color: '#a4a4a4',
@@ -225,13 +165,11 @@ describe('withPalette', () => {
       expect(palette).toEqual({
         ...paletteMock,
         lightVibrant: { population: 0, ...localDefaults.lightVibrant },
-        muted: { population: 0, ...globalDefaults.muted },
       });
       expect(style).toEqual([
         { fontSize: '14px' },
         {
           color: localDefaults.lightVibrant.color,
-          backgroundColor: globalDefaults.muted.color,
         },
       ]);
     }
@@ -259,7 +197,6 @@ describe('withPalette', () => {
     wrapper.shallow();
     subscriber({
       palette: paletteMock,
-      globalDefaults,
     });
     wrapper.shallow();
   });

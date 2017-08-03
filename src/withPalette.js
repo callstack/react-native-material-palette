@@ -14,10 +14,10 @@ type State = {
 
 /**
  * Connect component to a material palette notification channel in order to obtain
- * pallete instance when palette is resolved.
+ * palette instance when palette is resolved.
  * Prop `palette` will be passed to wrapped component with either `null` or with palette instance.
  * 
- * If `mapPaletteToStyle` is specified, it will be evaluated when pallete is available and
+ * If `mapPaletteToStyle` is specified, it will be evaluated when palette is available and
  * the results will be passed to a `style` prop to wrapped component.
  */
 export default function withMaterialPalette(
@@ -56,7 +56,6 @@ export default function withMaterialPalette(
 
         this.unsubscribe = subscribe((data: {
           palette: PaletteInstance,
-          globalDefaults: PaletteDefaults,
         }) => {
           if (data) {
             this.setState(data);
@@ -71,24 +70,19 @@ export default function withMaterialPalette(
       }
 
       _mergePaletteWithDefaults(): PaletteInstance {
-        const { palette, globalDefaults } = this.state;
+        const { palette } = this.state;
 
         return [
           ...Object.keys(palette || {}),
-          ...Object.keys(globalDefaults || {}),
           ...Object.keys(localDefaults || {}),
         ].reduce(
           (acc: *, key: string) => {
-            // $FlowFixMe
-            const profile = (key: ColorProfile);
+            const profile = ((key: any): ColorProfile);
             return {
               ...acc,
               [key]: {
                 population: 0,
                 ...acc[key],
-                ...(globalDefaults && globalDefaults[profile]
-                  ? globalDefaults[profile]
-                  : {}),
                 ...(localDefaults && localDefaults[profile]
                   ? localDefaults[profile]
                   : {}),

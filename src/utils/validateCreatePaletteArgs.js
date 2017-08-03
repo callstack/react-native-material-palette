@@ -1,25 +1,18 @@
-// @flow
+/* @flow */
 
-import type { Image, Options, Region, ColorProfile } from '../types';
+import { validColorProfiles } from '../constants/defaults';
+import type {
+  Image,
+  Options,
+  Region,
+  ColorProfile,
+  PaletteDefaults,
+} from '../types';
 
 export const INVALID_IMAGE_MESSAGE = 'Invalid image param, you should either require a local asset, or provide an external URI';
 
 export const createOptionsErrorMessage = (hint: string): string =>
   `Invalid options param - ${hint}. Please refer to the API documentation`;
-
-export default function validate(image: Image, options: Options) {
-  validateImage(image);
-  validateOptionsKeys(options);
-  if (options.type) {
-    validateType(options.type);
-  }
-  if (options.maximumColorCount) {
-    validateMaximumColorCount(options.maximumColorCount);
-  }
-  if (options.region) {
-    validateRegion(options.region);
-  }
-}
 
 export function validateImage(image: Image) {
   if (typeof image !== 'number' && typeof image !== 'object') {
@@ -94,6 +87,38 @@ export function validateType(type: ColorProfile | Array<ColorProfile>) {
             'options.type should be an Array of strings',
           ),
         );
+      }
+    });
+  }
+}
+
+export function validateDefaults(defaults: PaletteDefaults) {
+  if (typeof defaults !== 'object') {
+    throw new Error('this.props.defaults should be an object');
+  } else {
+    const validProfilesKeys = ['bodyTextColor', 'color', 'titleTextColor'];
+    (Object.keys((defaults: any)): ColorProfile[]).forEach(profile => {
+      if (!(profile in validColorProfiles)) {
+        throw new Error(
+          `${profile} is not a valid color profile for this.props.defaults. Please refer to the API documentation`,
+        );
+      } else {
+        const profileKeys = Object.keys(defaults[profile]).sort();
+        const areTypesCorrect = profileKeys.every(
+          key => typeof defaults[profile][key] === 'string',
+        );
+        const areEqual = validProfilesKeys.length === profileKeys.length &&
+          validProfilesKeys.every((v, i) => v === profileKeys[i]);
+        if (!areEqual) {
+          throw new Error(
+            `Each default profile should define 'bodyTextColor', 'color' and 'titleTextColor' parameters. Please refer to the API documentation`,
+          );
+        }
+        if (!areTypesCorrect) {
+          throw new Error(
+            `'bodyTextColor', 'color' and 'titleTextColor' should all be strings`,
+          );
+        }
       }
     });
   }

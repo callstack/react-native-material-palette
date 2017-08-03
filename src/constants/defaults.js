@@ -2,6 +2,22 @@
 
 import type { Region, Options, Swatch } from '../types';
 
+const defaultVibrant = '#757575';
+const defaultLightVibrant = '#E0E0E0';
+const defaultDarkVibrant = '#212121';
+const defaultMuted = '#9E9E9E';
+const defaultLightMuted = '#BDBDBD';
+const defaultDarkMuted = '#616161';
+
+export const validColorProfiles = {
+  vibrant: true,
+  lightVibrant: true,
+  darkVibrant: true,
+  muted: true,
+  lightMuted: true,
+  darkMuted: true,
+};
+
 export const defaultRegion: Region = {
   top: 0,
   right: 0,
@@ -15,9 +31,31 @@ export const defaultOptions: Options = {
   type: 'vibrant',
 };
 
-export const nullSwatch: Swatch = {
+export const defaultLightSwatch: Swatch = {
   population: 0,
   color: '#000000',
   bodyTextColor: '#000000',
   titleTextColor: '#000000',
+};
+
+export const defaultProfile = {
+  color: '#000000',
+  bodyTextColor: '#000000',
+  titleTextColor: '#000000',
+};
+
+export const defaultDarkSwatch: Swatch = {
+  population: 0,
+  color: '#000000',
+  bodyTextColor: '#FFFFFF',
+  titleTextColor: '#FFFFFF',
+};
+
+export const defaultSwatches = {
+  vibrant: { ...defaultDarkSwatch, color: defaultVibrant },
+  lightVibrant: { ...defaultLightSwatch, color: defaultLightVibrant },
+  darkVibrant: { ...defaultLightSwatch, color: defaultDarkVibrant },
+  muted: { ...defaultDarkSwatch, color: defaultMuted },
+  lightMuted: { ...defaultLightSwatch, color: defaultLightMuted },
+  darkMuted: { ...defaultLightSwatch, color: defaultDarkMuted },
 };

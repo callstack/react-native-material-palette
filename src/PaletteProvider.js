@@ -3,9 +3,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import createEventEmitter from './createEventEmitter';
-import MaterialPalette from './index';
+import { createMaterialPalette } from './index';
+import { defaultSwatches } from './constants/defaults';
+import { validateDefaults } from './utils/validateCreatePaletteArgs';
 
-import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
+import type {
+  PaletteInstance,
+  Image,
+  Options,
+  PaletteDefaults,
+  ColorProfile,
+} from './types';
 
 export const KEY = '__react-native-material-palette__';
 
@@ -37,10 +45,7 @@ type Props = {
   /**
    * Finish handler, called right after the palette is generated
    */
-  onFinish?: (
-    palette: PaletteInstance,
-    globalDefaults: PaletteDefaults,
-  ) => void,
+  onFinish?: (palette: PaletteInstance) => void,
   /**
    * Render the children regardless whether palette is still being created, does not
    * take effect if `LoaderComponent` is specified
@@ -93,17 +98,62 @@ export default class MaterialPaletteProvider
     };
   }
 
+  _mergeWithDefaults(palette: PaletteInstance) {
+    const globalDefaultsForTypesProvided = ((Object.keys(
+      palette,
+    ): any): ColorProfile[]).reduce(
+      (acc, profile) => ({
+        ...acc,
+        [profile]: defaultSwatches[profile],
+      }),
+      {},
+    );
+
+    const defaults = {
+      ...globalDefaultsForTypesProvided,
+      ...((Object.keys(
+        this.props.defaults || {},
+      ): any): ColorProfile[]).reduce(
+        (acc: *, profile: ColorProfile) => ({
+          ...acc,
+          [profile]: {
+            ...(this.props.defaults && this.props.defaults[profile]
+              ? this.props.defaults[profile]
+              : defaultSwatches[profile]),
+            population: 0,
+          },
+        }),
+        {},
+      ),
+    };
+    return {
+      ...defaults,
+      ...((Object.keys(palette): any): ColorProfile[])
+        .filter((profile: ColorProfile) => !!palette[profile]) // Stripping out unavailable profiles
+        .reduce(
+          (acc: *, profile: ColorProfile) => ({
+            ...acc,
+            [profile]: palette[profile],
+          }),
+          {},
+        ),
+    };
+  }
+
   componentWillMount() {
+    if (this.props.defaults) {
+      validateDefaults(this.props.defaults);
+    }
     execIfFunction(this.props.onInit);
-    MaterialPalette.create(this.props.image, this.props.options)
+    createMaterialPalette(this.props.image, this.props.options)
       .then((palette: PaletteInstance) => {
-        execIfFunction(this.props.onFinish, palette, this.props.defaults);
+        const paletteWithDefaults = this._mergeWithDefaults(palette);
+        execIfFunction(this.props.onFinish, paletteWithDefaults);
         if (!this.props.forceRender) {
-          this.setState({ palette });
+          this.setState({ palette: paletteWithDefaults });
         }
         this.eventEmitter.publish({
-          palette,
-          globalDefaults: this.props.defaults,
+          palette: paletteWithDefaults,
         });
       })
       .catch((error: Error) => {

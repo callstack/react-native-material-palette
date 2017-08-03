@@ -1,5 +1,7 @@
 /* @flow */
 
+import { validColorProfiles } from './constants/defaults';
+
 // Number is the opaque type returned by require('./image.jpg')
 export type Image = number | { uri: string };
 export type Region = {
@@ -9,14 +11,7 @@ export type Region = {
   right: number,
 };
 
-export type ColorProfile =
-  | 'muted'
-  | 'vibrant'
-  | 'darkMuted'
-  | 'darkVibrant'
-  | 'lightMuted'
-  | 'lightVibrant';
-
+export type ColorProfile = $Keys<typeof validColorProfiles>;
 export type Swatch = {
   population: number, // number of pixels
   color: string, // color for swatch,
@@ -32,12 +27,6 @@ export type DefaultSwatch = {
 
 export type PaletteDefaults = {
   [key: ColorProfile]: DefaultSwatch,
-};
-
-export type SwatchColors = {
-  color?: string,
-  bodyTextColor?: string,
-  titleTextColor?: string,
 };
 
 export type PaletteInstance = {

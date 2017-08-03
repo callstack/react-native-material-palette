@@ -80,16 +80,16 @@ create: (image: Image, options?: Options) => Promise<PaletteInstance>
 
 ##### Creating a palette from a network resource, with 'vibrant' color profile, maximumColorCount = 16 and the whole region of the image (default behaviour) 
 ```js
-import MaterialPalette from "react-native-material-palette";
+import { createMaterialPalette } from "react-native-material-palette";
 
-const palette = await MaterialPalette.create({ uri: 'http://dummySite/images/yummy.jpg' });
+const palette = await createMaterialPalette({ uri: 'http://dummySite/images/yummy.jpg' });
 ```
 
 ##### Creating a palette from an internal image asset, with 'muted' and 'lightVibrant' color profiles, maximumColorCount = 32 and a specific region of the image
 ```js
-import MaterialPalette from "react-native-material-palette";
+import { createMaterialPalette } from "react-native-material-palette";
 
-const palette = await MaterialPalette.create(require('./assets/image.jpg'), {
+const palette = await createMaterialPalette(require('./assets/image.jpg'), {
   region: { top: 0, left: 0, bottom: 50, right: 50},
   maximumColorCount: 32,
   type: ['muted', 'lightVibrant'],
