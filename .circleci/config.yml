@@ -24,7 +24,8 @@ jobs:
           - v1-dependencies
 
       - run: yarn
-
+      - store_artifacts:
+          path: ./coverage
       - save_cache:
           paths:
             - node_modules

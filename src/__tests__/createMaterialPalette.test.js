@@ -33,7 +33,7 @@ describe('createMaterialPalette', () => {
         },
       }));
 
-    createPalette({
+    return createPalette({
       image: 0,
     }).then(palette => {
       expect(palette.vibrant).toBeNull();
