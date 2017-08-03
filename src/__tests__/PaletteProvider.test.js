@@ -1,5 +1,9 @@
 /* eslint-disable import/first */
 jest.mock('../index.js', () => ({ createMaterialPalette: jest.fn() }));
+jest.mock('../utils/validateCreatePaletteArgs', () => ({
+  __esModule: true,
+  validateDefaults: jest.fn(),
+}));
 
 import React from 'react';
 import { Text } from 'react-native';
@@ -220,6 +224,31 @@ describe('PaletteProvider', () => {
         <PaletteWrapper
           types={['vibrant', 'muted']}
           defaults={undefined}
+          onFinish={onFinish}
+        />,
+      );
+    });
+
+    it('should merge palette with globals when props.defaults contains a wrong profile, for the types specified', done => {
+      createMaterialPalette.mockImplementation(() =>
+        Promise.resolve({
+          vibrant: defaultSwatches.vibrant,
+        }));
+
+      function onFinish(palette) {
+        console.log(palette);
+        expect(palette).toEqual({
+          vibrant: defaultSwatches.vibrant,
+          darkMuted: defaultSwatches.darkMuted,
+        });
+        done();
+      }
+      render(
+        <PaletteWrapper
+          types={['vibrant', 'muted']}
+          defaults={{
+            darkMuted: null,
+          }}
           onFinish={onFinish}
         />,
       );

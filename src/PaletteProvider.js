@@ -117,9 +117,9 @@ export default class MaterialPaletteProvider
         (acc: *, profile: ColorProfile) => ({
           ...acc,
           [profile]: {
-            ...((this.props.defaults
+            ...(this.props.defaults && this.props.defaults[profile]
               ? this.props.defaults[profile]
-              : defaultSwatches[profile]) || defaultSwatches[profile]),
+              : defaultSwatches[profile]),
             population: 0,
           },
         }),
