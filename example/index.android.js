@@ -15,22 +15,8 @@ export default class TestPalette extends Component {
     palette: null,
   };
 
-  async componentDidMount() {
-    const palette = await createMaterialPalette(
-      require('./assets/wroclaw.jpg'), // eslint-disable-line global-require
-      {
-        type: ['lightMuted', 'darkVibrant', 'vibrant'],
-      },
-    );
-    this.setState({
-      palette,
-      isLoading: false,
-    });
-  }
-
   render() {
-    const { palette, isLoading } = this.state;
-
+    
   }
 }
 
