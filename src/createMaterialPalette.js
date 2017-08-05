@@ -64,7 +64,7 @@ function mergeWithDefaults(
 export default (async function createMaterialPalette(
   image: Image,
   options?: Options = {},
-  defaults: PaletteDefaults,
+  defaults?: ?PaletteDefaults,
 ): Promise<PaletteInstance> {
   validateCreatePalette(image, options);
   const {
