@@ -4,16 +4,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import createEventEmitter from './createEventEmitter';
 import { createMaterialPalette } from './index';
-import { defaultSwatches } from './constants/defaults';
 import { validateDefaults } from './utils/validateCreatePaletteArgs';
 
-import type {
-  PaletteInstance,
-  Image,
-  Options,
-  PaletteDefaults,
-  ColorProfile,
-} from './types';
+import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
 
 export const KEY = '__react-native-material-palette__';
 
@@ -98,62 +91,23 @@ export default class MaterialPaletteProvider
     };
   }
 
-  _mergeWithDefaults(palette: PaletteInstance) {
-    const globalDefaultsForTypesProvided = ((Object.keys(
-      palette,
-    ): any): ColorProfile[]).reduce(
-      (acc, profile) => ({
-        ...acc,
-        [profile]: defaultSwatches[profile],
-      }),
-      {},
-    );
-
-    const defaults = {
-      ...globalDefaultsForTypesProvided,
-      ...((Object.keys(
-        this.props.defaults || {},
-      ): any): ColorProfile[]).reduce(
-        (acc: *, profile: ColorProfile) => ({
-          ...acc,
-          [profile]: {
-            ...(this.props.defaults && this.props.defaults[profile]
-              ? this.props.defaults[profile]
-              : defaultSwatches[profile]),
-            population: 0,
-          },
-        }),
-        {},
-      ),
-    };
-    return {
-      ...defaults,
-      ...((Object.keys(palette): any): ColorProfile[])
-        .filter((profile: ColorProfile) => !!palette[profile]) // Stripping out unavailable profiles
-        .reduce(
-          (acc: *, profile: ColorProfile) => ({
-            ...acc,
-            [profile]: palette[profile],
-          }),
-          {},
-        ),
-    };
-  }
-
   componentWillMount() {
     if (this.props.defaults) {
       validateDefaults(this.props.defaults);
     }
     execIfFunction(this.props.onInit);
-    createMaterialPalette(this.props.image, this.props.options)
+    createMaterialPalette(
+      this.props.image,
+      this.props.options,
+      this.props.defaults,
+    )
       .then((palette: PaletteInstance) => {
-        const paletteWithDefaults = this._mergeWithDefaults(palette);
-        execIfFunction(this.props.onFinish, paletteWithDefaults);
+        execIfFunction(this.props.onFinish, palette);
         if (!this.props.forceRender) {
-          this.setState({ palette: paletteWithDefaults });
+          this.setState({ palette });
         }
         this.eventEmitter.publish({
-          palette: paletteWithDefaults,
+          palette,
         });
       })
       .catch((error: Error) => {

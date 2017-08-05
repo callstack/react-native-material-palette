@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, Image } from 'react-native';
+import { AppRegistry, StyleSheet, Text, View, Image, FlatList } from 'react-native';
 
 import { createMaterialPalette } from 'react-native-material-palette';
 
@@ -30,33 +30,7 @@ export default class TestPalette extends Component {
 
   render() {
     const { palette, isLoading } = this.state;
-    return (
-      <View style={styles.container}>
-        {isLoading
-          ? <Text>
-              Generating palette asynchronously...
-            </Text>
-          : <View>
-              <Image
-                source={require('./assets/wroclaw.jpg')}
-                style={styles.image}
-              />
-              {Object.keys(palette).map(profile => (
-                <View
-                  style={{
-                    backgroundColor: palette[profile].color,
-                    height: 50,
-                  }}
-                  key={profile}
-                >
-                  <Text style={{ color: palette[profile].bodyTextColor }}>
-                    {profile.toUpperCase()}
-                  </Text>
-                </View>
-              ))}
-            </View>}
-      </View>
-    );
+
   }
 }
 
