@@ -18,7 +18,7 @@ type State = {
   data: Array<Object>,
 };
 
-export default class Example extends Component<void, void, State> {
+export default class PaletteExample extends Component<void, void, State> {
   state = {
     data: [],
   };
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-AppRegistry.registerComponent('TestPalette', () => Example);
+AppRegistry.registerComponent('PaletteExample', () => PaletteExample);
