@@ -11,7 +11,7 @@ import java.util.*
 
 class MaterialPalettePackage : ReactPackage {
     
-    fun createJSModules(): MutableList<Class<out JavaScriptModule>> = Collections.emptyList()
+    override fun createJSModules(): MutableList<Class<out JavaScriptModule>> = Collections.emptyList()
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule>
             = mutableListOf(MaterialPaletteModule(reactContext))
