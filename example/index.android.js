@@ -6,93 +6,65 @@
 import React, { Component } from 'react';
 import {
   AppRegistry,
-  StyleSheet,
-  FlatList,
-  Image,
-  View,
+  TouchableOpacity,
   Text,
+  StyleSheet,
+  View,
 } from 'react-native';
-import { createMaterialPalette } from 'react-native-material-palette';
+import { StackNavigator } from 'react-navigation';
+import ImageGallery from './src/screens/ImageGallery';
+import ScreenDetails from './src/screens/ScreenDetails';
 
-type State = {
-  data: Array<Object>,
-};
-
-export default class PaletteExample extends Component<void, void, State> {
-  state = {
-    data: [],
+class Menu extends Component {
+  static navigationOptions = {
+    title: 'Palette Example',
   };
 
-  async componentDidMount() {
-    const searchTerms = [
-      'nature',
-      'water',
-      'landscape',
-      'music',
-      'flower',
-      'house',
-    ];
-    const randomImageUrls = (await Promise.all(
-      searchTerms.map(term =>
-        fetch(`https://source.unsplash.com/featured/?${term}`)),
-    )).map((blob, index) => ({ url: blob.url, key: searchTerms[index] }));
-
-    const palettes = await Promise.all(
-      randomImageUrls.map(({ url }) =>
-        createMaterialPalette({ uri: url }, { type: 'muted' })),
-    );
-
-    // eslint-disable-next-line
-    this.setState({
-      data: randomImageUrls.map((imageData, index) => ({
-        ...imageData,
-        palette: palettes[index],
-      })),
-    });
-  }
-
   render() {
-    if (!this.state.data.length) return null;
+    const { navigate } = this.props.navigation;
     return (
-      <FlatList
-        contentContainerStyle={styles.list}
-        data={this.state.data}
-        renderItem={({ item }) => (
-          <View style={{ flex: 1, margin: 5 }}>
-            <Image
-              source={{ uri: item.url }}
-              style={{
-                flex: 1,
-                minWidth: 170,
-                maxWidth: 223,
-                height: 150,
-              }}
-            />
-            <View
-              style={{
-                backgroundColor: item.palette.muted.color,
-                height: 50,
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Text style={{ color: item.palette.muted.bodyTextColor }}>
-                {item.key.toUpperCase()}
-              </Text>
-            </View>
-          </View>
-        )}
-      />
+      <View style={{ padding: 15 }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigate('ImageGallery')}
+        >
+          <Text style={styles.text}>
+            Image Gallery
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigate('ScreenDetails')}
+        >
+          <Text style={styles.text}>
+            Screen Details
+          </Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 }
 
+const PaletteExample = StackNavigator({
+  Home: { screen: Menu },
+  ImageGallery: { screen: ImageGallery },
+  ScreenDetails: { screen: ScreenDetails },
+});
+
 const styles = StyleSheet.create({
-  list: {
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: 'blue',
+    marginBottom: 15,
     justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    alignItems: 'center',
+    borderRadius: 2,
+    elevation: 2,
+  },
+  text: {
+    fontSize: 14,
+    color: 'white',
   },
 });
 
