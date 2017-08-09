@@ -39,6 +39,9 @@
 ; Ignore react-native-mock
 .*/node_modules/react-native-mock/*
 
+; Ignore the example app
+<PROJECT_ROOT>/example/*
+
 [include]
 
 [libs]
