@@ -159,7 +159,7 @@ describe('withPalette', () => {
       expect(palette).toEqual({
         lightVibrant: { ...localDefaults.lightVibrant, population: 0 },
       });
-      expect(style).toEqual([{ fontSize: '14px' }, {}]);
+      expect(style).toEqual([[{ fontSize: '14px' }], {}]);
     }
     function onSecondRender(palette, style) {
       expect(palette).toEqual({
@@ -167,7 +167,7 @@ describe('withPalette', () => {
         lightVibrant: { population: 0, ...localDefaults.lightVibrant },
       });
       expect(style).toEqual([
-        { fontSize: '14px' },
+        [{ fontSize: '14px' }],
         {
           color: localDefaults.lightVibrant.color,
         },
@@ -177,7 +177,7 @@ describe('withPalette', () => {
     const PaletteTest = withPalette(
       palette => ({
         color: palette.lightVibrant && palette.lightVibrant.color,
-        backgroundColor: palette.muted && palette.muted.color,
+        // backgroundColor: palette.vibrant && palette.vibrant.color,
       }),
       localDefaults,
     )(getTestComponent());

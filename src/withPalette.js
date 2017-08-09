@@ -104,10 +104,7 @@ export default function withMaterialPalette(
         return (
           <WrappedComponent
             {...rest}
-            style={[
-              ...(Array.isArray(style) ? style : [style]),
-              stylesFromPalette,
-            ]}
+            style={[style, stylesFromPalette]}
             palette={palette}
           />
         );

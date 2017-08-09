@@ -1,6 +1,6 @@
 {
   "name": "react-native-material-palette",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "description": "",
   "license": "MIT",
   "repository": "github:callstack-io/react-native-material-palette",
@@ -10,7 +10,8 @@
   },
   "main": "./lib/index.js",
   "files": [
-    "lib"
+    "lib",
+    "android"
   ],
   "engines": {
     "node": ">=6"
@@ -74,93 +75,11 @@
       "transform-object-rest-spread"
     ]
   },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": [
-      "airbnb",
-      "plugin:flowtype/recommended",
-      "plugin:react/recommended",
-      "prettier",
-      "prettier/flowtype",
-      "prettier/react"
-    ],
-    "plugins": [
-      "flowtype",
-      "react",
-      "prettier"
-    ],
-    "env": {
-      "node": true,
-      "es6": true,
-      "jest": true
-    },
-    "globals": {
-      "ReactClass": true
-    },
-    "parserOptions": {
-      "sourceType": "module"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "trailingComma": "all",
-          "singleQuote": true
-        }
-      ],
-      "no-underscore-dangle": 0,
-      "no-use-before-define": 0,
-      "no-unused-expressions": 0,
-      "new-cap": 0,
-      "no-plusplus": 0,
-      "no-class-assign": 0,
-      "no-duplicate-imports": 0,
-      "import/no-extraneous-dependencies": 0,
-      "react/jsx-filename-extension": [
-        0,
-        {
-          "extensions": [
-            ".js",
-            ".jsx"
-          ]
-        }
-      ],
-      "react/sort-comp": 0,
-      "react/forbid-prop-types": 1,
-      "react/prop-types": 0,
-      "react/require-default-props": 0,
-      "import/no-duplicates": 0,
-      "import/extensions": 0,
-      "import/no-unresolved": 0,
-      "import/no-dynamic-require": 0,
-      "flowtype/boolean-style": [
-        2,
-        "boolean"
-      ],
-      "flowtype/no-weak-types": 1,
-      "flowtype/require-parameter-type": 0,
-      "flowtype/require-return-type": [
-        0,
-        "always",
-        {
-          "annotateUndefined": "never"
-        }
-      ],
-      "flowtype/require-valid-file-annotation": 2,
-      "flowtype/use-flow-type": 1,
-      "flowtype/valid-syntax": 1
-    }
-  },
   "jest": {
     "preset": "react-native",
     "setupFiles": [
       "./testSetup.js"
     ],
     "collectCoverage": true
-  },
-  "rnpm": {
-    "android": {
-      "sourceDir": "./android"
-    }
   }
 }

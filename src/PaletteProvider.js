@@ -103,12 +103,12 @@ export default class MaterialPaletteProvider
     )
       .then((palette: PaletteInstance) => {
         execIfFunction(this.props.onFinish, palette);
-        if (!this.props.forceRender) {
-          this.setState({ palette });
-        }
         this.eventEmitter.publish({
           palette,
         });
+        if (!this.props.forceRender) {
+          this.setState({ palette });
+        }
       })
       .catch((error: Error) => {
         const isCalled = execIfFunction(this.props.onError, error);
