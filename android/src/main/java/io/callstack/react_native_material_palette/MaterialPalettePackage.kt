@@ -10,8 +10,6 @@ import com.facebook.react.uimanager.ViewManager
 import java.util.*
 
 class MaterialPalettePackage : ReactPackage {
-    
-    override fun createJSModules(): MutableList<Class<out JavaScriptModule>> = Collections.emptyList()
 
     override fun createNativeModules(reactContext: ReactApplicationContext): MutableList<NativeModule>
             = mutableListOf(MaterialPaletteModule(reactContext))

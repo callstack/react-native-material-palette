@@ -34,16 +34,11 @@ export default class ImageGallery extends Component<void, void, State> {
     );
 
     const p2 = new Promise(resolve => {
-      setTimeout(
-        () => {
-          resolve('timeout');
-        },
-        4000,
-      );
+      setTimeout(resolve, 4000, 'timeout');
     });
 
     try {
-      const pValue = await Promise.race(p1, p2);
+      const pValue = await Promise.race([p1, p2]);
       if (pValue === 'timeout') {
         // eslint-disable-next-line
         this.setState({
@@ -94,11 +89,26 @@ export default class ImageGallery extends Component<void, void, State> {
         </View>
       );
     }
-    if (!this.state.data.length) return null;
+    if (!this.state.data.length) {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            padding: 24,
+          }}
+        >
+          <Text>
+            Loading...
+          </Text>
+        </View>
+      );
+    }
     return (
       <FlatList
-        contentContainerStyle={styles.list}
         data={this.state.data}
+        numColumns={2}
         renderItem={({ item }) => (
           <View style={{ flex: 1, margin: 5 }}>
             <Image
