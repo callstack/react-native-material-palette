@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { withMaterialPalette } from 'react-native-material-palette';

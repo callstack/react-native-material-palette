@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react';
 import { withMaterialPalette } from 'react-native-material-palette';
 import { Toolbar as ToolbarPaper } from 'react-native-paper';

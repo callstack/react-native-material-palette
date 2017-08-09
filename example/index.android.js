@@ -1,6 +1,5 @@
 /**
  * Sample Material Palette App
- * @flow
  */
 
 import React, { Component } from 'react';

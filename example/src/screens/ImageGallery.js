@@ -1,15 +1,8 @@
-// @flow
-
 import React, { Component } from 'react';
-import { StyleSheet, FlatList, Image, View, Text } from 'react-native';
+import { FlatList, Image, View, Text } from 'react-native';
 import { createMaterialPalette } from 'react-native-material-palette';
 
-type State = {
-  data: Array<Object>,
-  error: boolean,
-};
-
-export default class ImageGallery extends Component<void, void, State> {
+export default class ImageGallery extends Component {
   static navigationOptions = {
     title: 'Image Gallery',
   };
@@ -28,41 +21,27 @@ export default class ImageGallery extends Component<void, void, State> {
       'flower',
       'house',
     ];
-    const p1 = Promise.all(
-      searchTerms.map(term =>
-        fetch(`https://source.unsplash.com/featured/?${term}`)),
-    );
-
-    const p2 = new Promise(resolve => {
-      setTimeout(resolve, 4000, 'timeout');
-    });
-
     try {
-      const pValue = await Promise.race([p1, p2]);
-      if (pValue === 'timeout') {
-        // eslint-disable-next-line
-        this.setState({
-          error: true,
-        });
-      } else {
-        const randomImageUrls = (await pValue).map((response, index) => ({
-          url: response.url,
-          key: searchTerms[index],
-        }));
+      const randomImageUrls = (await Promise.all(
+        searchTerms.map(term =>
+          fetch(`https://source.unsplash.com/featured/?${term}`)),
+      )).map((response, index) => ({
+        url: response.url,
+        key: searchTerms[index],
+      }));
 
-        const palettes = await Promise.all(
-          randomImageUrls.map(({ url }) =>
-            createMaterialPalette({ uri: url }, { type: 'muted' })),
-        );
+      const palettes = await Promise.all(
+        randomImageUrls.map(({ url }) =>
+          createMaterialPalette({ uri: url }, { type: 'muted' })),
+      );
 
-        // eslint-disable-next-line
-        this.setState({
-          data: randomImageUrls.map((imageData, index) => ({
-            ...imageData,
-            palette: palettes[index],
-          })),
-        });
-      }
+      // eslint-disable-next-line
+      this.setState({
+        data: randomImageUrls.map((imageData, index) => ({
+          ...imageData,
+          palette: palettes[index],
+        })),
+      });
     } catch (error) {
       // eslint-disable-next-line
       this.setState({
@@ -139,11 +118,3 @@ export default class ImageGallery extends Component<void, void, State> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  list: {
-    justifyContent: 'center',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-});
