@@ -1,19 +1,28 @@
+/* @flow */
+
 import React from 'react';
 import { FAB } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import { withMaterialPalette } from 'react-native-material-palette';
 
-function Fab({ palette, icon }) {
-  const backgroundColor = palette.muted.color;
-  return <FAB icon={icon} style={[styles.fab, { backgroundColor }]} />;
+function Fab({ palette, icon, style }) {
+  return (
+    <FAB
+      icon={icon}
+      style={[styles.fab, style]}
+      color={palette.darkVibrant.bodyTextColor}
+    />
+  );
 }
 
-export default withMaterialPalette()(Fab);
+export default withMaterialPalette(palette => ({
+  backgroundColor: palette.darkVibrant.color,
+}))(Fab);
 
 const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
-    top: 275,
-    right: 8,
+    bottom: 16,
+    right: 16,
   },
 });

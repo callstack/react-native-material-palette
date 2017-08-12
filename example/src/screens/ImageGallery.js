@@ -1,5 +1,14 @@
+/* @flow */
+
 import React, { Component } from 'react';
-import { FlatList, Image, View, Text } from 'react-native';
+import {
+  FlatList,
+  Image,
+  View,
+  Text,
+  ActivityIndicator,
+  StyleSheet,
+} from 'react-native';
 import { createMaterialPalette } from 'react-native-material-palette';
 
 export default class ImageGallery extends Component {
@@ -9,107 +18,89 @@ export default class ImageGallery extends Component {
 
   state = {
     data: [],
-    error: false,
+    error: null,
   };
 
-  async componentDidMount() {
-    const searchTerms = [
-      'nature',
-      'water',
-      'landscape',
-      'music',
-      'flower',
-      'house',
-    ];
-    try {
-      const randomImageUrls = (await Promise.all(
-        searchTerms.map(term =>
-          fetch(`https://source.unsplash.com/featured/?${term}`)),
-      )).map((response, index) => ({
-        url: response.url,
-        key: searchTerms[index],
-      }));
-
-      const palettes = await Promise.all(
-        randomImageUrls.map(({ url }) =>
-          createMaterialPalette({ uri: url }, { type: 'muted' })),
-      );
-
-      // eslint-disable-next-line
-      this.setState({
-        data: randomImageUrls.map((imageData, index) => ({
-          ...imageData,
-          palette: palettes[index],
-        })),
-      });
-    } catch (error) {
-      // eslint-disable-next-line
-      this.setState({
-        error: true,
-      });
-    }
+  componentDidMount() {
+    this._loadPalettes();
   }
+
+  _loadPalettes = async () => {
+    const words = [
+      'Daleks',
+      'Thals',
+      'Voord',
+      'Sensorites',
+      'Koquillion',
+      'Menoptera',
+      'Zarbi',
+      'Larvae guns',
+      'Xerons',
+      'Aridians',
+      'Mire Beasts',
+      'Drahvins',
+    ];
+    const urls = Array.from({ length: 12 }).map(
+      (_, i) => `https://unsplash.it/300?random&num=${i * 100}`,
+    );
+
+    let palettes;
+
+    try {
+      palettes = await Promise.all(
+        urls.map(url => createMaterialPalette({ uri: url }, { type: 'muted' })),
+      );
+    } catch (error) {
+      this.setState({
+        error,
+      });
+      return;
+    }
+
+    this.setState({
+      data: palettes.map((palette, i) => ({
+        palette,
+        url: urls[i],
+        label: words[i],
+        key: urls[i],
+      })),
+    });
+  };
 
   render() {
     if (this.state.error) {
       return (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 24,
-            backgroundColor: 'red',
-          }}
-        >
+        <View style={[styles.blankslate, styles.error]}>
           <Text style={{ color: 'white' }}>
-            Unsplash API is down, please try later or tweak the example to use a different image src
+            An error occurred: {this.state.error.message}
           </Text>
         </View>
       );
     }
     if (!this.state.data.length) {
       return (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 24,
-          }}
-        >
-          <Text>
-            Loading...
-          </Text>
+        <View style={styles.blankslate}>
+          <ActivityIndicator />
         </View>
       );
     }
     return (
       <FlatList
         data={this.state.data}
-        numColumns={2}
+        numColumns={3}
         renderItem={({ item }) => (
-          <View style={{ flex: 1, margin: 5 }}>
-            <Image
-              source={{ uri: item.url }}
-              style={{
-                flex: 1,
-                minWidth: 170,
-                maxWidth: 223,
-                height: 150,
-              }}
-            />
+          <View style={styles.container}>
+            <Image source={{ uri: item.url }} style={styles.image} />
             <View
-              style={{
-                backgroundColor: item.palette.muted.color,
-                height: 50,
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={[
+                styles.label,
+                {
+                  backgroundColor: item.palette.muted.color,
+                },
+              ]}
             >
               <Text style={{ color: item.palette.muted.bodyTextColor }}>
-                {item.key.toUpperCase()}
+                {item.label}
               </Text>
             </View>
           </View>
@@ -118,3 +109,26 @@ export default class ImageGallery extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  image: {
+    minWidth: 120,
+    maxWidth: 180,
+    height: 120,
+  },
+  blankslate: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  error: {
+    backgroundColor: 'red',
+  },
+  label: {
+    padding: 8,
+  },
+});
