@@ -125,10 +125,10 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
         val uri: Uri
 
         try {
-            uri = Uri.parse(source.getString("uri"));
+            uri = Uri.parse(source.getString("uri"))
         } catch(error: IOException) {
             promise.reject(ERR_INVALID_URI, "The URI provided is not valid")
-            return;
+            return
         }
 
         if (uri.scheme == "http" || uri.scheme == "https") {
@@ -140,23 +140,23 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
                     .setLowestPermittedRequestLevel(RequestLevel.FULL_FETCH)
                     .build()
 
-            val imagePipeline = Fresco.getImagePipeline();
-            val dataSource = imagePipeline.fetchEncodedImage(imageRequest, reactApplicationContext);
+            val imagePipeline = Fresco.getImagePipeline()
+            val dataSource = imagePipeline.fetchEncodedImage(imageRequest, reactApplicationContext)
 
             val dataSubscriber = object: BaseDataSubscriber<CloseableReference<PooledByteBuffer>>() {
                 override fun onNewResultImpl(dataSource: DataSource<CloseableReference<PooledByteBuffer>>) {
-                    if (!dataSource.isFinished()) {
-                        return;
+                    if (!dataSource.isFinished) {
+                        return
                     }
 
-                    val result = dataSource.getResult()
+                    val result = dataSource.result
 
                     if (result == null) {
-                        promise.reject(ERR_DOWNLOAD, "Failed to download image");
-                        return;
+                        promise.reject(ERR_DOWNLOAD, "Failed to download image")
+                        return
                     }
 
-                    val inputStream = PooledByteBufferInputStream(result.get());
+                    val inputStream = PooledByteBufferInputStream(result.get())
 
                     try {
                         val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -165,28 +165,28 @@ class MaterialPaletteModule(reactContext: ReactApplicationContext) : ReactContex
                             promise.resolve(result)
                         })
                     } catch (e: Exception) {
-                        promise.reject(e);
+                        promise.reject(e)
                     } finally {
-                        Closeables.closeQuietly(inputStream);
+                        Closeables.closeQuietly(inputStream)
                     }
                 }
 
                 override fun onFailureImpl(dataSource: DataSource<CloseableReference<PooledByteBuffer>>) {
-                    promise.reject(dataSource.failureCause);
+                    promise.reject(dataSource.failureCause)
                 }
             }
 
-            dataSource.subscribe(dataSubscriber, CallerThreadExecutor.getInstance());
+            dataSource.subscribe(dataSubscriber, CallerThreadExecutor.getInstance())
         } else {
             try {
-                val bitmap = MediaStore.Images.Media.getBitmap(reactApplicationContext.contentResolver, uri);
+                val bitmap = MediaStore.Images.Media.getBitmap(reactApplicationContext.contentResolver, uri)
 
                 getPalettesFromImage(bitmap, options, {
                     result ->
                     promise.resolve(result)
-                });
+                })
             } catch (e: Exception) {
-                promise.reject(e);
+                promise.reject(e)
             }
         }
     }
