@@ -43,7 +43,7 @@ describe('withPalette', () => {
       <PaletteTest onFirstRender={() => {}} onSecondRender={() => {}} />,
       {
         context: createContext(() => unsubscribe),
-      },
+      }
     );
 
     wrapper.shallow();
@@ -58,7 +58,7 @@ describe('withPalette', () => {
       <PaletteTest onFirstRender={() => {}} onSecondRender={() => {}} />,
       {
         context: createContext(() => unsubscribe),
-      },
+      }
     );
     expect(() => {
       wrapper.shallow();
@@ -87,7 +87,7 @@ describe('withPalette', () => {
         context: createContext(fn => {
           subscriber = fn;
         }),
-      },
+      }
     );
 
     wrapper.shallow();
@@ -105,7 +105,7 @@ describe('withPalette', () => {
         context: createContext(fn => {
           subscriber = fn;
         }),
-      },
+      }
     );
 
     wrapper.shallow();
@@ -139,7 +139,7 @@ describe('withPalette', () => {
         context: createContext(fn => {
           subscriber = fn;
         }),
-      },
+      }
     );
 
     wrapper.shallow();
@@ -178,7 +178,7 @@ describe('withPalette', () => {
         color: palette.lightVibrant && palette.lightVibrant.color,
         backgroundColor: palette.muted && palette.muted.color,
       }),
-      localDefaults,
+      localDefaults
     )(getTestComponent());
     const wrapper = shallow(
       <PaletteTest
@@ -190,7 +190,7 @@ describe('withPalette', () => {
         context: createContext(fn => {
           subscriber = fn;
         }),
-      },
+      }
     );
 
     wrapper.shallow();
@@ -204,7 +204,7 @@ describe('withPalette', () => {
     const PaletteTest = withPalette()(getTestComponent());
     expect(() => {
       shallow(
-        <PaletteTest onFirstRender={() => {}} onSecondRender={() => {}} />,
+        <PaletteTest onFirstRender={() => {}} onSecondRender={() => {}} />
       );
     }).toThrowError();
   });

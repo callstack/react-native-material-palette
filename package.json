@@ -8,25 +8,19 @@
     "name": "Raul Gomez Acuna",
     "email": "rauliyohmc@gmail.com"
   },
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
   "files": [
-    "lib",
+    "dist",
     "android"
   ],
-  "engines": {
-    "node": ">=6"
-  },
   "scripts": {
     "flow": "flow",
-    "lint": "eslint src",
-    "clean": "rimraf lib",
-    "prepublish": "yarn run clean && babel src --out-dir lib --ignore '__tests__/'",
-    "build:watch": "yarn run clean && babel src --out-dir lib --watch --ignore '__tests__/'",
-    "jest": "jest src",
-    "jest:coverage": "npm run jest && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
-    "format": "eslint --fix src",
-    "prettier": "prettier --single-quote --trailing-comma all --write \"src/**/*.js\"",
+    "lint": "eslint .",
+    "clean": "del dist",
+    "prepublish": "yarn run clean && babel src --out-dir dist --ignore '__tests__/'",
+    "build:watch": "yarn run clean && babel src --out-dir dist --watch --ignore '__tests__/'",
+    "test": "jest",
+    "test:coverage": "yarn test && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "precommit": "yarn run lint"
   },
   "dependencies": {
@@ -38,23 +32,21 @@
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",
     "babel-eslint": "^7.2.1",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-preset-react-native-stage-0": "^1.0.1",
+    "babel-preset-react-native": "^2.1.0",
     "concurrently": "^3.4.0",
     "coveralls": "^2.13.1",
-    "enzyme": "^2.9.1",
+    "del-cli": "^1.1.0",
+    "enzyme": "~3.0.0-alpha.1",
     "eslint": "^4.4.1",
     "eslint-config-callstack-io": "^0.4.1",
-    "flow-bin": "^0.40.0",
+    "flow-bin": "~0.49.0",
     "husky": "^0.14.3",
     "jest": "^19.0.2",
-    "npm-release": "^1.0.0",
-    "prettier": "^1.5.3",
-    "react": "16.0.0-alpha.6",
-    "react-native": "0.43.4",
-    "react-native-mock": "^0.3.1",
-    "rimraf": "^2.6.1"
+    "prettier": "^0.22.0",
+    "react": "16.0.0-alpha.12",
+    "react-dom": "16.0.0-alpha.12",
+    "react-native": "~0.47.0",
+    "react-test-renderer": "16.0.0-alpha.12"
   },
   "peerDependencies": {
     "react": "*",
@@ -65,16 +57,15 @@
       [
         "react-native"
       ]
-    ],
-    "plugins": [
-      "transform-flow-strip-types",
-      "transform-object-rest-spread"
     ]
   },
   "jest": {
     "preset": "react-native",
     "setupFiles": [
-      "./testSetup.js"
+      "<rootDir>/__setup__/enzyme.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/example/node_modules"
     ],
     "collectCoverage": true
   }

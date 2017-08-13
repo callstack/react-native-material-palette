@@ -1,1 +1,6 @@
-**/flow-typed/**
+node_modules/
+flow-typed/
+coverage/
+dist/
+android/
+ios/

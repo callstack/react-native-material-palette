@@ -23,9 +23,9 @@ android/app/libs
 
 .vscode
 .github
-lib/
+dist/
 
 # EXAMPLE
-example/.happypack
+.happypack
 
 coverage/

@@ -23,58 +23,57 @@ describe('validateCreatePaletteArgs', () => {
 
   it('Should throw if options param is not valid', () => {
     expect(() => validateOptionsKeys('hello')).toThrow(
-      createOptionsErrorMessage('options should be an object'),
+      createOptionsErrorMessage('options should be an object')
     );
     expect(() => validateOptionsKeys({ foo: 'something' })).toThrow(
-      createOptionsErrorMessage(`foo is not a valid key`),
+      createOptionsErrorMessage(`foo is not a valid key`)
     );
     expect(() =>
       validateOptionsKeys({
         region: 'region',
         type: 'vibrant',
         bar: 'bar',
-      }),
-    ).toThrow(createOptionsErrorMessage(`bar is not a valid key`));
+      })).toThrow(createOptionsErrorMessage(`bar is not a valid key`));
     expect(() => validateOptionsKeys({})).not.toThrow();
     expect(() =>
       validateOptionsKeys({
         region: 'region',
         type: 'type',
         maximumColorCount: 4,
-      }),
-    ).not.toThrow();
+      })).not.toThrow();
   });
 
   it('Should throw if region param is not valid', () => {
     expect(() => validateRegion('region')).toThrow(
-      createOptionsErrorMessage('options.region should be an object'),
+      createOptionsErrorMessage('options.region should be an object')
     );
     expect(() =>
-      validateRegion({ foo: 1, bottom: 4, left: 4, right: 8 }),
-    ).toThrow(createOptionsErrorMessage('region.foo is not a valid param'));
+      validateRegion({ foo: 1, bottom: 4, left: 4, right: 8 })).toThrow(
+      createOptionsErrorMessage('region.foo is not a valid param')
+    );
     expect(() =>
-      validateRegion({ top: 1, bottom: '4', left: 4, right: 8 }),
-    ).toThrow(createOptionsErrorMessage('region.bottom should be a number'));
+      validateRegion({ top: 1, bottom: '4', left: 4, right: 8 })).toThrow(
+      createOptionsErrorMessage('region.bottom should be a number')
+    );
     expect(() =>
-      validateRegion({ top: 1, bottom: 45, left: 8, right: 1 }),
-    ).not.toThrow();
+      validateRegion({ top: 1, bottom: 45, left: 8, right: 1 })).not.toThrow();
   });
 
   it('Should throw if maximumColorCount is not valid', () => {
     expect(() => validateMaximumColorCount('hola')).toThrow(
       createOptionsErrorMessage(
-        'options.maximumColorCount should be positive integer',
-      ),
+        'options.maximumColorCount should be positive integer'
+      )
     );
     expect(() => validateMaximumColorCount(-1)).toThrow(
       createOptionsErrorMessage(
-        'options.maximumColorCount should be positive integer',
-      ),
+        'options.maximumColorCount should be positive integer'
+      )
     );
     expect(() => validateMaximumColorCount(22.3)).toThrow(
       createOptionsErrorMessage(
-        'options.maximumColorCount should be positive integer',
-      ),
+        'options.maximumColorCount should be positive integer'
+      )
     );
     expect(() => validateMaximumColorCount(4)).not.toThrow();
   });
@@ -82,11 +81,11 @@ describe('validateCreatePaletteArgs', () => {
   it('should throw if type is not valid', () => {
     expect(() => validateType(12)).toThrow(
       createOptionsErrorMessage(
-        'options.type should be either a string or an Array of strings',
-      ),
+        'options.type should be either a string or an Array of strings'
+      )
     );
     expect(() => validateType(['muted', 12])).toThrow(
-      createOptionsErrorMessage('options.type should be an Array of strings'),
+      createOptionsErrorMessage('options.type should be an Array of strings')
     );
     expect(() => validateType('vibrant')).not.toThrow();
     expect(() => validateType(['vibrant', 'lightVibrant'])).not.toThrow();
@@ -128,16 +127,16 @@ describe('validateCreatePaletteArgs', () => {
     };
 
     expect(() => validateDefaults(invalidDefaults1)).toThrow(
-      'this.props.defaults should be an object',
+      'this.props.defaults should be an object'
     );
     expect(() => validateDefaults(invalidDefaults2)).toThrow(
-      'foo is not a valid color profile for this.props.defaults. Please refer to the API documentation',
+      'foo is not a valid color profile for this.props.defaults. Please refer to the API documentation'
     );
     expect(() => validateDefaults(invalidDefaults3)).toThrow(
-      `Each default profile should define 'bodyTextColor', 'color' and 'titleTextColor' parameters. Please refer to the API documentation`,
+      `Each default profile should define 'bodyTextColor', 'color' and 'titleTextColor' parameters. Please refer to the API documentation`
     );
     expect(() => validateDefaults(invalidDefaults4)).toThrow(
-      `'bodyTextColor', 'color' and 'titleTextColor' should all be strings`,
+      `'bodyTextColor', 'color' and 'titleTextColor' should all be strings`
     );
     expect(() => validateDefaults(validDefaults)).not.toThrow();
   });
