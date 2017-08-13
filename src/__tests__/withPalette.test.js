@@ -1,5 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
+import { StyleSheet } from 'react-native';
 import withPalette from '../withPalette';
 import { KEY } from '../PaletteProvider';
 
@@ -159,19 +160,17 @@ describe('withPalette', () => {
       expect(palette).toEqual({
         lightVibrant: { ...localDefaults.lightVibrant, population: 0 },
       });
-      expect(style).toEqual([{ fontSize: '14px' }, {}]);
+      expect(StyleSheet.flatten(style)).toEqual({ fontSize: '14px' });
     }
     function onSecondRender(palette, style) {
       expect(palette).toEqual({
         ...paletteMock,
         lightVibrant: { population: 0, ...localDefaults.lightVibrant },
       });
-      expect(style).toEqual([
-        { fontSize: '14px' },
-        {
-          color: localDefaults.lightVibrant.color,
-        },
-      ]);
+      expect(StyleSheet.flatten(style)).toEqual({
+        fontSize: '14px',
+        color: localDefaults.lightVibrant.color,
+      });
     }
 
     const PaletteTest = withPalette(
