@@ -32,10 +32,6 @@ type Props = {
    */
   onError?: (error: Error) => void,
   /**
-   * Initialization handler, called right before generation the palette
-   */
-  onInit?: () => void,
-  /**
    * Finish handler, called right after the palette is generated
    */
   onFinish?: (palette: PaletteInstance) => void,
@@ -47,22 +43,12 @@ type Props = {
   /**
    * Render LoaderComponent when the palette is being created
    */
-  LoaderComponent?:
-    | React$Component<*, *, *>
-    | ((...args: *) => React$Element<*>),
+  LoaderComponent?: ReactClass<*> | ((...args: Array<*>) => React.Element<*>),
 };
 
 type State = {
   palette: ?PaletteInstance,
 };
-
-function execIfFunction(possibleFunction: mixed, ...args: *): boolean {
-  if (typeof possibleFunction === 'function') {
-    possibleFunction(...args);
-    return true;
-  }
-  return false;
-}
 
 /**
  * Provides broadcast for material palette instance via context.
@@ -74,16 +60,12 @@ export default class MaterialPaletteProvider extends Component<
   Props,
   State,
 > {
-  state: State;
-
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      palette: null,
-    };
-  }
   static childContextTypes = {
     [KEY]: PropTypes.func.isRequired,
+  };
+
+  state: State = {
+    palette: null,
   };
 
   eventEmitter = createEventEmitter(null);
@@ -98,38 +80,45 @@ export default class MaterialPaletteProvider extends Component<
     if (this.props.defaults) {
       validateDefaults(this.props.defaults);
     }
-    execIfFunction(this.props.onInit);
-    createMaterialPalette(
-      this.props.image,
-      this.props.options,
-      this.props.defaults,
-    )
-      .then((palette: PaletteInstance) => {
-        execIfFunction(this.props.onFinish, palette);
+
+    this._createPalette();
+  }
+
+  _createPalette = () => {
+    const { image, options, defaults, onFinish, onError } = this.props;
+
+    createMaterialPalette(image, options, defaults).then(
+      palette => {
+        if (onFinish) onFinish(palette);
+
         this.eventEmitter.publish({
           palette,
         });
-        if (!this.props.forceRender) {
-          this.setState({ palette });
+        this.setState({ palette });
+      },
+      error => {
+        if (onError) {
+          onError(error);
+        } else {
+          error.message = `Uncaught MaterialPaletteProvider exception: ${error.message}`; // eslint-disable-line no-param-reassign
+          throw error;
         }
-      })
-      .catch((error: Error) => {
-        const isCalled = execIfFunction(this.props.onError, error);
-        if (!isCalled) {
-          const enhancedError = error;
-          enhancedError.message = `Uncaught MaterialPaletteProvider exception: ${enhancedError.message}`;
-          throw enhancedError;
-        }
-      });
-  }
+      },
+    );
+  };
 
   render() {
-    if (!this.state.palette && this.props.LoaderComponent) {
-      return <this.props.LoaderComponent />;
-    } else if (!this.state.palette && !this.props.forceRender) {
-      return null;
+    const { forceRender, LoaderComponent, children } = this.props;
+    const shouldRender = this.state.palette || forceRender;
+
+    if (LoaderComponent && !this.state.palette) {
+      return <LoaderComponent />;
     }
 
-    return React.Children.only(this.props.children);
+    if (shouldRender) {
+      return React.Children.only(children);
+    }
+
+    return null;
   }
 }

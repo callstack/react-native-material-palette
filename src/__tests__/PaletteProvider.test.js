@@ -30,7 +30,7 @@ describe('PaletteProvider', () => {
     createMaterialPalette.mockReset();
   });
 
-  it('should create palette and call `onInit` and `onFinish` handlers', done => {
+  it('should create palette and call `onFinish` handler when done', done => {
     createMaterialPalette.mockImplementation(() =>
       Promise.resolve({ vibrant: defaultSwatches.vibrant }),
     );
@@ -115,32 +115,25 @@ describe('PaletteProvider', () => {
     );
   });
 
-  it('should throw error if `onError` was not passed and palette creation fails', () =>
-    new Promise(resolve => {
-      function checkErrorAndFinish(error) {
-        expect(error.message).toMatch(/MaterialPaletteProvider.*test/);
-        resolve();
-      }
-
-      createMaterialPalette.mockImplementation(() => ({
-        then() {
-          return this;
-        },
-        catch(errorHandler) {
-          try {
-            errorHandler(new Error('test'));
-          } catch (error) {
-            checkErrorAndFinish(error);
-          }
-        },
-      }));
-
-      render(
-        <PaletteProvider image={0} options={{ type: 'vibrant' }}>
-          <Text>Test</Text>
-        </PaletteProvider>,
-      );
+  it('should throw error if `onError` was not passed and palette creation fails', () => {
+    createMaterialPalette.mockImplementation(() => ({
+      then(success, failure) {
+        try {
+          failure(new Error('test'));
+        } catch (error) {
+          expect(error.message).toBe(
+            'Uncaught MaterialPaletteProvider exception: test',
+          );
+        }
+      },
     }));
+
+    render(
+      <PaletteProvider image={0} options={{ type: 'vibrant' }}>
+        <Text>Test</Text>
+      </PaletteProvider>,
+    );
+  });
 
   it('should render children if `forceRender` is true when creating palette', done => {
     createMaterialPalette.mockImplementation(

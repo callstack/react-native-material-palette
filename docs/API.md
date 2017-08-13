@@ -73,8 +73,6 @@ The concept is very similar to `Provider` component from `react-redux`.
 
 * `onError?: (error: Error) => void` (optional) - Error handler, called if the palette failed to create.
 
-* `onInit?: () => void` - (optional) - Init handler, called when the `MaterialPaletteProvider` is just about to start creating the palette.
-
 * `onFinish?: (palette: PaletteInstance) => void` - (optional) - Finish handler, called when the palette is created, but before it gets propagated to _connected_ components - use it, if you want to mutate the palette instance. If some profiles are not available for the provided image, the defaults will apply, taking precedence the ones you passed to the component as `this.props.defaults`.
 
 * `children: React$Element<*>`, - (__required__) - Children elements - the rest of your app's component tree.
