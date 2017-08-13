@@ -10,8 +10,7 @@ jest.mock('react-native/Libraries/Image/resolveAssetSource', () => jest.fn());
 jest.mock('../utils/validateCreatePalette', () => jest.fn());
 
 import { NativeModules } from 'react-native';
-import resolveAssetSource
-  from 'react-native/Libraries/Image/resolveAssetSource';
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 import createPalette from '../createMaterialPalette';
 import validateCreatePalette from '../utils/validateCreatePalette';
 import {
@@ -30,7 +29,8 @@ describe('createMaterialPalette', () => {
     NativeModules.MaterialPalette.createMaterialPalette.mockImplementation(() =>
       Promise.resolve({
         vibrant: defaultLightSwatch,
-      }));
+      }),
+    );
     resolveAssetSource.mockImplementation(() => `file://asset.jpg`);
 
     return createPalette(0).then(() => {
@@ -54,7 +54,8 @@ describe('createMaterialPalette', () => {
           bodyTextColor: 'red',
           titleTextColor: 'red',
         },
-      }));
+      }),
+    );
     resolveAssetSource.mockImplementation(() => `file://asset.jpg`);
 
     return createPalette(0, {

@@ -1,8 +1,7 @@
 /* @flow */
 
 import { NativeModules } from 'react-native';
-import resolveAssetSource
-  from 'react-native/Libraries/Image/resolveAssetSource';
+import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
 import isEqual from 'lodash/isEqual';
 import {
   defaultOptions,
@@ -67,11 +66,7 @@ export default (async function createMaterialPalette(
   defaults?: PaletteDefaults,
 ): Promise<PaletteInstance> {
   validateCreatePalette(image, options);
-  const {
-    region,
-    maximumColorCount,
-    type,
-  } = { ...defaultOptions, ...options };
+  const { region, maximumColorCount, type } = { ...defaultOptions, ...options };
 
   const source = resolveAssetSource(image);
 

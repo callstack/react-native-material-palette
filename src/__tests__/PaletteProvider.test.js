@@ -32,7 +32,8 @@ describe('PaletteProvider', () => {
 
   it('should create palette and call `onInit` and `onFinish` handlers', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.resolve({ vibrant: defaultSwatches.vibrant }));
+      Promise.resolve({ vibrant: defaultSwatches.vibrant }),
+    );
 
     function onFinish(palette) {
       expect(createMaterialPalette).toHaveBeenCalledWith(
@@ -74,7 +75,8 @@ describe('PaletteProvider', () => {
 
   it('should pass `subscribe` function via context', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.resolve({ vibrant: null }));
+      Promise.resolve({ vibrant: null }),
+    );
 
     function onRender(context) {
       expect(typeof context[KEY]).toEqual('function');
@@ -94,7 +96,8 @@ describe('PaletteProvider', () => {
 
   it('should run `onError` handler if palette creation fails', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.reject(new Error('test')));
+      Promise.reject(new Error('test')),
+    );
 
     function onError(error) {
       expect(error.message).toEqual('test');
@@ -143,31 +146,25 @@ describe('PaletteProvider', () => {
     createMaterialPalette.mockImplementation(
       () =>
         new Promise(resolve => {
-          setTimeout(
-            () => {
-              resolve({ vibrant: {} });
-            },
-            50,
-          );
+          setTimeout(() => {
+            resolve({ vibrant: {} });
+          }, 50);
         }),
     );
 
     let firstNotification = true;
     function onRender(context) {
-      setTimeout(
-        () => {
-          context[KEY](data => {
-            if (firstNotification) {
-              firstNotification = false;
-              expect(data).toBeNull();
-            } else {
-              expect(data.palette.vibrant).toEqual({});
-              done();
-            }
-          });
-        },
-        10,
-      );
+      setTimeout(() => {
+        context[KEY](data => {
+          if (firstNotification) {
+            firstNotification = false;
+            expect(data).toBeNull();
+          } else {
+            expect(data.palette.vibrant).toEqual({});
+            done();
+          }
+        });
+      }, 10);
     }
 
     const wrapper = render(

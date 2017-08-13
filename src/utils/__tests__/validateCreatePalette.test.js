@@ -24,7 +24,8 @@ describe('validateCreatePalette', () => {
 
   it('should run all validators if all args are passed', () => {
     expect(() =>
-      validateCreatePalette(VALID_IMAGE, defaultOptions)).not.toThrow();
+      validateCreatePalette(VALID_IMAGE, defaultOptions),
+    ).not.toThrow();
 
     validateCreatePalette(VALID_IMAGE, defaultOptions);
 

@@ -9,7 +9,8 @@ import type {
   PaletteDefaults,
 } from '../types';
 
-export const INVALID_IMAGE_MESSAGE = 'Invalid image param, you should either require a local asset, or provide an external URI';
+export const INVALID_IMAGE_MESSAGE =
+  'Invalid image param, you should either require a local asset, or provide an external URI';
 
 export const createOptionsErrorMessage = (hint: string): string =>
   `Invalid options param - ${hint}. Please refer to the API documentation`;
@@ -49,7 +50,9 @@ export function validateRegion(region: Region) {
       if (!validKeys.includes(reg) || !isNumber) {
         throw new Error(
           createOptionsErrorMessage(
-            `region.${reg} ${!isNumber ? 'should be a number' : 'is not a valid param'}`,
+            `region.${reg} ${!isNumber
+              ? 'should be a number'
+              : 'is not a valid param'}`,
           ),
         );
       }
@@ -107,7 +110,8 @@ export function validateDefaults(defaults: PaletteDefaults) {
         const areTypesCorrect = profileKeys.every(
           key => typeof defaults[profile][key] === 'string',
         );
-        const areEqual = validProfilesKeys.length === profileKeys.length &&
+        const areEqual =
+          validProfilesKeys.length === profileKeys.length &&
           validProfilesKeys.every((v, i) => v === profileKeys[i]);
         if (!areEqual) {
           throw new Error(

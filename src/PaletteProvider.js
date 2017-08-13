@@ -69,8 +69,11 @@ function execIfFunction(possibleFunction: mixed, ...args: *): boolean {
  * Passes `subscribe` method via context, which `withPalette` can call
  * and subscribe in order to receive the palette instance.
  */
-export default class MaterialPaletteProvider
-  extends Component<void, Props, State> {
+export default class MaterialPaletteProvider extends Component<
+  void,
+  Props,
+  State,
+> {
   state: State;
 
   constructor(props: Props) {
