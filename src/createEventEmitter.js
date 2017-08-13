@@ -18,7 +18,7 @@ export default function createEventEmitter(initialValue: *) {
 
       return () => {
         subscribers = subscribers.filter(
-          (subscriber: Subscriber) => subscriber !== newSubscriber,
+          (subscriber: Subscriber) => subscriber !== newSubscriber
         );
       };
     },

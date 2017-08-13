@@ -1,4 +1,5 @@
 /* @flow */
+/* eslint-disable global-require, react/no-unescaped-entities */
 
 import React from 'react';
 import { StyleSheet, Image, View, Text } from 'react-native';

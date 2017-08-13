@@ -10,7 +10,8 @@ jest.mock('react-native/Libraries/Image/resolveAssetSource', () => jest.fn());
 jest.mock('../utils/validateCreatePalette', () => jest.fn());
 
 import { NativeModules } from 'react-native';
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+import resolveAssetSource
+  from 'react-native/Libraries/Image/resolveAssetSource';
 import createPalette from '../createMaterialPalette';
 import validateCreatePalette from '../utils/validateCreatePalette';
 import {
@@ -29,13 +30,12 @@ describe('createMaterialPalette', () => {
     NativeModules.MaterialPalette.createMaterialPalette.mockImplementation(() =>
       Promise.resolve({
         vibrant: defaultLightSwatch,
-      }),
-    );
+      }));
     resolveAssetSource.mockImplementation(() => `file://asset.jpg`);
 
     return createPalette(0).then(() => {
       expect(
-        NativeModules.MaterialPalette.createMaterialPalette,
+        NativeModules.MaterialPalette.createMaterialPalette
       ).toHaveBeenCalledWith(`file://asset.jpg`, {
         type: ['vibrant'],
         region: defaultOptions.region,
@@ -54,8 +54,7 @@ describe('createMaterialPalette', () => {
           bodyTextColor: 'red',
           titleTextColor: 'red',
         },
-      }),
-    );
+      }));
     resolveAssetSource.mockImplementation(() => `file://asset.jpg`);
 
     return createPalette(0, {
@@ -66,7 +65,7 @@ describe('createMaterialPalette', () => {
       });
       expect(resolveAssetSource).toHaveBeenCalledWith(0);
       expect(
-        NativeModules.MaterialPalette.createMaterialPalette,
+        NativeModules.MaterialPalette.createMaterialPalette
       ).toHaveBeenCalledWith(`file://asset.jpg`, {
         type: ['lightVibrant', 'darkMuted'],
         region: defaultOptions.region,
@@ -94,11 +93,11 @@ describe('createMaterialPalette', () => {
               population: 20,
             },
             muted: null,
-          }),
+          })
       );
 
       expect(
-        await createPalette(0, { types: ['vibrant', 'muted'] }, undefined),
+        await createPalette(0, { types: ['vibrant', 'muted'] }, undefined)
       ).toEqual({
         vibrant: {
           color: 'green',
@@ -115,15 +114,15 @@ describe('createMaterialPalette', () => {
         () =>
           Promise.resolve({
             vibrant: defaultSwatches.vibrant,
-          }),
+          })
       );
 
       expect(
         await createPalette(
           0,
           { type: ['vibrant', 'muted'] },
-          { darkMuted: null },
-        ),
+          { darkMuted: null }
+        )
       ).toEqual({
         vibrant: defaultSwatches.vibrant,
         darkMuted: defaultSwatches.darkMuted,
@@ -148,7 +147,7 @@ describe('createMaterialPalette', () => {
             },
             lightVibrant: null,
             darkVibrant: null,
-          }),
+          })
       );
 
       expect(
@@ -166,8 +165,8 @@ describe('createMaterialPalette', () => {
               bodyTextColor: 'purple',
               titleTextColor: 'purple',
             },
-          },
-        ),
+          }
+        )
       ).toEqual({
         muted: {
           color: 'green',

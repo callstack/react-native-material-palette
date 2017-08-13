@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { withMaterialPalette } from 'react-native-material-palette';
-// $FlowFixMe
 import { Toolbar as ToolbarPaper } from 'react-native-paper';
 
 function ToolBar({ style, palette, dark, onArrowBackPressed }) {

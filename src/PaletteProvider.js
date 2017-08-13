@@ -55,11 +55,8 @@ type State = {
  * Passes `subscribe` method via context, which `withPalette` can call
  * and subscribe in order to receive the palette instance.
  */
-export default class MaterialPaletteProvider extends Component<
-  void,
-  Props,
-  State,
-> {
+export default class MaterialPaletteProvider
+  extends Component<void, Props, State> {
   static childContextTypes = {
     [KEY]: PropTypes.func.isRequired,
   };
@@ -103,7 +100,7 @@ export default class MaterialPaletteProvider extends Component<
           error.message = `Uncaught MaterialPaletteProvider exception: ${error.message}`; // eslint-disable-line no-param-reassign
           throw error;
         }
-      },
+      }
     );
   };
 

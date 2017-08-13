@@ -9,8 +9,7 @@ import type {
   PaletteDefaults,
 } from '../types';
 
-export const INVALID_IMAGE_MESSAGE =
-  'Invalid image param, you should either require a local asset, or provide an external URI';
+export const INVALID_IMAGE_MESSAGE = 'Invalid image param, you should either require a local asset, or provide an external URI';
 
 export const createOptionsErrorMessage = (hint: string): string =>
   `Invalid options param - ${hint}. Please refer to the API documentation`;
@@ -41,7 +40,7 @@ export function validateOptionsKeys(options: Options) {
 export function validateRegion(region: Region) {
   if (typeof region !== 'object') {
     throw new Error(
-      createOptionsErrorMessage('options.region should be an object'),
+      createOptionsErrorMessage('options.region should be an object')
     );
   } else {
     const validKeys = ['top', 'bottom', 'left', 'right'];
@@ -50,10 +49,8 @@ export function validateRegion(region: Region) {
       if (!validKeys.includes(reg) || !isNumber) {
         throw new Error(
           createOptionsErrorMessage(
-            `region.${reg} ${!isNumber
-              ? 'should be a number'
-              : 'is not a valid param'}`,
-          ),
+            `region.${reg} ${!isNumber ? 'should be a number' : 'is not a valid param'}`
+          )
         );
       }
     });
@@ -68,8 +65,8 @@ export function validateMaximumColorCount(maxColorCount: number) {
   ) {
     throw new Error(
       createOptionsErrorMessage(
-        'options.maximumColorCount should be positive integer',
-      ),
+        'options.maximumColorCount should be positive integer'
+      )
     );
   }
 }
@@ -78,8 +75,8 @@ export function validateType(type: ColorProfile | Array<ColorProfile>) {
   if (typeof type !== 'string' && !Array.isArray(type)) {
     throw new Error(
       createOptionsErrorMessage(
-        'options.type should be either a string or an Array of strings',
-      ),
+        'options.type should be either a string or an Array of strings'
+      )
     );
   }
   if (Array.isArray(type)) {
@@ -87,8 +84,8 @@ export function validateType(type: ColorProfile | Array<ColorProfile>) {
       if (typeof t !== 'string') {
         throw new Error(
           createOptionsErrorMessage(
-            'options.type should be an Array of strings',
-          ),
+            'options.type should be an Array of strings'
+          )
         );
       }
     });
@@ -103,24 +100,23 @@ export function validateDefaults(defaults: PaletteDefaults) {
     (Object.keys((defaults: any)): ColorProfile[]).forEach(profile => {
       if (!(profile in validColorProfiles)) {
         throw new Error(
-          `${profile} is not a valid color profile for this.props.defaults. Please refer to the API documentation`,
+          `${profile} is not a valid color profile for this.props.defaults. Please refer to the API documentation`
         );
       } else {
         const profileKeys = Object.keys(defaults[profile]).sort();
         const areTypesCorrect = profileKeys.every(
-          key => typeof defaults[profile][key] === 'string',
+          key => typeof defaults[profile][key] === 'string'
         );
-        const areEqual =
-          validProfilesKeys.length === profileKeys.length &&
+        const areEqual = validProfilesKeys.length === profileKeys.length &&
           validProfilesKeys.every((v, i) => v === profileKeys[i]);
         if (!areEqual) {
           throw new Error(
-            `Each default profile should define 'bodyTextColor', 'color' and 'titleTextColor' parameters. Please refer to the API documentation`,
+            `Each default profile should define 'bodyTextColor', 'color' and 'titleTextColor' parameters. Please refer to the API documentation`
           );
         }
         if (!areTypesCorrect) {
           throw new Error(
-            `'bodyTextColor', 'color' and 'titleTextColor' should all be strings`,
+            `'bodyTextColor', 'color' and 'titleTextColor' should all be strings`
           );
         }
       }

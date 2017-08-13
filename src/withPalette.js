@@ -21,12 +21,10 @@ type State = {
  * the results will be passed to a `style` prop to wrapped component.
  */
 export default function withMaterialPalette(
-  mapPaletteToStyle?: (
-    palette: PaletteInstance,
-  ) => {
+  mapPaletteToStyle?: (palette: PaletteInstance) => {
     [key: string]: mixed,
   },
-  localDefaults?: PaletteDefaults,
+  localDefaults?: PaletteDefaults
 ) {
   return (WrappedComponent: ReactClass<*>) => {
     class MaterialPaletteConnector extends Component<void, *, State> {
@@ -52,11 +50,13 @@ export default function withMaterialPalette(
         if (typeof subscribe !== 'function') {
           throw new Error(
             'Cannot find MaterialPaletteProvider key in context. ' +
-              'Did you forget to add <MaterialPaletteProvider> on top of components tree?',
+              'Did you forget to add <MaterialPaletteProvider> on top of components tree?'
           );
         }
 
-        this.unsubscribe = subscribe((data: { palette: PaletteInstance }) => {
+        this.unsubscribe = subscribe((data: {
+          palette: PaletteInstance,
+        }) => {
           if (data) {
             this.setState(data);
           }
@@ -75,29 +75,32 @@ export default function withMaterialPalette(
         return [
           ...Object.keys(palette || {}),
           ...Object.keys(localDefaults || {}),
-        ].reduce((acc: *, key: string) => {
-          const profile = ((key: any): ColorProfile);
-          return {
-            ...acc,
-            [key]: {
-              population: 0,
-              ...acc[key],
-              ...(localDefaults && localDefaults[profile]
-                ? localDefaults[profile]
-                : {}),
-              ...(palette && palette[profile] ? palette[profile] : {}),
-            },
-          };
-        }, {});
+        ].reduce(
+          (acc: *, key: string) => {
+            const profile = ((key: any): ColorProfile);
+            return {
+              ...acc,
+              [key]: {
+                population: 0,
+                ...acc[key],
+                ...(localDefaults && localDefaults[profile]
+                  ? localDefaults[profile]
+                  : {}),
+                ...(palette && palette[profile] ? palette[profile] : {}),
+              },
+            };
+          },
+          {}
+        );
       }
 
       render() {
         const { style, ...rest } = this.props;
         const palette: PaletteInstance = this._mergePaletteWithDefaults();
-        const stylesFromPalette =
-          this.state.palette && typeof mapPaletteToStyle === 'function'
-            ? mapPaletteToStyle(palette)
-            : {};
+        const stylesFromPalette = this.state.palette &&
+          typeof mapPaletteToStyle === 'function'
+          ? mapPaletteToStyle(palette)
+          : {};
         return (
           <WrappedComponent
             {...rest}

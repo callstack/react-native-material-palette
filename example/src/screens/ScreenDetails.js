@@ -1,8 +1,8 @@
 /* @flow */
+/* eslint-disable global-require */
 
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-// $FlowFixMe
 import { Provider as PaperProvider } from 'react-native-paper';
 import { MaterialPaletteProvider } from 'react-native-material-palette';
 import Toolbar from '../components/Toolbar';

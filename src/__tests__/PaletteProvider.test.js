@@ -32,8 +32,7 @@ describe('PaletteProvider', () => {
 
   it('should create palette and call `onFinish` handler when done', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.resolve({ vibrant: defaultSwatches.vibrant }),
-    );
+      Promise.resolve({ vibrant: defaultSwatches.vibrant }));
 
     function onFinish(palette) {
       expect(createMaterialPalette).toHaveBeenCalledWith(
@@ -47,7 +46,7 @@ describe('PaletteProvider', () => {
             bodyTextColor: '#FFFFFF',
             titleTextColor: '#FFFFFF',
           },
-        },
+        }
       );
       expect(palette).toEqual({
         vibrant: defaultSwatches.vibrant,
@@ -69,14 +68,13 @@ describe('PaletteProvider', () => {
         }}
       >
         <Text>Test</Text>
-      </PaletteProvider>,
+      </PaletteProvider>
     );
   });
 
   it('should pass `subscribe` function via context', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.resolve({ vibrant: null }),
-    );
+      Promise.resolve({ vibrant: null }));
 
     function onRender(context) {
       expect(typeof context[KEY]).toEqual('function');
@@ -90,14 +88,13 @@ describe('PaletteProvider', () => {
         forceRender
       >
         <TestComponent onRender={onRender} />
-      </PaletteProvider>,
+      </PaletteProvider>
     );
   });
 
   it('should run `onError` handler if palette creation fails', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.reject(new Error('test')),
-    );
+      Promise.reject(new Error('test')));
 
     function onError(error) {
       expect(error.message).toEqual('test');
@@ -111,7 +108,7 @@ describe('PaletteProvider', () => {
         onError={onError}
       >
         <Text>Test</Text>
-      </PaletteProvider>,
+      </PaletteProvider>
     );
   });
 
@@ -122,7 +119,7 @@ describe('PaletteProvider', () => {
           failure(new Error('test'));
         } catch (error) {
           expect(error.message).toBe(
-            'Uncaught MaterialPaletteProvider exception: test',
+            'Uncaught MaterialPaletteProvider exception: test'
           );
         }
       },
@@ -131,7 +128,7 @@ describe('PaletteProvider', () => {
     render(
       <PaletteProvider image={0} options={{ type: 'vibrant' }}>
         <Text>Test</Text>
-      </PaletteProvider>,
+      </PaletteProvider>
     );
   });
 
@@ -139,31 +136,37 @@ describe('PaletteProvider', () => {
     createMaterialPalette.mockImplementation(
       () =>
         new Promise(resolve => {
-          setTimeout(() => {
-            resolve({ vibrant: {} });
-          }, 50);
-        }),
+          setTimeout(
+            () => {
+              resolve({ vibrant: {} });
+            },
+            50
+          );
+        })
     );
 
     let firstNotification = true;
     function onRender(context) {
-      setTimeout(() => {
-        context[KEY](data => {
-          if (firstNotification) {
-            firstNotification = false;
-            expect(data).toBeNull();
-          } else {
-            expect(data.palette.vibrant).toEqual({});
-            done();
-          }
-        });
-      }, 10);
+      setTimeout(
+        () => {
+          context[KEY](data => {
+            if (firstNotification) {
+              firstNotification = false;
+              expect(data).toBeNull();
+            } else {
+              expect(data.palette.vibrant).toEqual({});
+              done();
+            }
+          });
+        },
+        10
+      );
     }
 
     const wrapper = render(
       <PaletteProvider image={0} options={{ type: 'vibrant' }} forceRender>
         <TestComponent onRender={onRender} />
-      </PaletteProvider>,
+      </PaletteProvider>
     );
 
     expect(wrapper.text()).toEqual('TestComponent');
@@ -178,7 +181,7 @@ describe('PaletteProvider', () => {
         LoaderComponent={() => <Text>Loading</Text>}
       >
         <Text>Test</Text>
-      </PaletteProvider>,
+      </PaletteProvider>
     );
     expect(wrapper.shallow().props().children).toEqual('Loading');
   });

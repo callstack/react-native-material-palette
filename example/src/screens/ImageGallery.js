@@ -41,14 +41,14 @@ export default class ImageGallery extends Component {
       'Drahvins',
     ];
     const urls = Array.from({ length: 12 }).map(
-      (_, i) => `https://unsplash.it/300?random&num=${i * 100}`,
+      (_, i) => `https://unsplash.it/300?random&num=${i * 100}`
     );
 
     let palettes;
 
     try {
       palettes = await Promise.all(
-        urls.map(url => createMaterialPalette({ uri: url }, { type: 'muted' })),
+        urls.map(url => createMaterialPalette({ uri: url }, { type: 'muted' }))
       );
     } catch (error) {
       this.setState({

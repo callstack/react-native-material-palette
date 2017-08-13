@@ -1,7 +1,8 @@
 /* @flow */
 
 import { NativeModules } from 'react-native';
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource';
+import resolveAssetSource
+  from 'react-native/Libraries/Image/resolveAssetSource';
 import isEqual from 'lodash/isEqual';
 import {
   defaultOptions,
@@ -19,16 +20,16 @@ import type {
 
 function mergeWithDefaults(
   palette: PaletteInstance,
-  customDefaults: PaletteDefaults = {},
+  customDefaults: PaletteDefaults = {}
 ) {
   const globalDefaultsForTypesProvided = ((Object.keys(
-    palette,
+    palette
   ): any): ColorProfile[]).reduce(
     (acc, profile) => ({
       ...acc,
       [profile]: defaultSwatches[profile],
     }),
-    {},
+    {}
   );
 
   const defaults = {
@@ -43,7 +44,7 @@ function mergeWithDefaults(
           population: 0,
         },
       }),
-      {},
+      {}
     ),
   };
   return {
@@ -55,7 +56,7 @@ function mergeWithDefaults(
           ...acc,
           [profile]: palette[profile],
         }),
-        {},
+        {}
       ),
   };
 }
@@ -63,10 +64,14 @@ function mergeWithDefaults(
 export default (async function createMaterialPalette(
   image: Image,
   options?: Options = {},
-  defaults?: PaletteDefaults,
+  defaults?: PaletteDefaults
 ): Promise<PaletteInstance> {
   validateCreatePalette(image, options);
-  const { region, maximumColorCount, type } = { ...defaultOptions, ...options };
+  const {
+    region,
+    maximumColorCount,
+    type,
+  } = { ...defaultOptions, ...options };
 
   const source = resolveAssetSource(image);
 
@@ -76,7 +81,7 @@ export default (async function createMaterialPalette(
       region,
       maximumColorCount,
       type: typeof type === 'string' ? [type] : type,
-    },
+    }
   );
   Object.keys(paletteInstance).forEach((profile: ColorProfile) => {
     if (isEqual(paletteInstance[profile], defaultLightSwatch)) {
