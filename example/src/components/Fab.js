@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+// $FlowFixMe
 import { FAB } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import { withMaterialPalette } from 'react-native-material-palette';
