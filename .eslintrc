@@ -1,0 +1,27 @@
+{
+  "extends": "callstack-io",
+  "plugins": [
+    "flowtype",
+    "react",
+    "prettier"
+  ],
+  "env": {
+    "jest": true
+  },
+  "globals": {
+    "ReactClass": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "trailingComma": "all",
+        "singleQuote": true
+      }
+    ],
+    "flowtype/require-parameter-type": 0
+  }
+}

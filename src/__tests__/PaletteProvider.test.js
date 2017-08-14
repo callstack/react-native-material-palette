@@ -11,7 +11,7 @@ import PropTypes from 'prop-types';
 import { shallow, render } from 'enzyme';
 import PaletteProvider, { KEY } from '../PaletteProvider';
 import { createMaterialPalette } from '../index';
-import { defaultSwatches, defaultDarkSwatch } from '../constants/defaults';
+import { defaultSwatches } from '../constants/defaults';
 
 // eslint-disable-next-line react/prefer-stateless-function
 class TestComponent extends React.Component {
@@ -32,19 +32,30 @@ describe('PaletteProvider', () => {
 
   it('should create palette and call `onFinish` handler when done', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.resolve({ vibrant: null }));
+      Promise.resolve({ vibrant: defaultSwatches.vibrant }),
+    );
 
     function onFinish(palette) {
-      expect(createMaterialPalette).toHaveBeenCalledWith(0, {
-        type: 'vibrant',
-      });
+      expect(createMaterialPalette).toHaveBeenCalledWith(
+        0,
+        {
+          type: 'vibrant',
+        },
+        {
+          vibrant: {
+            color: '#000000',
+            bodyTextColor: '#FFFFFF',
+            titleTextColor: '#FFFFFF',
+          },
+        },
+      );
       expect(palette).toEqual({
-        vibrant: defaultDarkSwatch,
+        vibrant: defaultSwatches.vibrant,
       });
       done();
     }
 
-    shallow(
+    render(
       <PaletteProvider
         image={0}
         options={{ type: 'vibrant' }}
@@ -64,7 +75,8 @@ describe('PaletteProvider', () => {
 
   it('should pass `subscribe` function via context', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.resolve({ vibrant: null }));
+      Promise.resolve({ vibrant: null }),
+    );
 
     function onRender(context) {
       expect(typeof context[KEY]).toEqual('function');
@@ -84,7 +96,8 @@ describe('PaletteProvider', () => {
 
   it('should run `onError` handler if palette creation fails', done => {
     createMaterialPalette.mockImplementation(() =>
-      Promise.reject(new Error('test')));
+      Promise.reject(new Error('test')),
+    );
 
     function onError(error) {
       expect(error.message).toEqual('test');
@@ -126,31 +139,25 @@ describe('PaletteProvider', () => {
     createMaterialPalette.mockImplementation(
       () =>
         new Promise(resolve => {
-          setTimeout(
-            () => {
-              resolve({ vibrant: {} });
-            },
-            50,
-          );
+          setTimeout(() => {
+            resolve({ vibrant: {} });
+          }, 50);
         }),
     );
 
     let firstNotification = true;
     function onRender(context) {
-      setTimeout(
-        () => {
-          context[KEY](data => {
-            if (firstNotification) {
-              firstNotification = false;
-              expect(data).toBeNull();
-            } else {
-              expect(data.palette.vibrant).toEqual({});
-              done();
-            }
-          });
-        },
-        10,
-      );
+      setTimeout(() => {
+        context[KEY](data => {
+          if (firstNotification) {
+            firstNotification = false;
+            expect(data).toBeNull();
+          } else {
+            expect(data.palette.vibrant).toEqual({});
+            done();
+          }
+        });
+      }, 10);
     }
 
     const wrapper = render(
@@ -174,140 +181,5 @@ describe('PaletteProvider', () => {
       </PaletteProvider>,
     );
     expect(wrapper.shallow().props().children).toEqual('Loading');
-  });
-
-  describe('Merge with defaults', () => {
-    const PaletteWrapper = ({ types, defaults, onFinish }) => (
-      <PaletteProvider
-        image={0}
-        options={{ type: types }}
-        onFinish={onFinish}
-        defaults={defaults}
-      >
-        <Text>Test</Text>
-      </PaletteProvider>
-    );
-
-    it('should merge palette with globals when props.defaults is not provided, for the types specified', done => {
-      createMaterialPalette.mockImplementation(() =>
-        Promise.resolve({
-          vibrant: {
-            color: 'green',
-            bodyTextColor: 'red',
-            titleTextColor: 'red',
-            population: 20,
-          },
-          muted: null,
-        }));
-
-      function onFinish(palette) {
-        expect(palette).toEqual({
-          vibrant: {
-            color: 'green',
-            bodyTextColor: 'red',
-            titleTextColor: 'red',
-            population: 20,
-          },
-          muted: defaultSwatches.muted,
-        });
-        done();
-      }
-
-      render(
-        <PaletteWrapper
-          types={['vibrant', 'muted']}
-          defaults={undefined}
-          onFinish={onFinish}
-        />,
-      );
-    });
-
-    it('should merge palette with globals when props.defaults contains a wrong profile, for the types specified', done => {
-      createMaterialPalette.mockImplementation(() =>
-        Promise.resolve({
-          vibrant: defaultSwatches.vibrant,
-        }));
-
-      function onFinish(palette) {
-        expect(palette).toEqual({
-          vibrant: defaultSwatches.vibrant,
-          darkMuted: defaultSwatches.darkMuted,
-        });
-        done();
-      }
-      render(
-        <PaletteWrapper
-          types={['vibrant', 'muted']}
-          defaults={{
-            darkMuted: null,
-          }}
-          onFinish={onFinish}
-        />,
-      );
-    });
-
-    it('should merge palette with both globals and local defaults, for the types specified', done => {
-      createMaterialPalette.mockImplementation(() =>
-        Promise.resolve({
-          muted: {
-            color: 'green',
-            bodyTextColor: 'red',
-            titleTextColor: 'red',
-            population: 20,
-          },
-          darkMuted: {
-            color: 'yellow',
-            bodyTextColor: 'blue',
-            titleTextColor: 'blue',
-            population: 40,
-          },
-          lightVibrant: null,
-          darkVibrant: null,
-        }));
-
-      function onFinish(palette) {
-        expect(palette).toEqual({
-          muted: {
-            color: 'green',
-            bodyTextColor: 'red',
-            titleTextColor: 'red',
-            population: 20,
-          },
-          darkMuted: {
-            color: 'yellow',
-            bodyTextColor: 'blue',
-            titleTextColor: 'blue',
-            population: 40,
-          },
-          lightVibrant: {
-            color: 'orange',
-            bodyTextColor: 'purple',
-            titleTextColor: 'purple',
-            population: 0,
-          },
-          darkVibrant: defaultSwatches.darkVibrant,
-        });
-        done();
-      }
-
-      render(
-        <PaletteWrapper
-          types={['muted', 'darkMuted', 'lightVibrant', 'darkVibrant']}
-          defaults={{
-            darkMuted: {
-              color: 'orange',
-              bodyTextColor: 'purple',
-              titleTextColor: 'purple',
-            },
-            lightVibrant: {
-              color: 'orange',
-              bodyTextColor: 'purple',
-              titleTextColor: 'purple',
-            },
-          }}
-          onFinish={onFinish}
-        />,
-      );
-    });
   });
 });

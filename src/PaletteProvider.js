@@ -4,16 +4,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import createEventEmitter from './createEventEmitter';
 import { createMaterialPalette } from './index';
-import { defaultSwatches } from './constants/defaults';
 import { validateDefaults } from './utils/validateCreatePaletteArgs';
 
-import type {
-  PaletteInstance,
-  Image,
-  Options,
-  PaletteDefaults,
-  ColorProfile,
-} from './types';
+import type { PaletteInstance, Image, Options, PaletteDefaults } from './types';
 
 export const KEY = '__react-native-material-palette__';
 
@@ -62,8 +55,11 @@ type State = {
  * Passes `subscribe` method via context, which `withPalette` can call
  * and subscribe in order to receive the palette instance.
  */
-export default class MaterialPaletteProvider
-  extends Component<void, Props, State> {
+export default class MaterialPaletteProvider extends Component<
+  void,
+  Props,
+  State,
+> {
   static childContextTypes = {
     [KEY]: PropTypes.func.isRequired,
   };
@@ -80,48 +76,6 @@ export default class MaterialPaletteProvider
     };
   }
 
-  _mergeWithDefaults(palette: PaletteInstance) {
-    const globalDefaultsForTypesProvided = ((Object.keys(
-      palette,
-    ): any): ColorProfile[]).reduce(
-      (acc, profile) => ({
-        ...acc,
-        [profile]: defaultSwatches[profile],
-      }),
-      {},
-    );
-
-    const defaults = {
-      ...globalDefaultsForTypesProvided,
-      ...((Object.keys(
-        this.props.defaults || {},
-      ): any): ColorProfile[]).reduce(
-        (acc: *, profile: ColorProfile) => ({
-          ...acc,
-          [profile]: {
-            ...(this.props.defaults && this.props.defaults[profile]
-              ? this.props.defaults[profile]
-              : defaultSwatches[profile]),
-            population: 0,
-          },
-        }),
-        {},
-      ),
-    };
-    return {
-      ...defaults,
-      ...((Object.keys(palette): any): ColorProfile[])
-        .filter((profile: ColorProfile) => !!palette[profile]) // Stripping out unavailable profiles
-        .reduce(
-          (acc: *, profile: ColorProfile) => ({
-            ...acc,
-            [profile]: palette[profile],
-          }),
-          {},
-        ),
-    };
-  }
-
   componentWillMount() {
     if (this.props.defaults) {
       validateDefaults(this.props.defaults);
@@ -131,18 +85,16 @@ export default class MaterialPaletteProvider
   }
 
   _createPalette = () => {
-    const { image, options, onFinish, onError } = this.props;
+    const { image, options, defaults, onFinish, onError } = this.props;
 
-    createMaterialPalette(image, options).then(
+    createMaterialPalette(image, options, defaults).then(
       palette => {
-        const paletteWithDefaults = this._mergeWithDefaults(palette);
-
-        if (onFinish) onFinish(paletteWithDefaults);
+        if (onFinish) onFinish(palette);
 
         this.eventEmitter.publish({
-          palette: paletteWithDefaults,
+          palette,
         });
-        this.setState({ palette: paletteWithDefaults });
+        this.setState({ palette });
       },
       error => {
         if (onError) {

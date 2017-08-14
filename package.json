@@ -1,6 +1,6 @@
 {
   "name": "react-native-material-palette",
-  "version": "0.0.0",
+  "version": "0.0.6",
   "description": "",
   "license": "MIT",
   "repository": "github:callstack-io/react-native-material-palette",
@@ -10,7 +10,8 @@
   },
   "main": "./lib/index.js",
   "files": [
-    "lib"
+    "lib",
+    "android"
   ],
   "engines": {
     "node": ">=6"
@@ -25,10 +26,12 @@
     "jest:coverage": "npm run jest && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "test": "concurrently \"npm run lint\" \"npm run jest\" \"npm run flow\"",
     "format": "eslint --fix src",
+    "prettier": "prettier --single-quote --trailing-comma all --write \"src/**/*.js\"",
     "precommit": "yarn run lint"
   },
   "dependencies": {
     "hoist-non-react-statics": "^2.2.0",
+    "lodash": "^4.17.4",
     "prop-types": "^15.5.10"
   },
   "devDependencies": {
@@ -41,19 +44,13 @@
     "concurrently": "^3.4.0",
     "coveralls": "^2.13.1",
     "enzyme": "^2.9.1",
-    "eslint": "^3.18.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-config-prettier": "^1.5.0",
-    "eslint-plugin-flowtype": "^2.30.4",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-prettier": "^2.0.1",
-    "eslint-plugin-react": "^6.10.3",
+    "eslint": "^4.4.1",
+    "eslint-config-callstack-io": "^0.4.1",
     "flow-bin": "^0.40.0",
     "husky": "^0.14.3",
     "jest": "^19.0.2",
     "npm-release": "^1.0.0",
-    "prettier": "^0.22.0",
+    "prettier": "^1.5.3",
     "react": "16.0.0-alpha.6",
     "react-native": "0.43.4",
     "react-native-mock": "^0.3.1",
@@ -74,93 +71,11 @@
       "transform-object-rest-spread"
     ]
   },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": [
-      "airbnb",
-      "plugin:flowtype/recommended",
-      "plugin:react/recommended",
-      "prettier",
-      "prettier/flowtype",
-      "prettier/react"
-    ],
-    "plugins": [
-      "flowtype",
-      "react",
-      "prettier"
-    ],
-    "env": {
-      "node": true,
-      "es6": true,
-      "jest": true
-    },
-    "globals": {
-      "ReactClass": true
-    },
-    "parserOptions": {
-      "sourceType": "module"
-    },
-    "rules": {
-      "prettier/prettier": [
-        "error",
-        {
-          "trailingComma": "all",
-          "singleQuote": true
-        }
-      ],
-      "no-underscore-dangle": 0,
-      "no-use-before-define": 0,
-      "no-unused-expressions": 0,
-      "new-cap": 0,
-      "no-plusplus": 0,
-      "no-class-assign": 0,
-      "no-duplicate-imports": 0,
-      "import/no-extraneous-dependencies": 0,
-      "react/jsx-filename-extension": [
-        0,
-        {
-          "extensions": [
-            ".js",
-            ".jsx"
-          ]
-        }
-      ],
-      "react/sort-comp": 0,
-      "react/forbid-prop-types": 1,
-      "react/prop-types": 0,
-      "react/require-default-props": 0,
-      "import/no-duplicates": 0,
-      "import/extensions": 0,
-      "import/no-unresolved": 0,
-      "import/no-dynamic-require": 0,
-      "flowtype/boolean-style": [
-        2,
-        "boolean"
-      ],
-      "flowtype/no-weak-types": 1,
-      "flowtype/require-parameter-type": 0,
-      "flowtype/require-return-type": [
-        0,
-        "always",
-        {
-          "annotateUndefined": "never"
-        }
-      ],
-      "flowtype/require-valid-file-annotation": 2,
-      "flowtype/use-flow-type": 1,
-      "flowtype/valid-syntax": 1
-    }
-  },
   "jest": {
     "preset": "react-native",
     "setupFiles": [
       "./testSetup.js"
     ],
     "collectCoverage": true
-  },
-  "rnpm": {
-    "android": {
-      "sourceDir": "./android"
-    }
   }
 }

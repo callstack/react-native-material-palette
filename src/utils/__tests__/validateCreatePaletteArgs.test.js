@@ -33,14 +33,16 @@ describe('validateCreatePaletteArgs', () => {
         region: 'region',
         type: 'vibrant',
         bar: 'bar',
-      })).toThrow(createOptionsErrorMessage(`bar is not a valid key`));
+      }),
+    ).toThrow(createOptionsErrorMessage(`bar is not a valid key`));
     expect(() => validateOptionsKeys({})).not.toThrow();
     expect(() =>
       validateOptionsKeys({
         region: 'region',
         type: 'type',
         maximumColorCount: 4,
-      })).not.toThrow();
+      }),
+    ).not.toThrow();
   });
 
   it('Should throw if region param is not valid', () => {
@@ -48,15 +50,14 @@ describe('validateCreatePaletteArgs', () => {
       createOptionsErrorMessage('options.region should be an object'),
     );
     expect(() =>
-      validateRegion({ foo: 1, bottom: 4, left: 4, right: 8 })).toThrow(
-      createOptionsErrorMessage('region.foo is not a valid param'),
-    );
+      validateRegion({ foo: 1, bottom: 4, left: 4, right: 8 }),
+    ).toThrow(createOptionsErrorMessage('region.foo is not a valid param'));
     expect(() =>
-      validateRegion({ top: 1, bottom: '4', left: 4, right: 8 })).toThrow(
-      createOptionsErrorMessage('region.bottom should be a number'),
-    );
+      validateRegion({ top: 1, bottom: '4', left: 4, right: 8 }),
+    ).toThrow(createOptionsErrorMessage('region.bottom should be a number'));
     expect(() =>
-      validateRegion({ top: 1, bottom: 45, left: 8, right: 1 })).not.toThrow();
+      validateRegion({ top: 1, bottom: 45, left: 8, right: 1 }),
+    ).not.toThrow();
   });
 
   it('Should throw if maximumColorCount is not valid', () => {

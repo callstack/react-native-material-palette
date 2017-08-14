@@ -69,11 +69,21 @@ type Swatch = {
   titleTextColor: string, // appropriate color to use for any 'title' text
 }
 
+type DefaultSwatch = {
+  color: string,
+  bodyTextColor: string,
+  titleTextColor: string,
+};
+
+type PaletteDefaults = {
+  [key: ColorProfile]: DefaultSwatch,
+};
+
 PaletteInstance = {
   [key: ColorProfile]: ?Swatch,
 };
 
-createMaterialPalette: (image: Image, options?: Options) => Promise<PaletteInstance>
+createMaterialPalette: (image: Image, options?: Options, defaults?: PaletteDefaults) => Promise<PaletteInstance>
 ```
 
 #### Examples
@@ -94,6 +104,25 @@ const palette = await createMaterialPalette(require('./assets/image.jpg'), {
   maximumColorCount: 32,
   type: ['muted', 'lightVibrant'],
 });
+```
+
+##### Creating a palette from an internal image asset and custom defaults
+```js
+import { createMaterialPalette } from "react-native-material-palette";
+
+const palette = await createMaterialPalette(
+  require('./assets/image.jpg'),
+  {
+    type: ['lightVibrant', 'darkMuted'],
+  },
+  {
+    darkMuted: {
+      color: '#000000',
+      bodyTextColor: '#B2B2B2',
+      titleTextColor: '#F4F4F4',
+    },
+  },
+);
 ```
 
 ## Development
