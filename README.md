@@ -2,7 +2,7 @@
 
 > 
 
-<a title="Join on Slack" href="https://slack.callstack.io"><img src="https://slack.callstack.io/badge.svg" /></a> [![CircleCI](https://circleci.com/gh/callstack-io/react-native-material-palette/tree/master.svg?style=shield)](https://circleci.com/gh/callstack-io/react-native-material-palette/tree/master) [![Coverage Status](https://coveralls.io/repos/github/callstack-io/react-native-material-palette/badge.svg?branch=master)](https://coveralls.io/github/callstack-io/react-native-material-palette?branch=master)
+<a title="Join on Slack" href="https://slack.callstack.io"><img src="https://slack.callstack.io/badge.svg" /></a> [![npm version](https://badge.fury.io/js/react-native-material-palette.svg)](https://badge.fury.io/js/react-native-material-palette) [![CircleCI](https://circleci.com/gh/callstack-io/react-native-material-palette/tree/master.svg?style=shield)](https://circleci.com/gh/callstack-io/react-native-material-palette/tree/master) [![Coverage Status](https://coveralls.io/repos/github/callstack-io/react-native-material-palette/badge.svg?branch=master)](https://coveralls.io/github/callstack-io/react-native-material-palette?branch=master)
 
 [Android Palette API](https://developer.android.com/training/material/palette-colors.html) brought to react native. It extracts prominent colors from images to help you create visually engaging apps. At the moment it only supports Android.
 
