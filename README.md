@@ -50,6 +50,13 @@ const PaletteView = withMaterialPalette(
 
 The API documentation can be found here: [API documentation](./docs/API.md).
 
+## Example app
+The repo includes an example app that covers all the API cases. Go [here](./example) to try it out!
+
+![image](https://user-images.githubusercontent.com/4982414/29331952-92fd2cfc-81fe-11e7-9ef3-25f0e17a0c62.png)
+
+![image](https://user-images.githubusercontent.com/4982414/29332055-f2e25ffc-81fe-11e7-87de-3473d2d74573.png)
+
 ## Development
 
 Development instructions can be found here: [`react-native-material-palette` development](./docs/DEVELOPMENT.md).
