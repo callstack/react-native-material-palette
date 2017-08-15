@@ -1,5 +1,107 @@
 # API
 
+## `createMaterialPalette()`
+
+```js
+createMaterialPalette(
+  image: Image,
+  options?: Options,
+  defaults?: PaletteDefaults,
+): Promise<PaletteInstance>
+
+// Number is the opaque type returned by require('./image.jpg')
+type Image = number | { uri: string }
+
+type Options = {
+  region?: { top: number, left: number, bottom: number, right: number },
+  maximumColorCount?: number = 16,
+  type?: ColorProfile | Array<ColorProfile> = 'vibrant',
+}
+
+type PaletteDefaults = {
+  [key: ColorProfile]: DefaultSwatch,
+};
+
+type PaletteInstance = {
+  [key: ColorProfile]: ?Swatch,
+};
+
+type Swatch = {
+  population: number, // number of pixels
+  color: string, // color for swatch,
+  bodyTextColor: string, // appropriate color to use for any 'body' text
+  titleTextColor: string, // appropriate color to use for any 'title' text
+}
+
+type ColorProfile =
+    | 'muted'
+    | 'vibrant'
+    | 'darkMuted'
+    | 'darkVibrant'
+    | 'lightMuted'
+    | 'lightVibrant';
+  
+type DefaultSwatch = {
+  color: string,
+  bodyTextColor: string,
+  titleTextColor: string,
+};
+
+```
+
+### Description
+`createMaterialPalette` is a function that returns a Promise that when resolved, will provide a palette instance with color information about the image provided.
+
+### Arguments
+* `image: Image` (__required__) - Local image to create palette from (`require('path/to/image')`) or object with remote URI adress from which the image can be downloaded (`{ uri: 'http://some-domain.ext/image.png' }`).
+
+* `options?: Options` (optional) - Options for palette creation.
+  * `region` - Indicates what area of the bitmap the builder uses when creating the palette.
+  * `maximumColorCount` - Sets the maximum number of colors in your palette. The default value is 16, and the optimal value depends on the source image. For landscapes, optimal values range from 8-16 while pictures with faces usually have values that fall between 24-32.
+  * `type` - Color profiles we aim to target. Defaults to `vibrant`
+  
+
+* `defaults?: PaletteDefaults` (optional) - Defaults which will be used, if the specific color profile is not found:
+
+### Examples
+
+#### Creating a palette from a network resource, with 'vibrant' color profile, maximumColorCount = 16 and the whole region of the image (default behaviour) 
+```js
+import { createMaterialPalette } from "react-native-material-palette";
+
+const palette = await createMaterialPalette({ uri: 'http://dummySite/images/yummy.jpg' });
+```
+
+#### Creating a palette from an internal image asset, with 'muted' and 'lightVibrant' color profiles, maximumColorCount = 32 and a specific region of the image
+```js
+import { createMaterialPalette } from "react-native-material-palette";
+
+const palette = await createMaterialPalette(require('./assets/image.jpg'), {
+  region: { top: 0, left: 0, bottom: 50, right: 50},
+  maximumColorCount: 32,
+  type: ['muted', 'lightVibrant'],
+});
+```
+
+#### Creating a palette from an internal image asset and custom defaults
+```js
+import { createMaterialPalette } from "react-native-material-palette";
+
+const palette = await createMaterialPalette(
+  require('./assets/image.jpg'),
+  {
+    type: ['lightVibrant', 'darkMuted'],
+  },
+  {
+    darkMuted: {
+      color: '#000000',
+      bodyTextColor: '#B2B2B2',
+      titleTextColor: '#F4F4F4',
+    },
+  },
+);
+```
+
 ## `MaterialPaletteProvider`
 
 ### Example of usage:
@@ -34,39 +136,14 @@ class App extends React.Component {
 The concept is very similar to `Provider` component from `react-redux`.
 
 ### Props
-* `image: Image` (__required__) - Local image to create palette from (`require('path/to/image')`) or object with remote URI adress from which the image can be downloaded (`{ uri: 'http://some-domain.ext/image.png' }`) - same as `image` in `MaterialPalette.create` function.
+* `image: Image` (__required__) - same as `image` in `createMaterialPalette` function.
 
-* `options?: Options` (optional) - Options for palette creation - same as `options` in `MaterialPalette.create` function:
-  ```javascript
-  type Options = {
-    region?: { top: number, left: number, bottom: number, right: number },
-    maximumColorCount?: number = 16,
-    type?: ColorProfile | Array<ColorProfile> = 'vibrant',
-  }
-  ```
+* `options?: Options` (optional) - same as `options` in `createMaterialPalette` function.
 
 * `defaults?: PaletteDefaults` (optional) - Global defaults which will be propagated to each _connected_ component, alongside with palette instance, which will be used, if the specific color profile is not found:
-  ```javascript
-  type ColorProfile =
-    | 'muted'
-    | 'vibrant'
-    | 'darkMuted'
-    | 'darkVibrant'
-    | 'lightMuted'
-    | 'lightVibrant';
-  
-  type DefaultSwatch = {
-    color: string,
-    bodyTextColor: string,
-    titleTextColor: string,
-  };
-
-  type PaletteDefaults = {
-    [key: ColorProfile]: DefaultSwatch,
-  };
-  ```
 
 * `forceRender?: boolean` (optional) - Forces to render the children regardless whether the palette is being created. __Does not take effect if `LoaderComponent` is specified!__
+
 * `LoaderComponent: React$Component<*, *, *> | ((...args: *) => React$Element<*>)` (optional) - If specified, will render the passed component while waiting for palette to be created:
   * `<MateriaPaletteProvider LoaderComponent={SpinnerComponent}>` - will render `SpinnerComponent`,
   * `<MateriaPaletteProvider LoaderComponent={() => <Text>Loading</Text>)}>` - will render `Text` component with _Loading_.
@@ -96,7 +173,7 @@ export default withMaterialPalette(
 ```
 
 ### Description
-`withMaterialPalette` is a function that returns a Higher Order Component (HOC), which allows to seemlessy _connect_ to the `MaterialPaletteProvider` and get the palette instance via context.
+`withMaterialPalette` is a function that returns a Higher Order Component (HOC), which allows to seamlessly _connect_ to the `MaterialPaletteProvider` and get the palette instance via context.
 
 Under the hood, it is a function factory (it returns a new function), similarily to `connect` from `react-redux`, to allow to be used as a decorator:
 ```javascript
