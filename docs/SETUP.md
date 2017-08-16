@@ -6,14 +6,14 @@
 
 1. Install module using npm or yarn:
 ```bash
-$ yarn add react-native-material-palette
+yarn add react-native-material-palette
 ```
 
 ### RN 0.47 or higher
 
 2. Link the native library's dependencies
 ```bash
-$ react-native link react-native-material-palette
+react-native link react-native-material-palette
 ```
 
 ### RN < 0.47
