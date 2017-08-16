@@ -52,13 +52,14 @@ public class MainApplication extends Application implements ReactApplication {
 
 ```
 
-4. Add the following lines to `android/app/src/build.gradle`:
+4. Do the following changes to `android/app/src/build.gradle`:
 ```diff
 // ...
 
 dependencies {
 +   compile project(':react-native-material-palette')
     compile fileTree(dir: "libs", include: ["*.jar"])
+-   compile "com.android.support:appcompat-v7:23.0.1"
 +   compile "com.android.support:appcompat-v7:24.0.1" // Or version 25, depends on your project compileSdkVersion 
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
