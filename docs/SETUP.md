@@ -17,7 +17,7 @@ react-native link react-native-material-palette
 ```
 
 ### RN < 0.47
-Linking modules written in Kotlin is only supported from RN 0.47 on. For lower versions, you'll have to follow the manual steps described below.
+Linking modules written in Kotlin is only supported from RN 0.47 on. For lower versions, you'll have to follow the manual steps described below:
 
 2. Add the following lines to `android/settings.gradle`:
 ```diff
