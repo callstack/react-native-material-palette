@@ -10,7 +10,7 @@
 
 Installation and setup guide can be found here: [Setup guide](./docs/SETUP.md).
 
-## Usage as direct palette generation, `createMaterialPalette`
+## Usage with `createMaterialPalette`
 
 ```js
 import { createMaterialPalette } from "react-native-material-palette";
