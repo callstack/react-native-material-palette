@@ -61,7 +61,7 @@ type DefaultSwatch = {
   * `type` - Color profiles we aim to target. Defaults to `vibrant`
   
 
-* `defaults?: PaletteDefaults` (optional) - Defaults which will be used, if the specific color profile is not found:
+* `defaults?: PaletteDefaults` (optional) - Defaults which will be used, if the specific color profile is not found.
 
 ### Examples
 
