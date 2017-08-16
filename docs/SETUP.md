@@ -59,7 +59,7 @@ public class MainApplication extends Application implements ReactApplication {
 dependencies {
 +   compile project(':react-native-material-palette')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    compile "com.android.support:appcompat-v7:25.0.1" // Or version 24, depends on your project compileSdkVersion 
++   compile "com.android.support:appcompat-v7:24.0.1" // Or version 25, depends on your project compileSdkVersion 
     compile "com.facebook.react:react-native:+"  // From node_modules
 }
 
