@@ -140,7 +140,7 @@ The concept is very similar to `Provider` component from `react-redux`.
 
 * `options?: Options` (optional) - same as `options` in `createMaterialPalette` function.
 
-* `defaults?: PaletteDefaults` (optional) - Global defaults which will be propagated to each _connected_ component, alongside with palette instance, which will be used, if the specific color profile is not found:
+* `defaults?: PaletteDefaults` (optional) - Global defaults which will be propagated to each _connected_ component, alongside with palette instance, which will be used, if the specific color profile is not found.
 
 * `forceRender?: boolean` (optional) - Forces to render the children regardless whether the palette is being created. __Does not take effect if `LoaderComponent` is specified!__
 
