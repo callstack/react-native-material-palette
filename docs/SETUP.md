@@ -52,7 +52,7 @@ public class MainApplication extends Application implements ReactApplication {
 
 ```
 
-4. Add the following line to `android/app/src/build.gradle`:
+4. Add the following lines to `android/app/src/build.gradle`:
 ```diff
 // ...
 
