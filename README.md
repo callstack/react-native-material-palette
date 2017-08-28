@@ -6,6 +6,8 @@
 
 [Android Palette API](https://developer.android.com/training/material/palette-colors.html) brought to react native. It extracts prominent colors from images to help you create visually engaging apps. At the moment it only supports Android.
 
+Check out [this medium article](https://blog.callstack.io/colour-your-apps-in-react-native-using-material-palette-35448df91958) for a broader introduction!
+
 ## Installation
 
 Installation and setup guide can be found here: [Setup guide](./docs/SETUP.md).
