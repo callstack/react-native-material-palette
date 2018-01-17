@@ -1,8 +1,14 @@
 # react-native-material-palette
 
-> 
+[![Build Status][build-badge]][build]
+[![Code Coverage][coverage-badge]][coverage]
+[![Version][version-badge]][package]
+[![MIT License][license-badge]][license]
 
-<a title="Join on Slack" href="https://slack.callstack.io"><img src="https://slack.callstack.io/badge.svg" /></a> [![npm version](https://badge.fury.io/js/react-native-material-palette.svg)](https://badge.fury.io/js/react-native-material-palette) [![CircleCI](https://circleci.com/gh/callstack-io/react-native-material-palette/tree/master.svg?style=shield)](https://circleci.com/gh/callstack-io/react-native-material-palette/tree/master) [![Coverage Status](https://coveralls.io/repos/github/callstack-io/react-native-material-palette/badge.svg?branch=master)](https://coveralls.io/github/callstack-io/react-native-material-palette?branch=master)
+
+[![PRs Welcome][prs-welcome-badge]][prs-welcome]
+[![Chat][chat-badge]][chat]
+[![Code of Conduct][coc-badge]][coc]
 
 [Android Palette API](https://developer.android.com/training/material/palette-colors.html) brought to react native. It extracts prominent colors from images to help you create visually engaging apps. At the moment it only supports Android.
 
@@ -68,6 +74,18 @@ The repo includes an example app that covers all the API cases. Go [here](./exam
 
 Development instructions can be found here: [`react-native-material-palette` development](./docs/DEVELOPMENT.md).
 
-## License
-
-[MIT](./LICENSE)
+<!-- badges -->
+[build-badge]: https://img.shields.io/circleci/project/github/callstack/react-native-material-palette/master.svg?style=flat-square
+[build]: https://circleci.com/gh/callstack/react-native-material-palette
+[coverage-badge]: https://img.shields.io/coveralls/github/callstack-io/react-native-material-palette.svg?style=flat-square
+[coverage]: https://coveralls.io/github/callstack-io/react-native-material-palette?branch=master
+[version-badge]: https://img.shields.io/npm/v/react-native-material-palette.svg?style=flat-square
+[package]: https://www.npmjs.com/package/react-native-material-palette
+[license-badge]: https://img.shields.io/npm/l/react-native-material-palette.svg?style=flat-square
+[license]: https://opensource.org/licenses/MIT
+[prs-welcome-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square
+[prs-welcome]: http://makeapullrequest.com
+[coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
+[coc]: https://github.com/callstack/react-native-material-palette/blob/master/CODE_OF_CONDUCT.md
+[chat-badge]: https://img.shields.io/badge/chat-slack-brightgreen.svg?style=flat-square&colorB=E01563
+[chat]: https://slack.callstack.com/
