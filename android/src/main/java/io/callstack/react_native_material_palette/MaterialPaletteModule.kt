@@ -8,13 +8,13 @@ import android.support.v7.graphics.Palette
 import android.support.v7.graphics.Target
 import com.facebook.common.executors.CallerThreadExecutor
 import com.facebook.common.internal.Closeables
+import com.facebook.common.memory.PooledByteBuffer
+import com.facebook.common.memory.PooledByteBufferInputStream
 import com.facebook.common.references.CloseableReference
 import com.facebook.datasource.BaseDataSubscriber
 import com.facebook.datasource.DataSource
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.facebook.imagepipeline.common.ImageDecodeOptions
-import com.facebook.imagepipeline.memory.PooledByteBuffer
-import com.facebook.imagepipeline.memory.PooledByteBufferInputStream
 import com.facebook.imagepipeline.request.ImageRequest.RequestLevel
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import com.facebook.react.bridge.*
