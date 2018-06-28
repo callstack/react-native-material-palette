@@ -87,5 +87,5 @@ Development instructions can be found here: [`react-native-material-palette` dev
 [prs-welcome]: http://makeapullrequest.com
 [coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg?style=flat-square
 [coc]: https://github.com/callstack/react-native-material-palette/blob/master/CODE_OF_CONDUCT.md
-[chat-badge]: https://img.shields.io/badge/chat-slack-brightgreen.svg?style=flat-square&colorB=E01563
-[chat]: https://slack.callstack.com/
+[chat-badge]: https://img.shields.io/discord/426714625279524876.svg?style=flat-square&colorB=758ED3
+[chat]: https://discord.gg/zwR2Cdh
