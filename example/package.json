@@ -1,29 +1,22 @@
 {
-  "name": "PaletteExample",
-  "version": "0.0.1",
-  "private": true,
+  "name": "react-native-material-palette-example",
+  "version": "1.0.0",
+  "main": "index.js",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "haul": "haul start",
-    "build:android": "cd android && ./gradlew clean && cd .. && react-native run-android"
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
-    "react": "16.0.0-alpha.12",
-    "react-native": "0.47.0",
-    "react-native-material-palette": "0.0.6",
-    "react-native-paper": "^0.0.6",
-    "react-native-vector-icons": "^4.3.0",
-    "react-navigation": "^1.0.0-beta.11"
+    "expo": "~54.0.32",
+    "expo-status-bar": "~3.0.9",
+    "react": "19.1.0",
+    "react-native": "0.81.5"
   },
+  "private": true,
   "devDependencies": {
-    "babel-jest": "20.0.3",
-    "babel-preset-react-native": "1.9.2",
-    "haul-cli": "^0.6.0",
-    "jest": "20.0.4",
-    "react-test-renderer": "16.0.0-alpha.6"
-  },
-  "jest": {
-    "preset": "react-native"
+    "expo-dev-client": "~6.0.20",
+    "react-native-builder-bob": "^0.40.17",
+    "react-native-monorepo-config": "^0.3.1"
   }
 }
