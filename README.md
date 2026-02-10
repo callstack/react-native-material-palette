@@ -1,13 +1,9 @@
 # react-native-material-palette
 
 [![Build Status][build-badge]][build]
-[![Code Coverage][coverage-badge]][coverage]
 [![Version][version-badge]][package]
 [![MIT License][license-badge]][license]
-
-[![PRs Welcome][prs-welcome-badge]][prs-welcome]
 [![Chat][chat-badge]][chat]
-[![Code of Conduct][coc-badge]][coc]
 
 [Android Palette API](https://developer.android.com/training/material/palette-colors.html) brought to react native. It extracts prominent colors from images to help you create visually engaging apps.
 
@@ -69,14 +65,17 @@ Each `PaletteSwatch` has the following properties:
 Specifies a rectangular area of the image to use for palette generation. Coordinates are in pixels.
 
 ```tsx
-const palette = await createPalette(source, {
-  region: {
-    left: 0,
-    top: 0,
-    right: 100,
-    bottom: 100,
-  },
-});
+const palette = await createPalette(
+  { uri: 'https://example.com/photo.jpg' },
+  {
+    region: {
+      left: 0,
+      top: 0,
+      right: 100,
+      bottom: 100,
+    },
+  }
+);
 ```
 
 ##### `maximumColorCount`
@@ -90,18 +89,21 @@ Extract a single swatch using a custom target for fine-grained control over colo
 ```tsx
 import { createPaletteForTarget } from 'react-native-material-palette';
 
-const swatch = await createPaletteForTarget(source, {
-  targetLightness: 0.5,
-  minimumLightness: 0.2,
-  maximumLightness: 0.8,
-  targetSaturation: 0.7,
-  minimumSaturation: 0.3,
-  maximumSaturation: 1.0,
-  lightnessWeight: 0.6,
-  saturationWeight: 0.3,
-  populationWeight: 0.1,
-  exclusive: true,
-});
+const swatch = await createPaletteForTarget(
+  { uri: 'https://example.com/photo.jpg' },
+  {
+    targetLightness: 0.5,
+    minimumLightness: 0.2,
+    maximumLightness: 0.8,
+    targetSaturation: 0.7,
+    minimumSaturation: 0.3,
+    maximumSaturation: 1.0,
+    lightnessWeight: 0.6,
+    saturationWeight: 0.3,
+    populationWeight: 0.1,
+    exclusive: true,
+  }
+);
 ```
 
 It accepts the same `region` and `maximumColorCount` options as `createPalette` in an optional third argument.
@@ -114,7 +116,10 @@ A hook for using palette colors in components. It extracts a single swatch based
 import { usePaletteSwatch } from 'react-native-material-palette';
 
 function MyComponent() {
-  const swatch = usePaletteSwatch(source, { type: 'vibrant' });
+  const swatch = usePaletteSwatch(
+    { uri: 'https://example.com/photo.jpg' },
+    { type: 'vibrant' }
+  );
 
   return (
     <View style={{ backgroundColor: swatch?.color ?? 'white' }}>
@@ -140,7 +145,10 @@ import { Palette } from 'react-native-material-palette';
 
 function MyComponent() {
   return (
-    <Palette.View source={imageSource} type="vibrant">
+    <Palette.View
+      source={{ uri: 'https://example.com/photo.jpg' }}
+      type="vibrant"
+    >
       {/* your content */}
     </Palette.View>
   );
@@ -166,7 +174,10 @@ import { Palette } from 'react-native-material-palette';
 
 function MyComponent() {
   return (
-    <Palette.Text source={imageSource} type="vibrant">
+    <Palette.Text
+      source={{ uri: 'https://example.com/photo.jpg' }}
+      type="vibrant"
+    >
       Hello, World!
     </Palette.Text>
   );
@@ -186,7 +197,10 @@ import { Palette } from 'react-native-material-palette';
 
 function MyComponent() {
   return (
-    <Palette.View source={imageSource} type="vibrant">
+    <Palette.View
+      source={{ uri: 'https://example.com/photo.jpg' }}
+      type="vibrant"
+    >
       <Palette.Text>Hello, World!</Palette.Text>
     </Palette.View>
   );
@@ -215,15 +229,9 @@ Made with [create-react-native-library](https://github.com/callstack/react-nativ
 
 [build-badge]: https://github.com/callstack/react-native-material-palette/actions/workflows/ci.yml/badge.svg
 [build]: https://github.com/callstack/react-native-material-palette/actions/workflows/ci.yml
-[coverage-badge]: https://img.shields.io/coveralls/github/callstack/react-native-material-palette.svg
-[coverage]: https://coveralls.io/github/callstack/react-native-material-palette?branch=main
 [version-badge]: https://img.shields.io/npm/v/react-native-material-palette.svg
 [package]: https://www.npmjs.com/package/react-native-material-palette
 [license-badge]: https://img.shields.io/npm/l/react-native-material-palette.svg
 [license]: https://opensource.org/licenses/MIT
-[prs-welcome-badge]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
-[prs-welcome]: http://makeapullrequest.com
-[coc-badge]: https://img.shields.io/badge/code%20of-conduct-ff69b4.svg
-[coc]: https://github.com/callstack/react-native-material-palette/blob/main/CODE_OF_CONDUCT.md
-[chat-badge]: https://img.shields.io/discord/426714625279524876.svg&colorB=758ED3
+[chat-badge]: https://img.shields.io/badge/chat-Discord-5b65ea.svg
 [chat]: https://discord.gg/zwR2Cdh
