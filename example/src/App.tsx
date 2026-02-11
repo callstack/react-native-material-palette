@@ -1,8 +1,13 @@
+import { useEffect, useState } from 'react';
 import {
+  BackHandler,
   Image,
+  PlatformColor,
+  Pressable,
   ScrollView,
   StatusBar,
   StyleSheet,
+  Text,
   View,
   type ImageSourcePropType,
 } from 'react-native';
@@ -11,6 +16,7 @@ import {
   type PaletteResult,
   type PaletteTarget,
 } from 'react-native-material-palette';
+import Demo from './Demo';
 
 const PALETTE_TYPES: (keyof PaletteResult)[] = [
   'vibrant',
@@ -61,11 +67,36 @@ const ROUNDNESS = 10;
 const SPACING = 8;
 
 export default function App() {
+  const [screen, setScreen] = useState<'home' | 'demo'>('home');
+
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        if (screen === 'demo') {
+          setScreen('home');
+          return true;
+        }
+
+        return false;
+      }
+    );
+
+    return () => subscription.remove();
+  }, [screen]);
+
+  if (screen === 'demo') {
+    return <Demo />;
+  }
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {IMAGES.map((img, index) => (
         <ExampleItem key={index} image={img.source} author={img.author} />
       ))}
+      <Pressable style={styles.button} onPress={() => setScreen('demo')}>
+        <Text style={styles.buttonLabel}>Go to Demo</Text>
+      </Pressable>
     </ScrollView>
   );
 }
@@ -172,5 +203,16 @@ const styles = StyleSheet.create({
   author: {
     margin: SPACING / 2,
     fontStyle: 'italic',
+  },
+  button: {
+    marginVertical: SPACING,
+    backgroundColor: PlatformColor('@android:color/system_accent1_50'),
+    paddingVertical: SPACING,
+    paddingHorizontal: SPACING * 2,
+    borderRadius: ROUNDNESS + SPACING,
+  },
+  buttonLabel: {
+    textAlign: 'center',
+    color: PlatformColor('@android:color/system_accent1_700'),
   },
 });
