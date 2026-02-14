@@ -132,6 +132,8 @@ export default function CustomImage() {
             autoCapitalize="none"
             autoCorrect={false}
             keyboardType="url"
+            returnKeyType="done"
+            onSubmitEditing={loadFromUrl}
           />
           <Pressable
             style={[
@@ -153,22 +155,33 @@ export default function CustomImage() {
           </Pressable>
         </View>
         {imageSource ? (
-          <View onLayout={handleDemoLayout}>
-            <Demo
-              sourceOverride={imageSource}
-              content={{
-                hero: { ...CUSTOM_HERO_ITEM, source: imageSource },
-                discover: { ...DISCOVER_ITEM, source: imageSource },
-                stories: { ...STORY_ITEM, source: imageSource },
-              }}
-            />
-            <Text style={styles.header}>Palette</Text>
-            <View style={styles.paletteContainer}>
-              <PaletteExampleItem image={imageSource} />
-            </View>
-          </View>
+          <CustomDemo imageSource={imageSource} onLayout={handleDemoLayout} />
         ) : null}
       </ScrollView>
+    </View>
+  );
+}
+
+function CustomDemo({
+  imageSource,
+  onLayout,
+}: {
+  imageSource: ImageSourcePropType;
+  onLayout: (event: LayoutChangeEvent) => void;
+}) {
+  const demoContent = {
+    hero: { ...CUSTOM_HERO_ITEM, source: imageSource },
+    discover: { ...DISCOVER_ITEM, source: imageSource },
+    stories: { ...STORY_ITEM, source: imageSource },
+  };
+
+  return (
+    <View onLayout={onLayout}>
+      <Demo sourceOverride={imageSource} content={demoContent} />
+      <Text style={styles.header}>Palette</Text>
+      <View style={styles.paletteContainer}>
+        <PaletteExampleItem image={imageSource} />
+      </View>
     </View>
   );
 }
