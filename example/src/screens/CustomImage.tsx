@@ -106,6 +106,8 @@ export default function CustomImage() {
     setDemoOffsetY(event.nativeEvent.layout.y);
   }, []);
 
+  const loadFromUrlDisabled = !urlInput.trim() || isLoadingImage;
+
   return (
     <View style={styles.screen}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
@@ -123,7 +125,7 @@ export default function CustomImage() {
           <Text style={styles.label}>Image URL</Text>
           <TextInput
             style={styles.input}
-            value={urlInput}
+            defaultValue={urlInput}
             onChangeText={setUrlInput}
             placeholder="https://example.com/image.jpg"
             placeholderTextColor={COLORS.subtitle}
@@ -131,13 +133,22 @@ export default function CustomImage() {
             autoCorrect={false}
             keyboardType="url"
           />
-          <Pressable style={styles.button} onPress={loadFromUrl}>
-            <Text style={styles.buttonLabel}>
-              {isLoadingImage ? 'Loading image...' : 'Load from URL'}
-            </Text>
+          <Pressable
+            style={[
+              styles.button,
+              loadFromUrlDisabled && styles.buttonDisabled,
+            ]}
+            onPress={loadFromUrl}
+            disabled={loadFromUrlDisabled}
+          >
+            <Text style={styles.buttonLabel}>Load from URL</Text>
           </Pressable>
 
-          <Pressable style={styles.button} onPress={pickFromGallery}>
+          <Pressable
+            style={[styles.button, isLoadingImage && styles.buttonDisabled]}
+            onPress={pickFromGallery}
+            disabled={isLoadingImage}
+          >
             <Text style={styles.buttonLabel}>Pick from gallery</Text>
           </Pressable>
         </View>
@@ -220,6 +231,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: GAP,
     borderRadius: ROUNDNESS + SPACING,
     alignItems: 'center',
+  },
+  buttonDisabled: {
+    opacity: 0.5,
   },
   buttonLabel: {
     textAlign: 'center',
