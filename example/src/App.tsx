@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import CustomImage from './screens/CustomImage';
 import Demo from './screens/Demo';
-import { SPACING } from './constants';
+import { COLORS, SPACING } from './constants';
 import { IMAGES } from './data';
 import PaletteExampleItem from './components/PaletteExampleItem';
 
@@ -64,7 +64,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.background,
   },
   content: {
     padding: SPACING * 4,

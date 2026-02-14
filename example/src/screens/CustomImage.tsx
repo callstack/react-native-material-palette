@@ -25,6 +25,7 @@ import Demo from './Demo';
 import { CUSTOM_HERO_ITEM, DISCOVER_ITEM, STORY_ITEM } from '../data';
 import { PADDING, SPACING, GAP, ROUNDNESS, COLORS } from '../constants';
 import PaletteExampleItem from '../components/PaletteExampleItem';
+import type { CustomDemoProps } from '../types';
 
 export default function CustomImage() {
   const [imageSource, setImageSource] = useState<ImageSourcePropType | null>(
@@ -162,13 +163,7 @@ export default function CustomImage() {
   );
 }
 
-function CustomDemo({
-  imageSource,
-  onLayout,
-}: {
-  imageSource: ImageSourcePropType;
-  onLayout: (event: LayoutChangeEvent) => void;
-}) {
+function CustomDemo({ imageSource, onLayout }: CustomDemoProps) {
   const demoContent = {
     hero: { ...CUSTOM_HERO_ITEM, source: imageSource },
     discover: { ...DISCOVER_ITEM, source: imageSource },

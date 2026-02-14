@@ -1,4 +1,4 @@
-import type { ImageSourcePropType } from 'react-native';
+import type { ImageSourcePropType, LayoutChangeEvent } from 'react-native';
 
 export type HeroContent = {
   source: ImageSourcePropType;
@@ -27,4 +27,9 @@ export type DemoProps = {
     discover: DiscoverItem | DiscoverItem[];
     stories: StoryItem | StoryItem[];
   };
+};
+
+export type CustomDemoProps = {
+  imageSource: ImageSourcePropType;
+  onLayout: (event: LayoutChangeEvent) => void;
 };
