@@ -6,104 +6,46 @@ import {
   Text,
   View,
   useWindowDimensions,
-  type ImageSourcePropType,
 } from 'react-native';
 import { Palette } from 'react-native-material-palette';
+import { HERO_ITEM, DISCOVER_ITEMS, STORY_ITEMS } from '../data';
+import type { DemoProps, DiscoverItem, HeroContent, StoryItem } from '../types';
+import {
+  PADDING,
+  SPACING,
+  GAP,
+  ROUNDNESS,
+  HERO_IMAGE_HEIGHT,
+  STORY_IMAGE_WIDTH,
+  STORY_IMAGE_HEIGHT,
+  DOT_SIZE,
+  DISCOVER_CARD_WIDTH_RATIO,
+  COLORS,
+  FALLBACK_DARK,
+  FALLBACK_LIGHT,
+} from '../constants';
 
-const DISCOVER_CARD_WIDTH_RATIO = 0.38;
+const toArray = <T,>(value: T | T[]) =>
+  Array.isArray(value) ? value : [value];
 
-const COLORS = {
-  background: '#FAFAFA',
-  text: '#1A1A1A',
-  fallbackDark: '#2A2A2A',
-  fallbackDarkTitle: '#FFFFFF',
-  fallbackDarkBody: '#CCCCCC',
-  fallbackLight: '#F0F0F0',
-  fallbackLightTitle: '#1A1A1A',
-  fallbackLightBody: '#555555',
-};
+export default function Demo({ sourceOverride, content }: DemoProps) {
+  const {
+    hero = HERO_ITEM,
+    discover = DISCOVER_ITEMS,
+    stories = STORY_ITEMS,
+  } = content ?? {};
 
-const SPACING = 4;
-const PADDING = SPACING * 5;
-const GAP = SPACING * 3;
-const ROUNDNESS = SPACING * 4;
-const HERO_IMAGE_HEIGHT = SPACING * 55;
-const STORY_IMAGE_WIDTH = SPACING * 28;
-const STORY_IMAGE_HEIGHT = SPACING * 33;
-const DOT_SIZE = SPACING * 1.5;
-
-const FALLBACK_DARK = {
-  color: COLORS.fallbackDark,
-  titleTextColor: COLORS.fallbackDarkTitle,
-  bodyTextColor: COLORS.fallbackDarkBody,
-};
-
-const FALLBACK_LIGHT = {
-  color: COLORS.fallbackLight,
-  titleTextColor: COLORS.fallbackLightTitle,
-  bodyTextColor: COLORS.fallbackLightBody,
-};
-
-const HERO_IMAGE = require('../assets/images/ishan-seefromthesky.jpg');
-
-const DISCOVER_ITEMS = [
-  {
-    source: require('../assets/images/mohamed-sameeh.jpg'),
-    title: 'Festival Lights',
-    location: 'Marrakech',
-  },
-  {
-    source: require('../assets/images/andrew-pons.jpg'),
-    title: 'Red Canyons',
-    location: 'Utah',
-  },
-  {
-    source: require('../assets/images/luke-mummert.jpg'),
-    title: 'Golden Gate',
-    location: 'San Francisco',
-  },
-  {
-    source: require('../assets/images/paolo-nicolello.jpg'),
-    title: 'Hidden Falls',
-    location: 'Iceland',
-  },
-];
-
-const STORY_ITEMS = [
-  {
-    source: require('../assets/images/luke-mummert.jpg'),
-    title: 'Crossing the Golden Gate',
-    excerpt:
-      'A golden hour walk across the iconic bridge with the city skyline in the distance.',
-    meta: '8 min · Sarah Kim',
-  },
-  {
-    source: require('../assets/images/andrew-pons.jpg'),
-    title: 'Above the Red Canyons',
-    excerpt:
-      'Aerial views reveal sculpted sandstone labyrinths hidden beneath the clouds.',
-    meta: '5 min · James Chen',
-  },
-  {
-    source: require('../assets/images/paolo-nicolello.jpg'),
-    title: 'Chasing Waterfalls in Iceland',
-    excerpt:
-      'Moss-covered gorges, turquoise pools, and cascades carved into ancient rock.',
-    meta: '6 min · Elena Rossi',
-  },
-];
-
-export default function Demo() {
   return (
     <View style={styles.screen}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.background} />
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={
+          content ? styles.scrollContent : styles.scrollNoContent
+        }
         showsVerticalScrollIndicator={false}
       >
         <Text style={styles.header}>Explore</Text>
-
-        <HeroCard />
+        <HeroCard {...hero} />
 
         <Text style={styles.sectionTitle}>Discover</Text>
         <ScrollView
@@ -111,61 +53,63 @@ export default function Demo() {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.discoverScroll}
         >
-          {DISCOVER_ITEMS.map((item, i) => (
-            <DiscoverCard key={i} {...item} />
+          {toArray(discover).map((item, i) => (
+            <DiscoverCard
+              key={i}
+              source={sourceOverride ?? item.source}
+              title={item.title}
+              location={item.location}
+            />
           ))}
         </ScrollView>
 
         <Text style={styles.sectionTitle}>Stories</Text>
-        {STORY_ITEMS.map((item, i) => (
-          <StoryCard key={i} {...item} />
+        {toArray(stories).map((item, i) => (
+          <StoryCard
+            key={i}
+            source={sourceOverride ?? item.source}
+            title={item.title}
+            excerpt={item.excerpt}
+            meta={item.meta}
+          />
         ))}
       </ScrollView>
     </View>
   );
 }
 
-function HeroCard() {
+function HeroCard({ source, title, subtitle, badgeText }: HeroContent) {
   return (
     <Palette.View
-      source={HERO_IMAGE}
+      source={source}
       type="darkMuted"
       fallback={FALLBACK_DARK}
       style={styles.heroCard}
     >
-      <Image source={HERO_IMAGE} style={styles.heroImage} resizeMode="cover" />
+      <Image source={source} style={styles.heroImage} resizeMode="cover" />
       <View style={styles.heroContent}>
         <Palette.View
-          source={HERO_IMAGE}
+          source={source}
           type="vibrant"
           fallback={FALLBACK_DARK}
           style={styles.badge}
         >
           <Palette.Text variant="titleTextColor" style={styles.badgeText}>
-            Featured
+            {badgeText}
           </Palette.Text>
         </Palette.View>
         <Palette.Text variant="titleTextColor" style={styles.heroTitle}>
-          Crystal Waters
+          {title}
         </Palette.Text>
         <Palette.Text variant="bodyTextColor" style={styles.heroSubtitle}>
-          Discover hidden paradise islands with pristine beaches and vibrant
-          turquoise waters
+          {subtitle}
         </Palette.Text>
       </View>
     </Palette.View>
   );
 }
 
-function DiscoverCard({
-  source,
-  title,
-  location,
-}: {
-  source: ImageSourcePropType;
-  title: string;
-  location: string;
-}) {
+function DiscoverCard({ source, title, location }: DiscoverItem) {
   const { width } = useWindowDimensions();
   const cardWidth = width * DISCOVER_CARD_WIDTH_RATIO;
 
@@ -193,17 +137,7 @@ function DiscoverCard({
   );
 }
 
-function StoryCard({
-  source,
-  title,
-  excerpt,
-  meta,
-}: {
-  source: ImageSourcePropType;
-  title: string;
-  excerpt: string;
-  meta: string;
-}) {
+function StoryCard({ source, title, excerpt, meta }: StoryItem) {
   return (
     <Palette.View
       source={source}
@@ -249,10 +183,27 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   scrollContent: {
+    paddingTop: PADDING * 2,
+    paddingBottom: PADDING,
+  },
+  scrollNoContent: {
     paddingTop: (StatusBar.currentHeight ?? 0) + PADDING,
     paddingBottom: PADDING * 2,
   },
   header: {
+    fontSize: 34,
+    fontWeight: '800',
+    color: COLORS.text,
+    marginHorizontal: PADDING,
+    marginBottom: SPACING * 3,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: COLORS.subtitle,
+    marginHorizontal: PADDING,
+    marginBottom: PADDING,
+  },
+  contentHeader: {
     fontSize: 34,
     fontWeight: '800',
     color: COLORS.text,
